@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Сюжетное приложение</string>
+    <string name="title_welcome">Привет, друзья Dico, добро пожаловать в приложение Stories!</string>
+    <string name="description_welcome">Поделитесь своим опытом обучения с Dicoding? Расскажите и подружитесь!</string>
+    <string name="login">Войти</string>
+    <string name="register">регистр</string>
+    <string name="version">Версия %s</string>
+    <string name="title_register">Заполните свои данные ниже, хорошо?</string>
+    <string name="name">Имя</string>
+    <string name="email">Эл. адрес</string>
+    <string name="title_login">Вы готовы поделиться своей историей?</string>
+    <string name="description_login">Введите данные своего аккаунта!</string>
+    <string name="add_story">Добавить историю</string>
+    <string name="todo_image">Ваше изображение</string>
+    <string name="camera">Камера</string>
+    <string name="gallery">Галерея</string>
+    <string name="description">Описание</string>
+    <string name="upload">Загрузить</string>
+    <string name="log_out">Выйти</string>
+    <string name="password">Пароль</string>
+    <string name="error_password">Количество паролей менее 6 символов!</string>
+    <string name="error_email">Неверный формат электронной почты!</string>
+    <string name="error_file">Сначала введите файл изображения.</string>
+    <string name="error_permission">Не получение разрешений.</string>
+    <string name="title_add_story">Добавить новую историю</string>
+    <string name="title_gallery">Выбрать картину</string>
+    <string name="appwidget_text">Список историй</string>
+    <string name="add_widget">Добавить виджет</string>
+    <string name="empty_text">Нет данных</string>
+    <string name="app_widget_description">Это описание виджета приложения</string>
+</resources>

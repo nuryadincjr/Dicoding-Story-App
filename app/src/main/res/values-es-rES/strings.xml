@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aplicación de historia</string>
+    <string name="title_welcome">Hola amigos de Dico, ¡bienvenidos a la aplicación Stories!</string>
+    <string name="description_welcome">¿Comparte tu experiencia de aprendizaje con Dicoding? ¡Dilo y haz amigos!</string>
+    <string name="login">Registrarse</string>
+    <string name="register">Registro</string>
+    <string name="version">Versión %s</string>
+    <string name="title_register">Complete sus datos a continuación, ¿de acuerdo?</string>
+    <string name="name">Nombre</string>
+    <string name="email">Correo electrónico</string>
+    <string name="title_login">¿Estás lista para compartir tu historia?</string>
+    <string name="description_login">¡Ingrese los datos de su cuenta!</string>
+    <string name="add_story">Agregar historia</string>
+    <string name="todo_image">Tu imagen</string>
+    <string name="camera">Cámara</string>
+    <string name="gallery">Galería</string>
+    <string name="description">Descripción</string>
+    <string name="upload">Subir</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="password">Clave</string>
+    <string name="error_password">¡El número de contraseñas es inferior a 6 caracteres!</string>
+    <string name="error_email">¡Formato de correo electrónico incorrecto!</string>
+    <string name="error_file">Introduzca primero el archivo de imagen.</string>
+    <string name="error_permission">No obtener permisos.</string>
+    <string name="title_add_story">Agregar nueva historia</string>
+    <string name="title_gallery">Elige una imagen</string>
+    <string name="appwidget_text">Historia de la lista</string>
+    <string name="add_widget">Añadir widget</string>
+    <string name="empty_text">Sin datos</string>
+    <string name="app_widget_description">Esta es una descripción del widget de la aplicación.</string>
+</resources>

@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Story App</string>
+    <string name="title_welcome">Hey Dico friends, welcome to the Stories App!</string>
+    <string name="description_welcome">Share your learning experience with Dicoding? Tell and make friends!</string>
+    <string name="login">Sign in</string>
+    <string name="register">Register</string>
+    <string name="version">Version %s</string>
+    <string name="title_register">Complete your data below, OK?</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="title_login">Are you ready to share your story?</string>
+    <string name="description_login">Enter your account data!</string>
+    <string name="add_story">Add Story</string>
+    <string name="todo_image">Your Image</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="description">Description</string>
+    <string name="upload">Upload</string>
+    <string name="log_out">Log out</string>
+    <string name="password">Password</string>
+    <string name="error_password">The number of passwords is less than 6 characters!</string>
+    <string name="error_email">Incorrect email format!</string>
+    <string name="error_file">Please enter the image file first.</string>
+    <string name="title_add_story">Add New Story</string>
+    <string name="title_gallery">Choose a Picture</string>
+    <string name="error_permission">Not getting permissions.</string>
+    <string name="appwidget_text">List Story</string>
+    <string name="add_widget">Add widget</string>
+    <string name="empty_text">No Data</string>
+    <string name="app_widget_description">This is an app widget description</string>
+
 </resources>

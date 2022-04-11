@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aplikasi Cerita</string>
+    <string name="title_welcome">Hai sobat Dico, selamat datang di Aplikasi Cerita!</string>
+    <string name="description_welcome">Bagikan pengalaman belajar kamu bersama Dicoding? Ceritakan dan dapatkan teman!</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="version">Versi %s</string>
+    <string name="title_register">Lengkapi data dirimu dibawah ini ya!</string>
+    <string name="name">Nama</string>
+    <string name="email">Email</string>
+    <string name="title_login">Sudah siap untuk membagikan cerita kamu?</string>
+    <string name="description_login">Masukan data akun mu ya!</string>
+    <string name="add_story">Tambah Cerita</string>
+    <string name="todo_image">Gambar Anda</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="description">Keterangan</string>
+    <string name="upload">Unggah</string>
+    <string name="log_out">Keluar</string>
+    <string name="password">Kata sandi</string>
+    <string name="error_password">The number of passwords is less than 6 characters!</string>
+    <string name="error_email">Format email salah!</string>
+    <string name="error_file">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="error_permission">Tidak mendapatkan permission.</string>
+    <string name="title_add_story">Tambahkan Cerita Baru</string>
+    <string name="title_gallery">Pilih Gambar</string>
+    <string name="appwidget_text">Daftar Cerita</string>
+    <string name="add_widget">Tambahkan widget</string>
+    <string name="empty_text">Tidak ada data</string>
+    <string name="app_widget_description">Ini adalah deskripsi widget aplikasi</string>
+</resources>
