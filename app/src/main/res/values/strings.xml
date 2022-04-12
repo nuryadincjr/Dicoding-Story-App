@@ -21,6 +21,10 @@
     <string name="error_password">The number of passwords is less than 6 characters!</string>
     <string name="error_email">Incorrect email format!</string>
     <string name="error_file">Please enter the image file first.</string>
+    <string name="error_description">Please enter the description first.</string>
+    <string name="error_name_empty">Enter a name.</string>
+    <string name="error_email_empty">Enter an email</string>
+    <string name="error_password_empty">Enter the password.</string>
     <string name="title_add_story">Add New Story</string>
     <string name="title_gallery">Choose a Picture</string>
     <string name="error_permission">Not getting permissions.</string>
@@ -28,5 +32,4 @@
     <string name="add_widget">Add widget</string>
     <string name="empty_text">No Data</string>
     <string name="app_widget_description">This is an app widget description</string>
-
 </resources>

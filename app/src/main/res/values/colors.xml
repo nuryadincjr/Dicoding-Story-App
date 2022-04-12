@@ -11,4 +11,11 @@
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
+
+    <color name="pink_primary">#f35383</color>
+    <color name="pink_light">#ff87b2</color>
+    <color name="pink_dark">#bc1357</color>
+    <color name="gray_secondary">#2c3d4f</color>
+    <color name="gray_light">#56677b</color>
+    <color name="gray_dark">#031727</color>
 </resources>

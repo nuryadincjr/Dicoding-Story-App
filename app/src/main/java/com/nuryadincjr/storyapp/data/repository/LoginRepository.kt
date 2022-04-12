@@ -10,7 +10,6 @@ import com.nuryadincjr.storyapp.data.remote.response.LoginResult
 class LoginRepository private constructor(
     private val apiService: ApiService
 ) {
-
     fun login(email: String, password: String): LiveData<Result<LoginResult>> =
         liveData {
             emit(Result.Loading)

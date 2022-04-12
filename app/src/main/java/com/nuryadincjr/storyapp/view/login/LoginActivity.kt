@@ -1,5 +1,7 @@
 package com.nuryadincjr.storyapp.view.login
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -10,10 +12,11 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.nuryadincjr.storyapp.BuildConfig
+import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.LoginFactory
@@ -47,9 +50,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnLogin.setOnClickListener(this)
-
         setupView()
+        playAnimation()
     }
 
     override fun onClick(p0: View?) {
@@ -68,27 +70,33 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
         supportActionBar?.hide()
 
-        binding.tvVersion.text =
-            format(getString(R.string.version, BuildConfig.VERSION_NAME))
+        binding.apply {
+            tvVersion.text = format(getString(R.string.version, VERSION_NAME))
+            btnLogin.setOnClickListener(this@LoginActivity)
+        }
     }
 
     private fun onLogin() {
         binding.apply {
             val email = tietEmail.text.toString()
             val password = tietPassword.text.toString()
+            val isEmailError = tietEmail.error.isNullOrEmpty()
+            val isPasswordError = tietPassword.error.isNullOrEmpty()
 
-            when {
-                email.isEmpty() -> {
-                    tilEmail.error = "Masukkan email"
-                }
-                password.isEmpty() -> {
-                    tilPassword.error = "Masukkan password"
-                }
-                else -> {
-                    progressBar.visibility = View.VISIBLE
-                    loginViewModel.apply {
-                        onLogin(email, password).observe(this@LoginActivity) {
-                            onResult(it, email, password)
+            if (isEmailError && isPasswordError) {
+                when {
+                    email.isEmpty() -> {
+                        tilEmail.error = getString(R.string.error_email_empty)
+                    }
+                    password.isEmpty() -> {
+                        tilPassword.error = getString(R.string.error_password_empty)
+                    }
+                    else -> {
+                        progressBar.visibility = View.VISIBLE
+                        loginViewModel.apply {
+                            onLogin(email, password).observe(this@LoginActivity) {
+                                onResult(it, email, password)
+                            }
                         }
                     }
                 }
@@ -109,11 +117,41 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 binding.progressBar.visibility = View.GONE
-                startActivity(Intent(this, MainActivity::class.java))
+                val intent = Intent(this, MainActivity::class.java)
+
+                startActivity(
+                    intent,
+                    ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(this)
+                        .toBundle()
+                )
+                finishAffinity()
             }
             is Result.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Toast.makeText(this, response.error, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun playAnimation() {
+        binding.apply {
+            ofFloat(imageView, View.TRANSLATION_Y, 30f, -30f).apply {
+                duration = 6000
+                repeatCount = INFINITE
+                repeatMode = REVERSE
+            }.start()
+
+            val title = ofFloat(tvTitle, View.ALPHA, 1f).setDuration(500)
+            val description = ofFloat(tvDescription, View.ALPHA, 1f).setDuration(500)
+            val email = ofFloat(tilEmail, View.ALPHA, 1f).setDuration(500)
+            val password = ofFloat(tilPassword, View.ALPHA, 1f).setDuration(500)
+            val signIn = ofFloat(btnLogin, View.ALPHA, 1f).setDuration(500)
+            val version = ofFloat(tvVersion, View.ALPHA, 1f).setDuration(500)
+
+            AnimatorSet().apply {
+                playSequentially(title, description, email, password, signIn, version)
+                start()
             }
         }
     }

@@ -21,12 +21,14 @@ class UsersPreference private constructor(private val dataStore: DataStore<Prefe
     }
 
     suspend fun loginSession(user: Users) {
-        dataStore.edit {
-            it[ID_KEY] = user.userId
-            it[NAME_KEY] = user.name
-            it[EMAIL_KEY] = user.email
-            it[PASSWORD_KEY] = user.password
-            it[TOKEN_KEY] = user.token
+        user.apply {
+            dataStore.edit {
+                it[ID_KEY] = userId
+                it[NAME_KEY] = name
+                it[EMAIL_KEY] = email
+                it[PASSWORD_KEY] = password
+                it[TOKEN_KEY] = token
+            }
         }
     }
 
@@ -42,7 +44,7 @@ class UsersPreference private constructor(private val dataStore: DataStore<Prefe
 
     companion object {
         @Volatile
-        private var INSTANCE: UsersPreference? = null
+        private var instance: UsersPreference? = null
 
         private val ID_KEY = stringPreferencesKey("userId")
         private val NAME_KEY = stringPreferencesKey("name")
@@ -50,12 +52,10 @@ class UsersPreference private constructor(private val dataStore: DataStore<Prefe
         private val PASSWORD_KEY = stringPreferencesKey("password")
         private val TOKEN_KEY = stringPreferencesKey("token")
 
-        fun getInstance(dataStore: DataStore<Preferences>): UsersPreference {
-            return INSTANCE ?: synchronized(this) {
-                val instance = UsersPreference(dataStore)
-                INSTANCE = instance
-                instance
-            }
-        }
+        fun getInstance(
+            dataStore: DataStore<Preferences>
+        ): UsersPreference = instance ?: synchronized(this) {
+            instance ?: UsersPreference(dataStore)
+        }.also { instance = it }
     }
 }

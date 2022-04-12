@@ -1,8 +1,11 @@
 package com.nuryadincjr.storyapp.adapter
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.nuryadincjr.storyapp.R
@@ -15,7 +18,8 @@ class ListStoriesAdapter(private val listStory: List<StoryItem>) :
     RecyclerView.Adapter<ListStoriesAdapter.ListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val binding = ItemListStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemListStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ListViewHolder(binding)
     }
 
@@ -28,7 +32,6 @@ class ListStoriesAdapter(private val listStory: List<StoryItem>) :
     class ListViewHolder(
         private var binding: ItemListStoryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-
         fun setDataToView(storyItem: StoryItem) {
             binding.apply {
                 tvName.text = storyItem.name
@@ -40,16 +43,20 @@ class ListStoriesAdapter(private val listStory: List<StoryItem>) :
                     .placeholder(R.drawable.ic_baseline_image_24)
                     .error(R.drawable.ic_baseline_broken_image_24)
                     .into(imageView)
-            }
 
-            itemView.apply {
-                setOnClickListener {
-                    context.startActivity(
-                        Intent(
-                            context,
-                            DetailsStoryActivity::class.java
-                        ).putExtra(DATA_STORY, storyItem)
-                    )
+                itemView.apply {
+                    setOnClickListener {
+                        val intent = Intent(context, DetailsStoryActivity::class.java)
+                        intent.putExtra(DATA_STORY, storyItem)
+                        val optionsCompat: ActivityOptionsCompat =
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                context as Activity,
+                                Pair(imageView, "photo"),
+                                Pair(tvName, "name"),
+                                Pair(tvDescription, "description"),
+                            )
+                        context.startActivity(intent, optionsCompat.toBundle())
+                    }
                 }
             }
         }

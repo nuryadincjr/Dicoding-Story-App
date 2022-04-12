@@ -1,70 +1,54 @@
 package com.nuryadincjr.storyapp.view.welcome
 
-import android.content.Context
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator.*
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.core.app.ActivityOptionsCompat
 import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
-import com.nuryadincjr.storyapp.data.factory.UsersFactory
-import com.nuryadincjr.storyapp.data.model.UsersPreference
 import com.nuryadincjr.storyapp.databinding.ActivityWelcomeBinding
 import com.nuryadincjr.storyapp.view.login.LoginActivity
-import com.nuryadincjr.storyapp.view.main.MainActivity
-import com.nuryadincjr.storyapp.view.main.UsersViewModel
 import com.nuryadincjr.storyapp.view.register.RegisterActivity
 import okhttp3.internal.format
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityWelcomeBinding
 
-    private val usersViewModel: UsersViewModel by viewModels {
-        UsersFactory(UsersPreference.getInstance(dataStore))
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        usersViewModel.getUser().observe(this) {
-            if (it.token.isNotEmpty()) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
-        }
-
-        binding.apply {
-            btnLogin.setOnClickListener(this@WelcomeActivity)
-            btnRegister.setOnClickListener(this@WelcomeActivity)
-        }
-
         setupView()
+        playAnimation()
     }
 
     override fun onClick(p0: View?) {
+        var intent: Intent? = null
+
         when (p0?.id) {
             R.id.btn_login -> {
-                startActivity(Intent(this, LoginActivity::class.java))
+                intent = Intent(this, LoginActivity::class.java)
             }
             R.id.btn_register -> {
-                startActivity(Intent(this, RegisterActivity::class.java))
+                intent = Intent(this, RegisterActivity::class.java)
             }
+        }
+
+        if (intent != null) {
+            startActivity(
+                intent,
+                ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+            )
         }
     }
 
@@ -80,6 +64,35 @@ class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
         }
         supportActionBar?.hide()
 
-        binding.tvVersion.text = format(getString(R.string.version, VERSION_NAME))
+        binding.apply {
+            tvVersion.text = format(getString(R.string.version, VERSION_NAME))
+            btnLogin.setOnClickListener(this@WelcomeActivity)
+            btnRegister.setOnClickListener(this@WelcomeActivity)
+        }
+    }
+
+    private fun playAnimation() {
+        binding.apply {
+            ofFloat(imageView, View.TRANSLATION_X, 30f, -30f).apply {
+                duration = 6000
+                repeatCount = INFINITE
+                repeatMode = REVERSE
+            }.start()
+
+            val title = ofFloat(tvTitle, View.ALPHA, 1f).setDuration(500)
+            val description = ofFloat(tvDescription, View.ALPHA, 1f).setDuration(500)
+            val signIn = ofFloat(btnLogin, View.ALPHA, 1f).setDuration(500)
+            val register = ofFloat(btnRegister, View.ALPHA, 1f).setDuration(500)
+            val version = ofFloat(tvVersion, View.ALPHA, 1f).setDuration(500)
+
+            val buttonSet = AnimatorSet().apply {
+                playTogether(signIn, register)
+            }
+
+            AnimatorSet().apply {
+                playSequentially(title, description, buttonSet, version)
+                start()
+            }
+        }
     }
 }

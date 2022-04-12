@@ -1,5 +1,7 @@
 package com.nuryadincjr.storyapp.view.register
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator.*
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +11,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.Result
@@ -33,9 +36,8 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnRegister.setOnClickListener(this)
-
         setupView()
+        playAnimation()
     }
 
     override fun onClick(p0: View?) {
@@ -54,7 +56,10 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         }
         supportActionBar?.hide()
 
-        binding.tvVersion.text = format(getString(R.string.version, VERSION_NAME))
+        binding.apply {
+            tvVersion.text = format(getString(R.string.version, VERSION_NAME))
+            btnRegister.setOnClickListener(this@RegisterActivity)
+        }
     }
 
     private fun onRegister() {
@@ -62,22 +67,26 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             val name = tietName.text.toString()
             val email = tietEmail.text.toString()
             val password = tietPassword.text.toString()
+            val isEmailError = tietEmail.error.isNullOrEmpty()
+            val isPasswordError = tietPassword.error.isNullOrEmpty()
 
-            when {
-                name.isEmpty() -> {
-                    tilName.error = "Masukkan nama"
-                }
-                email.isEmpty() -> {
-                    tilEmail.error = "Masukkan email"
-                }
-                password.isEmpty() -> {
-                    tilPassword.error = "Masukkan password"
-                }
-                else -> {
-                    progressBar.visibility = View.VISIBLE
-                    registerViewModel.apply {
-                        onRegister(name, email, password).observe(this@RegisterActivity) {
-                            onResult(it)
+            if (isEmailError && isPasswordError) {
+                when {
+                    name.isEmpty() -> {
+                        tilName.error = getString(R.string.error_name_empty)
+                    }
+                    email.isEmpty() -> {
+                        tilEmail.error = getString(R.string.error_email_empty)
+                    }
+                    password.isEmpty() -> {
+                        tilPassword.error = getString(R.string.error_password_empty)
+                    }
+                    else -> {
+                        progressBar.visibility = View.VISIBLE
+                        registerViewModel.apply {
+                            onRegister(name, email, password).observe(this@RegisterActivity) {
+                                onResult(it)
+                            }
                         }
                     }
                 }
@@ -93,12 +102,57 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 is Result.Success -> {
                     progressBar.visibility = View.GONE
-                    startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+
+                    startActivity(
+                        intent,
+                        ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(this@RegisterActivity)
+                            .toBundle()
+                    )
+                    finish()
                 }
                 is Result.Error -> {
                     progressBar.visibility = View.GONE
                     Toast.makeText(this@RegisterActivity, response.error, Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+    }
+
+    private fun playAnimation() {
+        binding.apply {
+            val transX = ofFloat(imageView, View.TRANSLATION_X, 30f, -30f).apply {
+                duration = 6000
+                repeatCount = INFINITE
+                repeatMode = REVERSE
+            }
+
+            val transY = ofFloat(imageView, View.TRANSLATION_Y, 30f, -30f).apply {
+                duration = 6000
+                repeatCount = INFINITE
+                repeatMode = REVERSE
+            }
+
+            val launcherSet = AnimatorSet().apply {
+                playTogether(transX, transY)
+            }
+
+            AnimatorSet().apply {
+                playSequentially(launcherSet)
+                start()
+            }
+
+            val title = ofFloat(tvTitle, View.ALPHA, 1f).setDuration(500)
+            val name = ofFloat(tilName, View.ALPHA, 1f).setDuration(500)
+            val email = ofFloat(tilEmail, View.ALPHA, 1f).setDuration(500)
+            val password = ofFloat(tilPassword, View.ALPHA, 1f).setDuration(500)
+            val register = ofFloat(btnRegister, View.ALPHA, 1f).setDuration(500)
+            val version = ofFloat(tvVersion, View.ALPHA, 1f).setDuration(500)
+
+            AnimatorSet().apply {
+                playSequentially(title, name, email, password, register, version)
+                start()
             }
         }
     }

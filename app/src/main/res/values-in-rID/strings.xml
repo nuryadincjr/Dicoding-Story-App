@@ -22,7 +22,11 @@
     <string name="error_password">The number of passwords is less than 6 characters!</string>
     <string name="error_email">Format email salah!</string>
     <string name="error_file">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="error_description">Masukkan deskripsi terlebih dahulu.</string>
     <string name="error_permission">Tidak mendapatkan permission.</string>
+    <string name="error_name_empty">Masukkan nama.</string>
+    <string name="error_email_empty">Masukkan email.</string>
+    <string name="error_password_empty">Masukkan password.</string>
     <string name="title_add_story">Tambahkan Cerita Baru</string>
     <string name="title_gallery">Pilih Gambar</string>
     <string name="appwidget_text">Daftar Cerita</string>

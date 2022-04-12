@@ -1,6 +1,8 @@
 package com.nuryadincjr.storyapp.view.added
 
 import android.Manifest
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator.ofFloat
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -23,7 +25,6 @@ import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
 import com.nuryadincjr.storyapp.data.factory.UsersFactory
-import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.model.UsersPreference
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.databinding.ActivityAddStoryBinding
@@ -44,9 +45,7 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddStoryBinding
     private lateinit var currentPhotoPath: String
-
     private var getFile: File? = null
-    private var user: Users? = null
 
     private val usersViewModel: UsersViewModel by viewModels {
         UsersFactory(UsersPreference.getInstance(dataStore))
@@ -89,19 +88,8 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (!allPermissionsGranted()) {
-            ActivityCompat.requestPermissions(
-                this,
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE
-            )
-        }
-
-        binding.apply {
-            btnCamera.setOnClickListener(this@AddStoryActivity)
-            btnGallery.setOnClickListener(this@AddStoryActivity)
-            btnUpload.setOnClickListener(this@AddStoryActivity)
-        }
+        setupView()
+        playAnimation()
     }
 
     override fun onClick(p0: View?) {
@@ -124,6 +112,22 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
                     .show()
                 finish()
             }
+        }
+    }
+
+    private fun setupView() {
+        if (!allPermissionsGranted()) {
+            ActivityCompat.requestPermissions(
+                this,
+                REQUIRED_PERMISSIONS,
+                REQUEST_CODE
+            )
+        }
+
+        binding.apply {
+            btnCamera.setOnClickListener(this@AddStoryActivity)
+            btnGallery.setOnClickListener(this@AddStoryActivity)
+            btnUpload.setOnClickListener(this@AddStoryActivity)
         }
     }
 
@@ -154,26 +158,30 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun startUploadStory() {
-        if (getFile != null) {
-            binding.progressBar.visibility = View.VISIBLE
-
-            val file = reduceFileImage(getFile as File)
-            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val description = binding.tietDescription.text
-                .toString()
-                .toRequestBody("text/plain".toMediaType())
-            val photo = MultipartBody.Part.createFormData("photo", file.name, requestImageFile)
-
-            usersViewModel.getUser().observe(this) { user ->
-                this.user = user
-                addStoryViewModel.onUpload(user!!.token, photo, description)
-                    .observe(this) {
-                        onResult(it)
-                    }
+        val description = binding.tietDescription.text
+        when {
+            getFile == null -> {
+                Toast.makeText(this, getString(R.string.error_file), Toast.LENGTH_SHORT).show()
             }
+            description.isNullOrEmpty() -> {
+                Toast.makeText(this, getString(R.string.error_description), Toast.LENGTH_SHORT)
+                    .show()
+            }
+            else -> {
+                binding.progressBar.visibility = View.VISIBLE
 
-        } else {
-            Toast.makeText(this, getString(R.string.error_file), Toast.LENGTH_SHORT).show()
+                val file = reduceFileImage(getFile as File)
+                val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val myStory = description.toString().toRequestBody("text/plain".toMediaType())
+                val photo = MultipartBody.Part.createFormData("photo", file.name, requestImageFile)
+
+                usersViewModel.getUser().observe(this) { user ->
+                    addStoryViewModel.onUpload(user.token, photo, myStory)
+                        .observe(this) {
+                            onResult(it)
+                        }
+                }
+            }
         }
     }
 
@@ -190,6 +198,25 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             is Result.Error -> {
                 binding.progressBar.visibility = View.GONE
                 Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun playAnimation() {
+        binding.apply {
+            val image = ofFloat(imageView, View.ALPHA, 1f).setDuration(500)
+            val camera = ofFloat(btnCamera, View.ALPHA, 1f).setDuration(500)
+            val gallery = ofFloat(btnGallery, View.ALPHA, 1f).setDuration(500)
+            val description = ofFloat(tilDescription, View.ALPHA, 1f).setDuration(500)
+            val upload = ofFloat(btnUpload, View.ALPHA, 1f).setDuration(500)
+
+            val buttonSet = AnimatorSet().apply {
+                playTogether(camera, gallery)
+            }
+
+            AnimatorSet().apply {
+                playSequentially(image, buttonSet, description, upload)
+                start()
             }
         }
     }

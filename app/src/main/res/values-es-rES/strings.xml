@@ -22,7 +22,11 @@
     <string name="error_password">¡El número de contraseñas es inferior a 6 caracteres!</string>
     <string name="error_email">¡Formato de correo electrónico incorrecto!</string>
     <string name="error_file">Introduzca primero el archivo de imagen.</string>
+    <string name="error_description">Por favor ingrese la descripción primero.</string>
     <string name="error_permission">No obtener permisos.</string>
+    <string name="error_name_empty">Ingresa un nombre.</string>
+    <string name="error_email_empty">Ingrese correo electrónico.</string>
+    <string name="error_password_empty">Introduce la contraseña.</string>
     <string name="title_add_story">Agregar nueva historia</string>
     <string name="title_gallery">Elige una imagen</string>
     <string name="appwidget_text">Historia de la lista</string>

@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.StoryApp">
+        android:theme="@style/Theme.StoryApp.Transition">
         <receiver
             android:name=".widget.ListStoryWidget"
             android:exported="true">
@@ -48,10 +48,10 @@
             android:name=".view.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".view.welcome.WelcomeActivity"
             android:exported="false" />
         <activity
-            android:name=".view.welcome.WelcomeActivity"
+            android:name=".view.main.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.StoryApp.Starting">
             <intent-filter>

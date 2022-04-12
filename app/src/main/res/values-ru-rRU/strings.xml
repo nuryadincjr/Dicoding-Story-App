@@ -22,7 +22,11 @@
     <string name="error_password">Количество паролей менее 6 символов!</string>
     <string name="error_email">Неверный формат электронной почты!</string>
     <string name="error_file">Сначала введите файл изображения.</string>
+    <string name="error_description">Сначала введите описание.</string>
     <string name="error_permission">Не получение разрешений.</string>
+    <string name="error_name_empty">Введите имя.</string>
+    <string name="error_email_empty">Введите адрес электронной почты.</string>
+    <string name="error_password_empty">Введите пароль.</string>
     <string name="title_add_story">Добавить новую историю</string>
     <string name="title_gallery">Выбрать картину</string>
     <string name="appwidget_text">Список историй</string>

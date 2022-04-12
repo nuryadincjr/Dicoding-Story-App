@@ -10,10 +10,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +23,6 @@ import com.nuryadincjr.storyapp.adapter.ListStoriesAdapter
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
 import com.nuryadincjr.storyapp.data.factory.UsersFactory
-import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.model.UsersPreference
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.databinding.ActivityMainBinding
@@ -44,33 +44,16 @@ class MainActivity : AppCompatActivity() {
         UsersFactory(UsersPreference.getInstance(dataStore))
     }
 
-    private var user: Users? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        usersViewModel.getUser().observe(this) { user ->
-            this.user = user
-            mainViewModel.getStories(user!!.token).observe(this) {
-                onResult(it)
-            }
-        }
-
-        binding.apply {
-            fabStory.setOnClickListener {
-                startActivity(Intent(this@MainActivity, AddStoryActivity::class.java))
-            }
-
-            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy > 0) fabStory.hide() else fabStory.show()
-                }
-            })
-        }
+        setupView()
+        onSubscribe()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -81,10 +64,48 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_logout) {
             usersViewModel.logout()
-            startActivity(Intent(this, WelcomeActivity::class.java))
+            val intent = Intent(this, WelcomeActivity::class.java)
+
+            startActivity(
+                intent,
+                ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this)
+                    .toBundle()
+            )
             finish()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupView() {
+        binding.apply {
+            fabStory.setOnClickListener {
+                val intent = Intent(this@MainActivity, AddStoryActivity::class.java)
+                startActivity(
+                    intent,
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle()
+                )
+            }
+
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0) fabStory.hide() else fabStory.show()
+                }
+            })
+        }
+    }
+
+    private fun onSubscribe() {
+        usersViewModel.getUser().observe(this) { user ->
+            if (user.token.isEmpty()) {
+                startActivity(Intent(this, WelcomeActivity::class.java))
+                finish()
+            } else {
+                mainViewModel.getStories(user.token).observe(this) {
+                    onResult(it)
+                }
+            }
+        }
     }
 
     private fun onResult(result: Result<List<StoryItem>>) {

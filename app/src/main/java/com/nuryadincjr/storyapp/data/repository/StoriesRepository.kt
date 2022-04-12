@@ -1,20 +1,18 @@
 package com.nuryadincjr.storyapp.data.repository
 
-import android.accounts.AuthenticatorDescription
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
+import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class StoriesRepository private constructor(
     private val apiService: ApiService
 ) {
-
     fun getStories(token: String): LiveData<Result<List<StoryItem>>> =
         liveData {
             emit(Result.Loading)

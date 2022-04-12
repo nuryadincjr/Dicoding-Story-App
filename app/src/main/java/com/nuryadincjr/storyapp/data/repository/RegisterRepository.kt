@@ -2,16 +2,14 @@ package com.nuryadincjr.storyapp.data.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
+import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
-import com.nuryadincjr.storyapp.data.Result
 
 class RegisterRepository private constructor(
     private val apiService: ApiService
 ) {
-
     fun register(name: String, email: String, password: String): LiveData<Result<PostResponse>> =
         liveData {
             emit(Result.Loading)
