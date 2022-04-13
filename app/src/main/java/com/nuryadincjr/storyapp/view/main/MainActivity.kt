@@ -24,11 +24,13 @@ import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
 import com.nuryadincjr.storyapp.data.factory.UsersFactory
 import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.remote.response.Stories
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.databinding.ActivityMainBinding
 import com.nuryadincjr.storyapp.util.Constant.SPAN_COUNT
 import com.nuryadincjr.storyapp.view.added.AddStoryActivity
 import com.nuryadincjr.storyapp.view.welcome.WelcomeActivity
+import com.nuryadincjr.storyapp.widget.ListStoryWidget
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -120,6 +122,8 @@ class MainActivity : AppCompatActivity() {
                 is Result.Success -> {
                     progressBar.visibility = View.GONE
                     showRecyclerList(result.data)
+                    val resultList = Stories(result.data)
+                    ListStoryWidget.setList(resultList)
                 }
                 is Result.Error -> {
                     progressBar.visibility = View.GONE

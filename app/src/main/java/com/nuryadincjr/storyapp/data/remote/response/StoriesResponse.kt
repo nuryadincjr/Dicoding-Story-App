@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class GetStoriesResponse(
 
 	@field:SerializedName("listStory")
@@ -14,7 +15,14 @@ data class GetStoriesResponse(
 
 	@field:SerializedName("message")
 	val message: String? = null
-)
+): Parcelable
+
+
+@Parcelize
+data class Stories(
+	@field:SerializedName("listStory")
+	val story: List<StoryItem>? = null,
+): Parcelable
 
 @Parcelize
 data class StoryItem(

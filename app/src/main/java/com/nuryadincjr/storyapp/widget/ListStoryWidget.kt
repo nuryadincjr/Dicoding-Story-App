@@ -9,9 +9,9 @@ import android.os.Build
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.net.toUri
-import com.nuryadincjr.storyapp.BuildConfig
-import com.nuryadincjr.storyapp.BuildConfig.*
+import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
+import com.nuryadincjr.storyapp.data.remote.response.Stories
 
 /**
  * Implementation of App Widget functionality.
@@ -50,10 +50,16 @@ class ListStoryWidget : AppWidgetProvider() {
     companion object {
         private const val TOAST_ACTION = "$VERSION_NAME.TOAST_ACTION"
         const val EXTRA_ITEM = "$VERSION_NAME.EXTRA_ITEM"
+        private var stories: Stories? = null
+
+        fun setList(response: Stories) {
+            stories = response
+        }
 
         private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
             val intent = Intent(context, StackWidgetService::class.java)
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            intent.putExtra("ITEM_LIST", stories)
             intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
 
             val views = RemoteViews(context.packageName, R.layout.list_story_widget)
