@@ -39,6 +39,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
+
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
@@ -61,8 +62,9 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
         if (it.resultCode == RESULT_OK) {
             val myFile = File(currentPhotoPath)
             val result = BitmapFactory.decodeFile(myFile.path)
-            getFile = myFile
 
+            getFile = myFile
+            addStoryViewModel.setFile(myFile)
             binding.imageView.setImageBitmap(result)
         }
     }
@@ -73,8 +75,9 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
         if (it.resultCode == RESULT_OK) {
             val selectedImg: Uri = it.data?.data as Uri
             val myFile = uriToFile(selectedImg, this)
-            getFile = myFile
 
+            getFile = myFile
+            addStoryViewModel.setFile(myFile)
             binding.imageView.setImageURI(selectedImg)
         }
     }
@@ -89,6 +92,7 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         setupView()
+        onSubscribe()
         playAnimation()
     }
 
@@ -112,6 +116,14 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
                     .show()
                 finish()
             }
+        }
+    }
+
+    private fun onSubscribe() {
+        addStoryViewModel.getFile().observe(this@AddStoryActivity) {
+            getFile = it
+            val result = BitmapFactory.decodeFile(it?.path)
+            binding.imageView.setImageBitmap(result)
         }
     }
 
@@ -176,10 +188,11 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
                 val photo = MultipartBody.Part.createFormData("photo", file.name, requestImageFile)
 
                 usersViewModel.getUser().observe(this) { user ->
-                    addStoryViewModel.onUpload(user.token, photo, myStory)
-                        .observe(this) {
-                            onResult(it)
-                        }
+                    addStoryViewModel.setToken(user.token)
+                }
+
+                addStoryViewModel.onUpload(photo, myStory).observe(this) {
+                    onResult(it)
                 }
             }
         }

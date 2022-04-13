@@ -62,19 +62,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_logout) {
-            usersViewModel.logout()
-            val intent = Intent(this, WelcomeActivity::class.java)
-
-            startActivity(
-                intent,
-                ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(this)
-                    .toBundle()
-            )
-            finish()
-        }
+        if (item.itemId == R.id.menu_logout) startLogout()
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun startLogout() {
+        usersViewModel.logout()
+        val intent = Intent(this, WelcomeActivity::class.java)
+
+        startActivity(
+            intent,
+            ActivityOptionsCompat
+                .makeSceneTransitionAnimation(this)
+                .toBundle()
+        )
+        finish()
     }
 
     private fun setupView() {
@@ -97,11 +99,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun onSubscribe() {
         usersViewModel.getUser().observe(this) { user ->
+            mainViewModel.setToken(user.token)
             if (user.token.isEmpty()) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             } else {
-                mainViewModel.getStories(user.token).observe(this) {
+                mainViewModel.getStories().observe(this) {
                     onResult(it)
                 }
             }
