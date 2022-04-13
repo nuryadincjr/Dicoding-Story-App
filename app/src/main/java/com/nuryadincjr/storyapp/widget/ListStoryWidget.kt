@@ -9,6 +9,8 @@ import android.os.Build
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.net.toUri
+import com.nuryadincjr.storyapp.BuildConfig
+import com.nuryadincjr.storyapp.BuildConfig.*
 import com.nuryadincjr.storyapp.R
 
 /**
@@ -46,8 +48,8 @@ class ListStoryWidget : AppWidgetProvider() {
     }
 
     companion object {
-        private const val TOAST_ACTION = "com.nuryadincjr.storyapp.TOAST_ACTION"
-        const val EXTRA_ITEM = "com.nuryadincjr.storyapp.EXTRA_ITEM"
+        private const val TOAST_ACTION = "$VERSION_NAME.TOAST_ACTION"
+        const val EXTRA_ITEM = "$VERSION_NAME.EXTRA_ITEM"
 
         private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
             val intent = Intent(context, StackWidgetService::class.java)

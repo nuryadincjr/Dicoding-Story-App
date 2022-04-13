@@ -1,5 +1,6 @@
 package com.nuryadincjr.storyapp.widget
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -15,23 +16,22 @@ internal class StackRemoteViewsFactory(
 ) :
     RemoteViewsService.RemoteViewsFactory {
 
-    private val mWidgetItems = ArrayList<Bitmap>()
+    private val widgetItems = ArrayList<Bitmap>()
 
     override fun onCreate() {
 
     }
 
     override fun onDataSetChanged() {
-        val url =
-            "https://media-exp1.licdn.com/dms/image/C5603AQEXpUCSS9vDGw/profile-displayphoto-shrink_800_800/0/1629560383905?e=1655337600&v=beta&t=Op_nd-GtDMfoVxUODPCDaazKQWihAyQu858uWtcetd4"
         try {
             val bitmap: Bitmap = Glide.with(context)
                 .asBitmap()
-                .load(url)
+                .load(MY_URL)
                 .submit(512, 512)
                 .get()
-
-            mWidgetItems.add(bitmap)
+            for (i in 0..5) {
+                widgetItems.add(bitmap)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -41,11 +41,11 @@ internal class StackRemoteViewsFactory(
 
     }
 
-    override fun getCount(): Int = mWidgetItems.size
+    override fun getCount(): Int = widgetItems.size
 
     override fun getViewAt(position: Int): RemoteViews {
         val rv = RemoteViews(context.packageName, R.layout.item_widget)
-        rv.setImageViewBitmap(R.id.imageView, mWidgetItems[position])
+        rv.setImageViewBitmap(R.id.imageView, widgetItems[position])
 
         val extras = bundleOf(ListStoryWidget.EXTRA_ITEM to position)
         val fillInIntent = Intent()
@@ -62,4 +62,9 @@ internal class StackRemoteViewsFactory(
     override fun getItemId(i: Int): Long = 0
 
     override fun hasStableIds(): Boolean = false
+
+    companion object {
+        private const val MY_URL =
+            "https://media-exp1.licdn.com/dms/image/C5603AQEXpUCSS9vDGw/profile-displayphoto-shrink_800_800/0/1629560383905?e=1655337600&v=beta&t=Op_nd-GtDMfoVxUODPCDaazKQWihAyQu858uWtcetd4"
+    }
 }
