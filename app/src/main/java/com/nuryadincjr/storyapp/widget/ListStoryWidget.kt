@@ -1,6 +1,6 @@
 package com.nuryadincjr.storyapp.widget
 
-import android.app.PendingIntent
+import android.app.PendingIntent.*
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -12,6 +12,7 @@ import androidx.core.net.toUri
 import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.remote.response.Stories
+import com.nuryadincjr.storyapp.view.main.MainActivity
 
 /**
  * Implementation of App Widget functionality.
@@ -50,34 +51,52 @@ class ListStoryWidget : AppWidgetProvider() {
     companion object {
         private const val TOAST_ACTION = "$VERSION_NAME.TOAST_ACTION"
         const val EXTRA_ITEM = "$VERSION_NAME.EXTRA_ITEM"
+        const val ITEM_LIST = "ITEM_LIST"
         private var stories: Stories? = null
 
         fun setList(response: Stories) {
+
             stories = response
         }
 
-        private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
-            val intent = Intent(context, StackWidgetService::class.java)
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            intent.putExtra("ITEM_LIST", stories)
-            intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
+        private fun updateAppWidget(
+            context: Context,
+            appWidgetManager: AppWidgetManager,
+            appWidgetId: Int
+        ) {
+            val intent = Intent(context, StackWidgetService::class.java).apply {
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+                putExtra(ITEM_LIST, stories)
+                data = toUri(Intent.URI_INTENT_SCHEME).toUri()
+            }
 
-            val views = RemoteViews(context.packageName, R.layout.list_story_widget)
-            views.setRemoteAdapter(R.id.stack_view, intent)
-            views.setEmptyView(R.id.stack_view, R.id.empty_view)
+            val toastIntent = Intent(context, ListStoryWidget::class.java).apply {
+                action = TOAST_ACTION
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            }
 
-            val toastIntent = Intent(context, ListStoryWidget::class.java)
-            toastIntent.action = TOAST_ACTION
-            toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-
-            val toastPendingIntent = PendingIntent.getBroadcast(
+            val toastPendingIntent = getBroadcast(
                 context, 0, toastIntent,
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-                else 0
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    FLAG_UPDATE_CURRENT or FLAG_MUTABLE
+                } else 0
             )
 
-            views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
+            val mainIntent = Intent(context, MainActivity::class.java)
+            val mainPendingIntent = getActivity(
+                context, 0, mainIntent,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
+                } else 0
+            )
+
+            val views = RemoteViews(context.packageName, R.layout.list_story_widget).apply {
+                setRemoteAdapter(R.id.stack_view, intent)
+                setEmptyView(R.id.stack_view, R.id.tv_empty)
+                setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
+                setOnClickPendingIntent(R.id.tv_banner, mainPendingIntent)
+            }
+
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
     }

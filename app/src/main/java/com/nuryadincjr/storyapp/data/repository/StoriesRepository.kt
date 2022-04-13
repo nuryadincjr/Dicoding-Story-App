@@ -69,7 +69,6 @@ class StoriesRepository private constructor(
             }
         }
 
-
     companion object {
         private const val TAG = "StoriesRepository"
 

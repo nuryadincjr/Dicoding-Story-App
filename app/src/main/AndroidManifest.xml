@@ -48,10 +48,10 @@
             android:name=".view.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".view.welcome.WelcomeActivity"
+            android:name=".view.main.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".view.welcome.WelcomeActivity"
             android:exported="true"
             android:theme="@style/Theme.StoryApp.Starting">
             <intent-filter>

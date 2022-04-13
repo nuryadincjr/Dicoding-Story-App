@@ -20,6 +20,7 @@ class RegisterFactory(private val registerRepository: RegisterRepository?) :
     companion object {
         @Volatile
         private var instance: RegisterFactory? = null
+
         fun getInstance(context: Context): RegisterFactory =
             instance ?: synchronized(this) {
                 instance ?: RegisterFactory(Injection.repository(context))

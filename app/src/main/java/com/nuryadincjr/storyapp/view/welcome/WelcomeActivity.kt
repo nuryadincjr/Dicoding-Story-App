@@ -1,27 +1,46 @@
 package com.nuryadincjr.storyapp.view.welcome
 
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator.*
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
+import com.nuryadincjr.storyapp.data.factory.StoriesFactory
+import com.nuryadincjr.storyapp.data.model.UsersPreference
 import com.nuryadincjr.storyapp.databinding.ActivityWelcomeBinding
+import com.nuryadincjr.storyapp.util.Constant
+import com.nuryadincjr.storyapp.util.Constant.alphaAnim
+import com.nuryadincjr.storyapp.util.Constant.transAnim
 import com.nuryadincjr.storyapp.view.login.LoginActivity
+import com.nuryadincjr.storyapp.view.main.MainActivity
 import com.nuryadincjr.storyapp.view.register.RegisterActivity
 import okhttp3.internal.format
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constant.PREF_SESSION)
 
 class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityWelcomeBinding
 
+    private val welcomeViewModel: WelcomeViewModel by viewModels {
+        val preference = UsersPreference.getInstance(dataStore)
+        StoriesFactory.getInstance(this, preference)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
@@ -29,6 +48,7 @@ class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         setupView()
+        onSubscribe()
         playAnimation()
     }
 
@@ -73,17 +93,13 @@ class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun playAnimation() {
         binding.apply {
-            ofFloat(imageView, View.TRANSLATION_X, 30f, -30f).apply {
-                duration = 6000
-                repeatCount = INFINITE
-                repeatMode = REVERSE
-            }.start()
+            transAnim(imageView, View.TRANSLATION_X).start()
 
-            val title = ofFloat(tvTitle, View.ALPHA, 1f).setDuration(500)
-            val description = ofFloat(tvDescription, View.ALPHA, 1f).setDuration(500)
-            val signIn = ofFloat(btnLogin, View.ALPHA, 1f).setDuration(500)
-            val register = ofFloat(btnRegister, View.ALPHA, 1f).setDuration(500)
-            val version = ofFloat(tvVersion, View.ALPHA, 1f).setDuration(500)
+            val title = alphaAnim(tvTitle)
+            val description = alphaAnim(tvDescription)
+            val signIn = alphaAnim(btnLogin)
+            val register = alphaAnim(btnRegister)
+            val version = alphaAnim(tvVersion)
 
             val buttonSet = AnimatorSet().apply {
                 playTogether(signIn, register)
@@ -92,6 +108,17 @@ class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
             AnimatorSet().apply {
                 playSequentially(title, description, buttonSet, version)
                 start()
+            }
+        }
+    }
+
+    private fun onSubscribe() {
+        welcomeViewModel.apply {
+            getUser().observe(this@WelcomeActivity) {
+                if (it.token.isNotEmpty()) {
+                    startActivity(Intent(this@WelcomeActivity, MainActivity::class.java))
+                    finish()
+                }
             }
         }
     }

@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -22,32 +21,28 @@ import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.adapter.ListStoriesAdapter
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
-import com.nuryadincjr.storyapp.data.factory.UsersFactory
 import com.nuryadincjr.storyapp.data.model.UsersPreference
 import com.nuryadincjr.storyapp.data.remote.response.Stories
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.databinding.ActivityMainBinding
+import com.nuryadincjr.storyapp.util.Constant.PREF_SESSION
 import com.nuryadincjr.storyapp.util.Constant.SPAN_COUNT
 import com.nuryadincjr.storyapp.view.added.AddStoryActivity
 import com.nuryadincjr.storyapp.view.welcome.WelcomeActivity
 import com.nuryadincjr.storyapp.widget.ListStoryWidget
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREF_SESSION)
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     private val mainViewModel: MainViewModel by viewModels {
-        StoriesFactory.getInstance(this)
-    }
-
-    private val usersViewModel: UsersViewModel by viewModels {
-        UsersFactory(UsersPreference.getInstance(dataStore))
+        val preference = UsersPreference.getInstance(dataStore)
+        StoriesFactory.getInstance(this, preference)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -69,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startLogout() {
-        usersViewModel.logout()
+        mainViewModel.logout()
         val intent = Intent(this, WelcomeActivity::class.java)
 
         startActivity(
@@ -100,13 +95,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onSubscribe() {
-        usersViewModel.getUser().observe(this) { user ->
-            mainViewModel.setToken(user.token)
-            if (user.token.isEmpty()) {
-                startActivity(Intent(this, WelcomeActivity::class.java))
-                finish()
-            } else {
-                mainViewModel.getStories().observe(this) {
+        mainViewModel.apply {
+            getUser().observe(this@MainActivity) { user ->
+                setToken(user.token)
+                getStories().observe(this@MainActivity) {
                     onResult(it)
                 }
             }
@@ -122,6 +114,7 @@ class MainActivity : AppCompatActivity() {
                 is Result.Success -> {
                     progressBar.visibility = View.GONE
                     showRecyclerList(result.data)
+
                     val resultList = Stories(result.data)
                     ListStoryWidget.setList(resultList)
                 }

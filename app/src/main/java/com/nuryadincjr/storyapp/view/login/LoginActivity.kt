@@ -1,7 +1,6 @@
 package com.nuryadincjr.storyapp.view.login
 
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -20,27 +19,25 @@ import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.LoginFactory
-import com.nuryadincjr.storyapp.data.factory.UsersFactory
 import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.model.UsersPreference
 import com.nuryadincjr.storyapp.data.remote.response.LoginResult
 import com.nuryadincjr.storyapp.databinding.ActivityLoginBinding
+import com.nuryadincjr.storyapp.util.Constant.PREF_SESSION
+import com.nuryadincjr.storyapp.util.Constant.alphaAnim
+import com.nuryadincjr.storyapp.util.Constant.transAnim
 import com.nuryadincjr.storyapp.view.main.MainActivity
-import com.nuryadincjr.storyapp.view.main.UsersViewModel
 import okhttp3.internal.format
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREF_SESSION)
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityLoginBinding
 
     private val loginViewModel: LoginViewModel by viewModels {
-        LoginFactory.getInstance(this)
-    }
-
-    private val usersViewModel: UsersViewModel by viewModels {
-        UsersFactory(UsersPreference.getInstance(dataStore))
+        val preference = UsersPreference.getInstance(dataStore)
+        LoginFactory.getInstance(this, preference)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,21 +108,24 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
             is Result.Success -> {
                 response.data.apply {
-                    val users =
-                        Users(userId.toString(), name.toString(), email, password, token.toString())
-                    usersViewModel.login(users)
+                    val users = Users(
+                        userId.toString(),
+                        name.toString(),
+                        email, password,
+                        token.toString()
+                    )
+                    loginViewModel.login(users)
+                    binding.progressBar.visibility = View.GONE
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+
+                    startActivity(
+                        intent,
+                        ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(this@LoginActivity)
+                            .toBundle()
+                    )
+                    finishAffinity()
                 }
-
-                binding.progressBar.visibility = View.GONE
-                val intent = Intent(this, MainActivity::class.java)
-
-                startActivity(
-                    intent,
-                    ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(this)
-                        .toBundle()
-                )
-                finishAffinity()
             }
             is Result.Error -> {
                 binding.progressBar.visibility = View.GONE
@@ -136,18 +136,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun playAnimation() {
         binding.apply {
-            ofFloat(imageView, View.TRANSLATION_Y, 30f, -30f).apply {
-                duration = 6000
-                repeatCount = INFINITE
-                repeatMode = REVERSE
-            }.start()
+            transAnim(imageView, View.TRANSLATION_Y).start()
 
-            val title = ofFloat(tvTitle, View.ALPHA, 1f).setDuration(500)
-            val description = ofFloat(tvDescription, View.ALPHA, 1f).setDuration(500)
-            val email = ofFloat(tilEmail, View.ALPHA, 1f).setDuration(500)
-            val password = ofFloat(tilPassword, View.ALPHA, 1f).setDuration(500)
-            val signIn = ofFloat(btnLogin, View.ALPHA, 1f).setDuration(500)
-            val version = ofFloat(tvVersion, View.ALPHA, 1f).setDuration(500)
+            val title = alphaAnim(tvTitle)
+            val description = alphaAnim(tvDescription)
+            val email = alphaAnim(tilEmail)
+            val password = alphaAnim(tilPassword)
+            val signIn = alphaAnim(btnLogin)
+            val version = alphaAnim(tvVersion)
 
             AnimatorSet().apply {
                 playSequentially(title, description, email, password, signIn, version)

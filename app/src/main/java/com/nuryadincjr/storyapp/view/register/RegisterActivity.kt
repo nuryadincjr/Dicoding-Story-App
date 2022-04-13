@@ -1,7 +1,6 @@
 package com.nuryadincjr.storyapp.view.register
 
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator.*
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +17,8 @@ import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.RegisterFactory
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.databinding.ActivityRegisterBinding
+import com.nuryadincjr.storyapp.util.Constant.alphaAnim
+import com.nuryadincjr.storyapp.util.Constant.transAnim
 import com.nuryadincjr.storyapp.view.login.LoginActivity
 import okhttp3.internal.format
 
@@ -122,18 +123,8 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun playAnimation() {
         binding.apply {
-            val transX = ofFloat(imageView, View.TRANSLATION_X, 30f, -30f).apply {
-                duration = 6000
-                repeatCount = INFINITE
-                repeatMode = REVERSE
-            }
-
-            val transY = ofFloat(imageView, View.TRANSLATION_Y, 30f, -30f).apply {
-                duration = 6000
-                repeatCount = INFINITE
-                repeatMode = REVERSE
-            }
-
+            val transX = transAnim(imageView, View.TRANSLATION_X)
+            val transY = transAnim(imageView, View.TRANSLATION_Y)
             val launcherSet = AnimatorSet().apply {
                 playTogether(transX, transY)
             }
@@ -143,12 +134,12 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                 start()
             }
 
-            val title = ofFloat(tvTitle, View.ALPHA, 1f).setDuration(500)
-            val name = ofFloat(tilName, View.ALPHA, 1f).setDuration(500)
-            val email = ofFloat(tilEmail, View.ALPHA, 1f).setDuration(500)
-            val password = ofFloat(tilPassword, View.ALPHA, 1f).setDuration(500)
-            val register = ofFloat(btnRegister, View.ALPHA, 1f).setDuration(500)
-            val version = ofFloat(tvVersion, View.ALPHA, 1f).setDuration(500)
+            val title = alphaAnim(tvTitle)
+            val name = alphaAnim(tilName)
+            val email = alphaAnim(tilEmail)
+            val password = alphaAnim(tilPassword)
+            val register = alphaAnim(btnRegister)
+            val version = alphaAnim(tvVersion)
 
             AnimatorSet().apply {
                 playSequentially(title, name, email, password, register, version)

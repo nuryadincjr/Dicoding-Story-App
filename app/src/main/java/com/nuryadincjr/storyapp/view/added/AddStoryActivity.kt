@@ -2,7 +2,6 @@ package com.nuryadincjr.storyapp.view.added
 
 import android.Manifest
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator.ofFloat
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -24,14 +23,14 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
-import com.nuryadincjr.storyapp.data.factory.UsersFactory
 import com.nuryadincjr.storyapp.data.model.UsersPreference
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.databinding.ActivityAddStoryBinding
+import com.nuryadincjr.storyapp.util.Constant.PREF_SESSION
+import com.nuryadincjr.storyapp.util.Constant.alphaAnim
 import com.nuryadincjr.storyapp.util.createTempFile
 import com.nuryadincjr.storyapp.util.reduceFileImage
 import com.nuryadincjr.storyapp.util.uriToFile
-import com.nuryadincjr.storyapp.view.main.UsersViewModel
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -39,8 +38,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREF_SESSION)
 
 class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -48,12 +46,9 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var currentPhotoPath: String
     private var getFile: File? = null
 
-    private val usersViewModel: UsersViewModel by viewModels {
-        UsersFactory(UsersPreference.getInstance(dataStore))
-    }
-
     private val addStoryViewModel: AddStoryViewModel by viewModels {
-        StoriesFactory.getInstance(this)
+        val preference = UsersPreference.getInstance(dataStore)
+        StoriesFactory.getInstance(this, preference)
     }
 
     private val launcherIntentCamera = registerForActivityResult(
@@ -187,12 +182,14 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
                 val myStory = description.toString().toRequestBody("text/plain".toMediaType())
                 val photo = MultipartBody.Part.createFormData("photo", file.name, requestImageFile)
 
-                usersViewModel.getUser().observe(this) { user ->
-                    addStoryViewModel.setToken(user.token)
-                }
+                addStoryViewModel.apply {
+                    getUser().observe(this@AddStoryActivity) { user ->
+                        setToken(user.token)
+                    }
 
-                addStoryViewModel.onUpload(photo, myStory).observe(this) {
-                    onResult(it)
+                    onUpload(photo, myStory).observe(this@AddStoryActivity) {
+                        onResult(it)
+                    }
                 }
             }
         }
@@ -217,11 +214,11 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun playAnimation() {
         binding.apply {
-            val image = ofFloat(imageView, View.ALPHA, 1f).setDuration(500)
-            val camera = ofFloat(btnCamera, View.ALPHA, 1f).setDuration(500)
-            val gallery = ofFloat(btnGallery, View.ALPHA, 1f).setDuration(500)
-            val description = ofFloat(tilDescription, View.ALPHA, 1f).setDuration(500)
-            val upload = ofFloat(btnUpload, View.ALPHA, 1f).setDuration(500)
+            val image = alphaAnim(imageView)
+            val camera = alphaAnim(btnCamera)
+            val gallery = alphaAnim(btnGallery)
+            val description = alphaAnim(tilDescription)
+            val upload = alphaAnim(btnUpload)
 
             val buttonSet = AnimatorSet().apply {
                 playTogether(camera, gallery)

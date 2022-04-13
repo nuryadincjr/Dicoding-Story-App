@@ -9,6 +9,8 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.remote.response.Stories
+import com.nuryadincjr.storyapp.data.remote.response.StoryItem
+import com.nuryadincjr.storyapp.widget.ListStoryWidget.Companion.ITEM_LIST
 
 internal class StackRemoteViewsFactory(
     private val context: Context,
@@ -16,7 +18,7 @@ internal class StackRemoteViewsFactory(
 ) :
     RemoteViewsService.RemoteViewsFactory {
 
-    private val widgetItems = ArrayList<Bitmap>()
+    private var widgetItems: List<StoryItem>? = null
 
     override fun onCreate() {
 
@@ -24,20 +26,9 @@ internal class StackRemoteViewsFactory(
 
     override fun onDataSetChanged() {
         try {
-            val stories = intent.getParcelableExtra<Stories>("ITEM_LIST") as Stories
+            val stories = intent.getParcelableExtra<Stories>(ITEM_LIST) as Stories
             val listStory = stories.story
-
-            if (listStory != null) {
-                for (item in listStory) {
-                    val bitmap: Bitmap = Glide.with(context)
-                        .asBitmap()
-                        .load(item.photoUrl.toString())
-                        .submit(512, 512)
-                        .get()
-                    widgetItems.add(bitmap)
-                }
-            }
-
+            widgetItems = listStory
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -47,12 +38,19 @@ internal class StackRemoteViewsFactory(
 
     }
 
-    override fun getCount(): Int = widgetItems.size
+    override fun getCount(): Int = if (widgetItems != null) widgetItems!!.size else 0
 
     override fun getViewAt(position: Int): RemoteViews {
         val rv = RemoteViews(context.packageName, R.layout.item_widget)
-
-        rv.setImageViewBitmap(R.id.imageView, widgetItems[position])
+        if (widgetItems != null) {
+            val bitmap: Bitmap = Glide.with(context)
+                .asBitmap()
+                .load(widgetItems!![position].photoUrl.toString())
+                .submit(512, 512)
+                .get()
+            rv.setImageViewBitmap(R.id.imageView, bitmap)
+            rv.setTextViewText(R.id.textView, widgetItems!![position].name.toString())
+        }
 
         val extras = bundleOf(ListStoryWidget.EXTRA_ITEM to position)
         val fillInIntent = Intent()
