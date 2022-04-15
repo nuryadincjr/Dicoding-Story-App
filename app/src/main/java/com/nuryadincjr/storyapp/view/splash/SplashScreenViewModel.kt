@@ -1,4 +1,4 @@
-package com.nuryadincjr.storyapp.view.welcome
+package com.nuryadincjr.storyapp.view.splash
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,7 @@ import androidx.lifecycle.asLiveData
 import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.model.UsersPreference
 
-class WelcomeViewModel(
+class SplashScreenViewModel(
     private val usersPreference: UsersPreference
 ) : ViewModel() {
 

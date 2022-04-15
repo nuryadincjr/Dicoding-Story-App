@@ -30,6 +30,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryApp.Transition">
         <activity
+            android:name=".view.welcome.WelcomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.settings.SettingsActivity"
             android:exported="false" />
 
@@ -62,12 +65,12 @@
             android:name=".view.register.RegisterActivity"
             android:exported="false" />
         <activity
+            android:theme="@style/Theme.StoryApp"
             android:name=".view.main.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".view.welcome.WelcomeActivity"
-            android:exported="true"
-            android:theme="@style/Theme.StoryApp.Starting">
+            android:name=".view.splash.SplashScreenActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

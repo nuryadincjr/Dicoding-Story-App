@@ -7,32 +7,21 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
-import com.nuryadincjr.storyapp.data.factory.StoriesFactory
-import com.nuryadincjr.storyapp.data.model.UsersPreference
-import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.databinding.ActivityWelcomeBinding
 import com.nuryadincjr.storyapp.util.Constant.alphaAnim
 import com.nuryadincjr.storyapp.util.Constant.transAnim
 import com.nuryadincjr.storyapp.view.login.LoginActivity
-import com.nuryadincjr.storyapp.view.main.MainActivity
 import com.nuryadincjr.storyapp.view.register.RegisterActivity
 import okhttp3.internal.format
 
 class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityWelcomeBinding
-
-    private val welcomeViewModel: WelcomeViewModel by viewModels {
-        val preference = UsersPreference.getInstance(dataStore)
-        StoriesFactory.getInstance(this, preference)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -43,7 +32,6 @@ class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         setupView()
-        onSubscribe()
         playAnimation()
     }
 
@@ -69,12 +57,6 @@ class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setupView() {
         @Suppress("DEPRECATION")
-
-        welcomeViewModel.getTheme().observe(this@WelcomeActivity) {
-            val themeMode = if (it) MODE_NIGHT_YES else MODE_NIGHT_NO
-            setDefaultNightMode(themeMode)
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
@@ -109,17 +91,6 @@ class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
             AnimatorSet().apply {
                 playSequentially(title, description, buttonSet, version)
                 start()
-            }
-        }
-    }
-
-    private fun onSubscribe() {
-        welcomeViewModel.apply {
-            getUser().observe(this@WelcomeActivity) {
-                if (it.token.isNotEmpty()) {
-                    startActivity(Intent(this@WelcomeActivity, MainActivity::class.java))
-                    finish()
-                }
             }
         }
     }

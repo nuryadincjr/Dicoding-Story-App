@@ -20,13 +20,6 @@
         <item name="android:windowExitTransition">@android:transition/fade</item>
     </style>
 
-    <style name="Theme.StoryApp.Starting" parent="Theme.SplashScreen" >
-        <item name="windowSplashScreenBackground">@color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_dico</item>
-        <item name="windowSplashScreenAnimationDuration">200</item>
-        <item name="postSplashScreenTheme">@style/Theme.StoryApp</item>
-    </style>
-
     <style name="Theme.StoryApp.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
         <!-- Radius of the outer bound of widgets to make the rounded corners -->
         <item name="appWidgetRadius">16dp</item>
