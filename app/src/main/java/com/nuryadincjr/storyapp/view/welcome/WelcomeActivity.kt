@@ -1,7 +1,6 @@
 package com.nuryadincjr.storyapp.view.welcome
 
 import android.animation.AnimatorSet
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,23 +12,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
 import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.databinding.ActivityWelcomeBinding
-import com.nuryadincjr.storyapp.util.Constant
 import com.nuryadincjr.storyapp.util.Constant.alphaAnim
 import com.nuryadincjr.storyapp.util.Constant.transAnim
 import com.nuryadincjr.storyapp.view.login.LoginActivity
 import com.nuryadincjr.storyapp.view.main.MainActivity
 import com.nuryadincjr.storyapp.view.register.RegisterActivity
 import okhttp3.internal.format
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constant.PREF_SESSION)
 
 class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
 

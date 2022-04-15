@@ -1,6 +1,5 @@
 package com.nuryadincjr.storyapp.view.main
 
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
@@ -11,9 +10,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,16 +18,14 @@ import com.nuryadincjr.storyapp.adapter.ListStoriesAdapter
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
 import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.data.remote.response.Stories
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.databinding.ActivityMainBinding
-import com.nuryadincjr.storyapp.util.Constant.PREF_SESSION
 import com.nuryadincjr.storyapp.util.Constant.SPAN_COUNT
 import com.nuryadincjr.storyapp.view.added.AddStoryActivity
 import com.nuryadincjr.storyapp.view.settings.SettingsActivity
 import com.nuryadincjr.storyapp.widget.ListStoryWidget
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREF_SESSION)
 
 class MainActivity : AppCompatActivity() {
 

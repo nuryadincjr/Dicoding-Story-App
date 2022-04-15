@@ -1,6 +1,5 @@
 package com.nuryadincjr.storyapp.view.settings
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -10,17 +9,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.core.app.ActivityOptionsCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.factory.SettingFactory
 import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.databinding.ActivitySettingsBinding
-import com.nuryadincjr.storyapp.util.Constant
 import com.nuryadincjr.storyapp.view.welcome.WelcomeActivity
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constant.PREF_SESSION)
 
 class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySettingsBinding

@@ -21,6 +21,7 @@ import com.nuryadincjr.storyapp.data.Result.*
 import com.nuryadincjr.storyapp.data.factory.LoginFactory
 import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.remote.response.LoginResult
 import com.nuryadincjr.storyapp.databinding.ActivityLoginBinding
@@ -29,8 +30,6 @@ import com.nuryadincjr.storyapp.util.Constant.alphaAnim
 import com.nuryadincjr.storyapp.util.Constant.transAnim
 import com.nuryadincjr.storyapp.view.main.MainActivity
 import okhttp3.internal.format
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREF_SESSION)
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 

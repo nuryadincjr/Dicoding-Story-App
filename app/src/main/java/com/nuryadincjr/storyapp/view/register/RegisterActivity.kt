@@ -1,7 +1,6 @@
 package com.nuryadincjr.storyapp.view.register
 
 import android.animation.AnimatorSet
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -12,25 +11,20 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.Result.*
 import com.nuryadincjr.storyapp.data.factory.RegisterFactory
 import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.remote.response.LoginResult
 import com.nuryadincjr.storyapp.databinding.ActivityRegisterBinding
-import com.nuryadincjr.storyapp.util.Constant
 import com.nuryadincjr.storyapp.util.Constant.alphaAnim
 import com.nuryadincjr.storyapp.util.Constant.transAnim
 import com.nuryadincjr.storyapp.view.main.MainActivity
 import okhttp3.internal.format
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constant.PREF_SESSION)
 
 class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
