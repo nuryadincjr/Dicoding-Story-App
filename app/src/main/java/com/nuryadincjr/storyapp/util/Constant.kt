@@ -29,14 +29,21 @@ object Constant {
             e.message.toString()
         } else errorCode
 
-        return throwableStatus(status, context)
+        val arrayCode = arrayOf("200", "401", "403", "404", "400", "500")
+
+        return if (arrayCode.contains(status)) {
+            throwableStatus(status, context)
+        } else {
+            throwableStatus(e.message.toString(), context)
+        }
     }
 
-    fun throwableStatus(status: String, context: Context) = when (status) {
+    private fun throwableStatus(status: String, context: Context) = when (status) {
         "200" -> context.getString(R.string.error_200)
         "401" -> context.getString(R.string.error_401)
         "403" -> context.getString(R.string.error_403)
         "404" -> context.getString(R.string.error_404)
+        "400" -> context.getString(R.string.error_400)
         "500" -> context.getString(R.string.error_500)
         else -> status
     }

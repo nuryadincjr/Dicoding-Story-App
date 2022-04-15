@@ -17,7 +17,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
-import com.nuryadincjr.storyapp.data.Result
+import com.nuryadincjr.storyapp.data.Result.*
 import com.nuryadincjr.storyapp.data.factory.LoginFactory
 import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.model.UsersPreference
@@ -92,8 +92,19 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     else -> {
                         progressBar.visibility = View.VISIBLE
                         loginViewModel.apply {
-                            onLogin(email, password).observe(this@LoginActivity) {
-                                onResult(it, email, password)
+                            onLogin(email, password).observe(this@LoginActivity) { result ->
+                                when (result) {
+                                    is Loading -> progressBar.visibility = View.VISIBLE
+                                    is Success -> onSuccess(result, email, password)
+                                    is Error -> {
+                                        progressBar.visibility = View.GONE
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            result.error,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
                             }
                         }
                     }
@@ -102,43 +113,36 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun onResult(result: Result<LoginResponse>, email: String, password: String) {
-        when (result) {
-            is Result.Loading -> {
-                binding.progressBar.visibility = View.VISIBLE
-            }
-            is Result.Success -> {
-                val loginResponse = result.data
-                val loginResult = loginResponse.loginResult as LoginResult
-                val message = loginResponse.message
+    private fun onSuccess(
+        result: Success<LoginResponse>,
+        email: String,
+        password: String
+    ) {
+        val loginResponse = result.data
+        val loginResult = loginResponse.loginResult as LoginResult
+        val message = loginResponse.message
 
-                loginResult.apply {
-                    val users = Users(
-                        userId.toString(),
-                        name.toString(),
-                        email, password,
-                        token.toString()
-                    )
+        loginResult.apply {
+            val users = Users(
+                userId.toString(),
+                name.toString(),
+                email, password,
+                token.toString()
+            )
 
-                    loginViewModel.loginSession(users)
-                    binding.progressBar.visibility = View.GONE
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            loginViewModel.loginSession(users)
+            binding.progressBar.visibility = View.GONE
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
 
-                    startActivity(
-                        intent,
-                        ActivityOptionsCompat
-                            .makeSceneTransitionAnimation(this@LoginActivity)
-                            .toBundle()
-                    )
-                    Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT).show()
+            startActivity(
+                intent,
+                ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this@LoginActivity)
+                    .toBundle()
+            )
+            Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT).show()
 
-                    finishAffinity()
-                }
-            }
-            is Result.Error -> {
-                binding.progressBar.visibility = View.GONE
-                Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
-            }
+            finishAffinity()
         }
     }
 

@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Aplikasi Cerita</string>
     <string name="app_detail">Detail Cerita</string>
+    <string name="app_settings">Settings</string>
     <string name="title_welcome">Hai sobat Dico, selamat datang di Aplikasi Cerita!</string>
     <string name="description_welcome">Bagikan pengalaman belajar kamu bersama Dicoding? Ceritakan dan dapatkan teman!</string>
     <string name="login">Masuk</string>
@@ -32,11 +33,18 @@
     <string name="error_401">Email atau kata sandi salah</string>
     <string name="error_403">Akses Ditolak Anda tidak memiliki izin untuk mengakses</string>
     <string name="error_404">Halaman tidak ditemukan</string>
+    <string name="error_400">Permintaan Buruk, Email mungkin sudah terdaftar</string>
     <string name="error_500">Kesalahan pada server</string>
     <string name="title_add_story">Tambahkan Cerita Baru</string>
     <string name="title_gallery">Pilih Gambar</string>
     <string name="appwidget_text">Daftar Cerita</string>
-    <string name="add_widget">Tambahkan widget</string>
     <string name="empty_text">Tidak ada data</string>
     <string name="app_widget_description">Ini adalah deskripsi widget aplikasi</string>
+    <string name="application">Aplikasi</string>
+    <string name="language">Bahasa</string>
+    <string name="summary_language">Inggris, Indonesia, Rusia, Spanyol</string>
+    <string name="dark_mode">Mode Gelap</string>
+    <string name="account">Akun</string>
+    <string name="sign_out">Keluar</string>
+    <string name="summary_sign_out">Keluar dari sesi ini</string>
 </resources>

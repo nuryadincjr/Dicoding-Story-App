@@ -1,9 +1,22 @@
 package com.nuryadincjr.storyapp.view.register
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.nuryadincjr.storyapp.data.model.Users
+import com.nuryadincjr.storyapp.data.model.UsersPreference
 import com.nuryadincjr.storyapp.data.repository.RegisterRepository
+import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val registerRepository: RegisterRepository) : ViewModel() {
+class RegisterViewModel(
+    private val registerRepository: RegisterRepository,
+    private val usersPreference: UsersPreference
+) : ViewModel() {
     fun onRegister(name: String, email: String, password: String) =
         registerRepository.register(name, email, password)
+
+    fun loginSession(user: Users) {
+        viewModelScope.launch {
+            usersPreference.loginSession(user)
+        }
+    }
 }

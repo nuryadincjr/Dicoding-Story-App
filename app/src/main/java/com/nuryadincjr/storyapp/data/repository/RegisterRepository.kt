@@ -6,33 +6,40 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.nuryadincjr.storyapp.data.Result
-import com.nuryadincjr.storyapp.data.remote.response.PostResponse
+import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
-import com.nuryadincjr.storyapp.util.Constant
+import com.nuryadincjr.storyapp.util.Constant.onException
 
 class RegisterRepository private constructor(
     private val context: Context,
     private val apiService: ApiService
 ) {
-    fun register(name: String, email: String, password: String): LiveData<Result<PostResponse>> =
+    fun register(name: String, email: String, password: String): LiveData<Result<LoginResponse>> =
         liveData {
             emit(Result.Loading)
             try {
                 val registerResponse = apiService.postRegister(name, email, password)
-                val isError = registerResponse.error == true
-                val message = registerResponse.message.toString()
+                var isError = registerResponse.error == true
+                var message = registerResponse.message.toString()
 
-                val response = if (isError) {
+                if (isError) {
                     Result.Error(message)
                 } else {
-                    Result.Success(registerResponse)
+                    val loginResponse = apiService.postLogin(email, password)
+                    isError = loginResponse.error == true
+                    message = loginResponse.message.toString()
+
+                    val response = if (isError) {
+                        Result.Error(message)
+                    } else {
+                        Result.Success(loginResponse)
+                    }
+                    emit(response)
                 }
 
-                emit(response)
                 Log.d(TAG, "register: $message")
             } catch (e: Exception) {
-                val exception = Constant.onException(e, context)
-
+                val exception = onException(e, context)
                 emit(Result.Error(exception))
                 Log.d(TAG, "register: $exception")
             }

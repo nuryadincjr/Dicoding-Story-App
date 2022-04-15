@@ -5,10 +5,9 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
-import com.nuryadincjr.storyapp.data.remote.response.LoginResult
+import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
 import com.nuryadincjr.storyapp.util.Constant
 
 class LoginRepository private constructor(

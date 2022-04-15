@@ -1,6 +1,7 @@
 package com.nuryadincjr.storyapp.view.register
 
 import android.animation.AnimatorSet
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,24 +12,33 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
-import com.nuryadincjr.storyapp.data.Result
+import com.nuryadincjr.storyapp.data.Result.*
 import com.nuryadincjr.storyapp.data.factory.RegisterFactory
+import com.nuryadincjr.storyapp.data.model.Users
+import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.remote.response.LoginResult
-import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.databinding.ActivityRegisterBinding
+import com.nuryadincjr.storyapp.util.Constant
 import com.nuryadincjr.storyapp.util.Constant.alphaAnim
 import com.nuryadincjr.storyapp.util.Constant.transAnim
-import com.nuryadincjr.storyapp.view.login.LoginActivity
+import com.nuryadincjr.storyapp.view.main.MainActivity
 import okhttp3.internal.format
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constant.PREF_SESSION)
 
 class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityRegisterBinding
 
     private val registerViewModel: RegisterViewModel by viewModels {
-        RegisterFactory.getInstance(this)
+        val preference = UsersPreference.getInstance(dataStore)
+        RegisterFactory.getInstance(this, preference)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,8 +96,23 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                     else -> {
                         progressBar.visibility = View.VISIBLE
                         registerViewModel.apply {
-                            onRegister(name, email, password).observe(this@RegisterActivity) {
-                                onResult(it)
+                            onRegister(
+                                name,
+                                email,
+                                password
+                            ).observe(this@RegisterActivity) { result ->
+                                when (result) {
+                                    is Loading -> progressBar.visibility = View.VISIBLE
+                                    is Success -> onSuccess(result, email, password)
+                                    is Error -> {
+                                        progressBar.visibility = View.GONE
+                                        Toast.makeText(
+                                            this@RegisterActivity,
+                                            result.error,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
                             }
                         }
                     }
@@ -96,33 +121,36 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun onResult(result: Result<PostResponse>) {
-        binding.apply {
-            when (result) {
-                is Result.Loading -> {
-                    progressBar.visibility = View.VISIBLE
-                }
-                is Result.Success -> {
-                    val registerResponse = result.data
-                    val message = registerResponse.message
+    private fun onSuccess(
+        result: Success<LoginResponse>,
+        email: String,
+        password: String
+    ) {
+        val loginResponse = result.data
+        val loginResult = loginResponse.loginResult as LoginResult
+        val message = loginResponse.message
 
-                    progressBar.visibility = View.GONE
-                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+        loginResult.apply {
+            val users = Users(
+                userId.toString(),
+                name.toString(),
+                email, password,
+                token.toString()
+            )
 
-                    startActivity(
-                        intent,
-                        ActivityOptionsCompat
-                            .makeSceneTransitionAnimation(this@RegisterActivity)
-                            .toBundle()
-                    )
-                    Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
-                    finish()
-                }
-                is Result.Error -> {
-                    progressBar.visibility = View.GONE
-                    Toast.makeText(this@RegisterActivity, result.error, Toast.LENGTH_SHORT).show()
-                }
-            }
+            registerViewModel.loginSession(users)
+            binding.progressBar.visibility = View.GONE
+            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+
+            startActivity(
+                intent,
+                ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this@RegisterActivity)
+                    .toBundle()
+            )
+            Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
+
+            finishAffinity()
         }
     }
 

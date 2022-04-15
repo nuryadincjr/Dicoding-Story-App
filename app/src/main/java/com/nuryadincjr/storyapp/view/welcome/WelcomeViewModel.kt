@@ -13,4 +13,6 @@ class WelcomeViewModel(
     fun getUser(): LiveData<Users> {
         return usersPreference.getUserSession().asLiveData()
     }
+
+    fun getTheme(): LiveData<Boolean> = usersPreference.getTheme().asLiveData()
 }

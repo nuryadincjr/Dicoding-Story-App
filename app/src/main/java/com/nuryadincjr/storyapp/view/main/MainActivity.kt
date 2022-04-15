@@ -28,7 +28,7 @@ import com.nuryadincjr.storyapp.databinding.ActivityMainBinding
 import com.nuryadincjr.storyapp.util.Constant.PREF_SESSION
 import com.nuryadincjr.storyapp.util.Constant.SPAN_COUNT
 import com.nuryadincjr.storyapp.view.added.AddStoryActivity
-import com.nuryadincjr.storyapp.view.welcome.WelcomeActivity
+import com.nuryadincjr.storyapp.view.settings.SettingsActivity
 import com.nuryadincjr.storyapp.widget.ListStoryWidget
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREF_SESSION)
@@ -59,13 +59,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_logout) startLogout()
+        if (item.itemId == R.id.menu_settings) startSettings()
         return super.onOptionsItemSelected(item)
     }
 
-    private fun startLogout() {
-        mainViewModel.logout()
-        val intent = Intent(this, WelcomeActivity::class.java)
+    private fun startSettings() {
+        val intent = Intent(this, SettingsActivity::class.java)
 
         startActivity(
             intent,
@@ -73,7 +72,6 @@ class MainActivity : AppCompatActivity() {
                 .makeSceneTransitionAnimation(this)
                 .toBundle()
         )
-        finish()
     }
 
     private fun setupView() {

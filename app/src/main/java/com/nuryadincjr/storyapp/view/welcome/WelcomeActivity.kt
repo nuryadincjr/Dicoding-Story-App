@@ -10,6 +10,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.datastore.core.DataStore
@@ -74,6 +75,12 @@ class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setupView() {
         @Suppress("DEPRECATION")
+
+        welcomeViewModel.getTheme().observe(this@WelcomeActivity) {
+            val themeMode = if (it) MODE_NIGHT_YES else MODE_NIGHT_NO
+            setDefaultNightMode(themeMode)
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {

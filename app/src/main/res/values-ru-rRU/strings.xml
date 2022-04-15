@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Сюжетное приложение</string>
     <string name="app_detail">Подробная история</string>
+    <string name="app_settings">Settings</string>
     <string name="title_welcome">Привет, друзья Dico, добро пожаловать в приложение Stories!</string>
     <string name="description_welcome">Поделитесь своим опытом обучения с Dicoding? Расскажите и подружитесь!</string>
     <string name="login">Войти</string>
@@ -31,12 +32,19 @@
     <string name="error_200">Ответ верный, но результата нет</string>
     <string name="error_401">неверный адрес электронной почты или пароль</string>
     <string name="error_403">Доступ запрещен У вас нет разрешения на доступ</string>
+    <string name="error_400">Неверный запрос, возможно, электронная почта уже зарегистрирована</string>
     <string name="error_404">Страница не найдена</string>
     <string name="error_500">Ошибка сервера</string>
     <string name="title_add_story">Добавить новую историю</string>
     <string name="title_gallery">Выбрать картину</string>
     <string name="appwidget_text">Список историй</string>
-    <string name="add_widget">Добавить виджет</string>
     <string name="empty_text">Нет данных</string>
     <string name="app_widget_description">Это описание виджета приложения</string>
+    <string name="application">Заявление</string>
+    <string name="language">Язык</string>
+    <string name="summary_language">английский, индонезийский, русский, испанский</string>
+    <string name="dark_mode">Темный режим</string>
+    <string name="account">Счет</string>
+    <string name="sign_out">выход</string>
+    <string name="summary_sign_out">Выйти из этой сессии</string>
 </resources>
