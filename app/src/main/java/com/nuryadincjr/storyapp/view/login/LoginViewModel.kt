@@ -15,7 +15,7 @@ class LoginViewModel(
     fun onLogin(email: String, password: String) =
         loginRepository.login(email, password)
 
-    fun login(user: Users) {
+    fun loginSession(user: Users) {
         viewModelScope.launch {
             usersPreference.loginSession(user)
         }

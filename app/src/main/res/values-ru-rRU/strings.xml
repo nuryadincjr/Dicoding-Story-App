@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Сюжетное приложение</string>
+    <string name="app_detail">Подробная история</string>
     <string name="title_welcome">Привет, друзья Dico, добро пожаловать в приложение Stories!</string>
     <string name="description_welcome">Поделитесь своим опытом обучения с Dicoding? Расскажите и подружитесь!</string>
     <string name="login">Войти</string>
@@ -27,6 +28,11 @@
     <string name="error_name_empty">Введите имя.</string>
     <string name="error_email_empty">Введите адрес электронной почты.</string>
     <string name="error_password_empty">Введите пароль.</string>
+    <string name="error_200">Ответ верный, но результата нет</string>
+    <string name="error_401">неверный адрес электронной почты или пароль</string>
+    <string name="error_403">Доступ запрещен У вас нет разрешения на доступ</string>
+    <string name="error_404">Страница не найдена</string>
+    <string name="error_500">Ошибка сервера</string>
     <string name="title_add_story">Добавить новую историю</string>
     <string name="title_gallery">Выбрать картину</string>
     <string name="appwidget_text">Список историй</string>

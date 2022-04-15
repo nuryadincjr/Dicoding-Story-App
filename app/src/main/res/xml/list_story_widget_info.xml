@@ -7,8 +7,5 @@
     android:minHeight="110dp"
     android:previewImage="@drawable/ic_dico"
 
-    android:previewLayout="@layout/list_story_widget"
-    android:targetCellWidth="4"
-    android:targetCellHeight="2"
     android:updatePeriodMillis="0"
     android:widgetCategory="home_screen" />

@@ -21,6 +21,7 @@ import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.LoginFactory
 import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.remote.response.LoginResult
 import com.nuryadincjr.storyapp.databinding.ActivityLoginBinding
 import com.nuryadincjr.storyapp.util.Constant.PREF_SESSION
@@ -101,20 +102,25 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun onResult(response: Result<LoginResult>, email: String, password: String) {
-        when (response) {
+    private fun onResult(result: Result<LoginResponse>, email: String, password: String) {
+        when (result) {
             is Result.Loading -> {
                 binding.progressBar.visibility = View.VISIBLE
             }
             is Result.Success -> {
-                response.data.apply {
+                val loginResponse = result.data
+                val loginResult = loginResponse.loginResult as LoginResult
+                val message = loginResponse.message
+
+                loginResult.apply {
                     val users = Users(
                         userId.toString(),
                         name.toString(),
                         email, password,
                         token.toString()
                     )
-                    loginViewModel.login(users)
+
+                    loginViewModel.loginSession(users)
                     binding.progressBar.visibility = View.GONE
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
 
@@ -124,12 +130,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                             .makeSceneTransitionAnimation(this@LoginActivity)
                             .toBundle()
                     )
+                    Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT).show()
+
                     finishAffinity()
                 }
             }
             is Result.Error -> {
                 binding.progressBar.visibility = View.GONE
-                Toast.makeText(this, response.error, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -15,6 +15,7 @@ import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.RegisterFactory
+import com.nuryadincjr.storyapp.data.remote.response.LoginResult
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.databinding.ActivityRegisterBinding
 import com.nuryadincjr.storyapp.util.Constant.alphaAnim
@@ -95,13 +96,16 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun onResult(response: Result<PostResponse>) {
+    private fun onResult(result: Result<PostResponse>) {
         binding.apply {
-            when (response) {
+            when (result) {
                 is Result.Loading -> {
                     progressBar.visibility = View.VISIBLE
                 }
                 is Result.Success -> {
+                    val registerResponse = result.data
+                    val message = registerResponse.message
+
                     progressBar.visibility = View.GONE
                     val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
 
@@ -111,11 +115,12 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                             .makeSceneTransitionAnimation(this@RegisterActivity)
                             .toBundle()
                     )
+                    Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
                     finish()
                 }
                 is Result.Error -> {
                     progressBar.visibility = View.GONE
-                    Toast.makeText(this@RegisterActivity, response.error, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegisterActivity, result.error, Toast.LENGTH_SHORT).show()
                 }
             }
         }

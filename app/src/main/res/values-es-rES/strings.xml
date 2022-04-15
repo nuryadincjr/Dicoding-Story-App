@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Aplicación de historia</string>
+    <string name="app_detail">Historia detallada</string>
     <string name="title_welcome">Hola amigos de Dico, ¡bienvenidos a la aplicación Stories!</string>
     <string name="description_welcome">¿Comparte tu experiencia de aprendizaje con Dicoding? ¡Dilo y haz amigos!</string>
     <string name="login">Registrarse</string>
@@ -27,6 +28,11 @@
     <string name="error_name_empty">Ingresa un nombre.</string>
     <string name="error_email_empty">Ingrese correo electrónico.</string>
     <string name="error_password_empty">Introduce la contraseña.</string>
+    <string name="error_200">Respuesta OK, pero sin resultado</string>
+    <string name="error_401">Correo electrónico o contraseña no válidos</string>
+    <string name="error_403">Acceso denegado No tienes permiso para acceder</string>
+    <string name="error_404">Página no encontrada</string>
+    <string name="error_500">Error del servidor</string>
     <string name="title_add_story">Agregar nueva historia</string>
     <string name="title_gallery">Elige una imagen</string>
     <string name="appwidget_text">Historia de la lista</string>

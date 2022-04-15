@@ -1,7 +1,8 @@
 package com.nuryadincjr.storyapp.view.detail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
@@ -24,7 +25,19 @@ class DetailsStoryActivity : AppCompatActivity() {
         setupView(storyItem)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) onBackPressed()
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun setupView(user: StoryItem?) {
+
+        supportActionBar?.apply {
+            title = getString(R.string.app_detail)
+            setDisplayHomeAsUpEnabled(true)
+            elevation = 0f
+        }
+
         binding.apply {
             tvName.text = user?.name
             tvDescription.text = user?.description

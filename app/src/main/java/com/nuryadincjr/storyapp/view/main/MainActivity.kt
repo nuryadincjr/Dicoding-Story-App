@@ -112,11 +112,13 @@ class MainActivity : AppCompatActivity() {
                     progressBar.visibility = View.VISIBLE
                 }
                 is Result.Success -> {
-                    progressBar.visibility = View.GONE
-                    showRecyclerList(result.data)
+                    val listStory = result.data
 
-                    val resultList = Stories(result.data)
-                    ListStoryWidget.setList(resultList)
+                    progressBar.visibility = View.GONE
+                    showRecyclerList(listStory)
+
+                    val listStoryWidget = Stories(listStory)
+                    ListStoryWidget.setList(listStoryWidget)
                 }
                 is Result.Error -> {
                     progressBar.visibility = View.GONE

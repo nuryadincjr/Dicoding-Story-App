@@ -11,9 +11,9 @@ object Injection {
         val apiService = getApiService()
 
         return when (T::class.java) {
-            RegisterRepository::class.java -> RegisterRepository.getInstance(apiService) as T
-            LoginRepository::class.java -> LoginRepository.getInstance(apiService) as T
-            StoriesRepository::class.java -> StoriesRepository.getInstance(apiService) as T
+            RegisterRepository::class.java -> RegisterRepository.getInstance(context, apiService) as T
+            LoginRepository::class.java -> LoginRepository.getInstance(context, apiService) as T
+            StoriesRepository::class.java -> StoriesRepository.getInstance(context, apiService) as T
             else -> null
         }
     }

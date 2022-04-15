@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -81,14 +82,17 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_story)
 
-        supportActionBar?.title = getString(R.string.title_add_story)
-
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupView()
         onSubscribe()
         playAnimation()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) onBackPressed()
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onClick(p0: View?) {
@@ -123,6 +127,12 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupView() {
+        supportActionBar?.apply {
+            title = getString(R.string.title_add_story)
+            setDisplayHomeAsUpEnabled(true)
+            elevation = 0f
+        }
+
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
                 this,
@@ -201,8 +211,11 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
                 binding.progressBar.visibility = View.VISIBLE
             }
             is Result.Success -> {
+                val addStoryResponse = result.data
+                val message = addStoryResponse.message
+
                 binding.progressBar.visibility = View.GONE
-                Toast.makeText(this, result.data.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 finish()
             }
             is Result.Error -> {
