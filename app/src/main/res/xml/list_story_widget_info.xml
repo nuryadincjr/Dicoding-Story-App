@@ -7,5 +7,5 @@
     android:minHeight="110dp"
     android:previewImage="@drawable/ic_dico"
 
-    android:updatePeriodMillis="0"
+    android:updatePeriodMillis="30000"
     android:widgetCategory="home_screen" />

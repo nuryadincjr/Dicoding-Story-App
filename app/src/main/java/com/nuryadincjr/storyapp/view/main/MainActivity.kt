@@ -19,13 +19,11 @@ import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
 import com.nuryadincjr.storyapp.data.model.UsersPreference
 import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
-import com.nuryadincjr.storyapp.data.remote.response.Stories
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.databinding.ActivityMainBinding
 import com.nuryadincjr.storyapp.util.Constant.SPAN_COUNT
 import com.nuryadincjr.storyapp.view.added.AddStoryActivity
 import com.nuryadincjr.storyapp.view.settings.SettingsActivity
-import com.nuryadincjr.storyapp.widget.ListStoryWidget
 
 class MainActivity : AppCompatActivity() {
 
@@ -105,12 +103,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 is Result.Success -> {
                     val listStory = result.data
-
-                    progressBar.visibility = View.GONE
                     showRecyclerList(listStory)
 
-                    val listStoryWidget = Stories(listStory)
-                    ListStoryWidget.setList(listStoryWidget)
+                    mainViewModel.saveWidgetList(listStory)
+                    progressBar.visibility = View.GONE
                 }
                 is Result.Error -> {
                     progressBar.visibility = View.GONE

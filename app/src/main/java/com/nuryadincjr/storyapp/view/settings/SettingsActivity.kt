@@ -88,7 +88,11 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onLogout() {
-        settingsViewModel.logout()
+        settingsViewModel.apply {
+            saveWidgetList(emptyList())
+            logout()
+        }
+
         val intent = Intent(this, WelcomeActivity::class.java)
 
         startActivity(

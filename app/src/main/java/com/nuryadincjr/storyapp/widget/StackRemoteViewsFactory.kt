@@ -1,5 +1,6 @@
 package com.nuryadincjr.storyapp.widget
 
+import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -8,51 +9,44 @@ import android.widget.RemoteViewsService
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.nuryadincjr.storyapp.R
-import com.nuryadincjr.storyapp.data.remote.response.Stories
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
-import com.nuryadincjr.storyapp.widget.ListStoryWidget.Companion.ITEM_LIST
+import com.nuryadincjr.storyapp.data.repository.WidgetRepository
 
-internal class StackRemoteViewsFactory(
+class StackRemoteViewsFactory(
     private val context: Context,
-    private val intent: Intent
+    private val repository: WidgetRepository
 ) :
     RemoteViewsService.RemoteViewsFactory {
 
-    private var widgetItems: List<StoryItem>? = null
+    private var widgetItems: List<StoryItem?>? = emptyList()
 
     override fun onCreate() {
 
     }
 
     override fun onDataSetChanged() {
-        try {
-            val stories = intent.getParcelableExtra<Stories>(ITEM_LIST) as Stories
-            val listStory = stories.story
-            widgetItems = listStory
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        widgetItems = repository.dataStory.value
     }
 
     override fun onDestroy() {
 
     }
 
-    override fun getCount(): Int = if (widgetItems != null) widgetItems!!.size else 0
+    override fun getCount(): Int = widgetItems?.size ?: 0
 
     override fun getViewAt(position: Int): RemoteViews {
         val rv = RemoteViews(context.packageName, R.layout.item_widget)
         if (widgetItems != null) {
             val bitmap: Bitmap = Glide.with(context)
                 .asBitmap()
-                .load(widgetItems!![position].photoUrl.toString())
+                .load(widgetItems!![position]?.photoUrl.toString())
                 .submit(512, 512)
                 .get()
             rv.setImageViewBitmap(R.id.imageView, bitmap)
-            rv.setTextViewText(R.id.textView, widgetItems!![position].name.toString())
+            rv.setTextViewText(R.id.textView, widgetItems!![position]?.name.toString())
         }
 
-        val extras = bundleOf(ListStoryWidget.EXTRA_ITEM to position)
+        val extras = bundleOf(EXTRA_APPWIDGET_ID to position)
         val fillInIntent = Intent()
         fillInIntent.putExtras(extras)
 
@@ -64,7 +58,7 @@ internal class StackRemoteViewsFactory(
 
     override fun getViewTypeCount(): Int = 1
 
-    override fun getItemId(i: Int): Long = 0
+    override fun getItemId(i: Int): Long = widgetItems?.get(i).hashCode().toLong()
 
     override fun hasStableIds(): Boolean = false
 }

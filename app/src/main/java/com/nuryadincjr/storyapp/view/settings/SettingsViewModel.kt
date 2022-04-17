@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
@@ -23,4 +24,10 @@ class SettingsViewModel(
     }
 
     fun getTheme(): LiveData<Boolean> = usersPreference.getTheme().asLiveData()
+
+    fun saveWidgetList(list: List<StoryItem>) {
+        viewModelScope.launch {
+            usersPreference.saveWidgetList(list)
+        }
+    }
 }

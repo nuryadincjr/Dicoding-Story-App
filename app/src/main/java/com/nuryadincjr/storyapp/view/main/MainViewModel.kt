@@ -3,9 +3,12 @@ package com.nuryadincjr.storyapp.view.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.data.repository.StoriesRepository
+import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val storiesRepository: StoriesRepository,
@@ -18,4 +21,11 @@ class MainViewModel(
     fun getUser(): LiveData<Users> {
         return usersPreference.getUserSession().asLiveData()
     }
+
+    fun saveWidgetList(list: List<StoryItem>) {
+        viewModelScope.launch {
+            usersPreference.saveWidgetList(list)
+        }
+    }
+
 }
