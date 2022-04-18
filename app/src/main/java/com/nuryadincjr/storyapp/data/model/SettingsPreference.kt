@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.lang.reflect.Type
 
-class UsersPreference private constructor(private val dataStore: DataStore<Preferences>) {
+class SettingsPreference private constructor(private val dataStore: DataStore<Preferences>) {
 
     fun getUserSession(): Flow<Users> {
         return dataStore.data.map {
@@ -71,7 +71,6 @@ class UsersPreference private constructor(private val dataStore: DataStore<Prefe
         }
     }
 
-
     fun getWidgetList(): Flow<List<StoryItem?>?> {
         return dataStore.data.map {
             val json = it[WIDGET_KEY] ?: ""
@@ -84,7 +83,7 @@ class UsersPreference private constructor(private val dataStore: DataStore<Prefe
 
     companion object {
         @Volatile
-        private var instance: UsersPreference? = null
+        private var instance: SettingsPreference? = null
 
         val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constant.PREF_SESSION)
 
@@ -98,8 +97,8 @@ class UsersPreference private constructor(private val dataStore: DataStore<Prefe
 
         fun getInstance(
             dataStore: DataStore<Preferences>
-        ): UsersPreference = instance ?: synchronized(this) {
-            instance ?: UsersPreference(dataStore)
+        ): SettingsPreference = instance ?: synchronized(this) {
+            instance ?: SettingsPreference(dataStore)
         }.also { instance = it }
     }
 }

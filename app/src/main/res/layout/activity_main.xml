@@ -27,16 +27,29 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/add_story"
+        android:focusable="true"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/fab_story"
+        app:layout_constraintEnd_toEndOf="@+id/fab_story"
+        app:layout_constraintStart_toStartOf="@+id/fab_story"
+        app:srcCompat="@drawable/ic_map_search" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:clickable="true"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:contentDescription="@string/add_story"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_post_add_24"
-        android:focusable="true"
-        android:contentDescription="@string/add_story" />
+        app:srcCompat="@drawable/ic_baseline_post_add_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

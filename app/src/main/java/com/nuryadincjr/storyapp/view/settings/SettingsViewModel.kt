@@ -4,30 +4,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.nuryadincjr.storyapp.data.model.UsersPreference
+import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-    private val usersPreference: UsersPreference
+    private val settingsPreference: SettingsPreference
 ) : ViewModel() {
     fun logout() {
         viewModelScope.launch {
-            usersPreference.logoutSession()
+            settingsPreference.logoutSession()
         }
     }
 
     fun saveTheme(isDarkMode: Boolean) {
         viewModelScope.launch {
-            usersPreference.saveTheme(isDarkMode)
+            settingsPreference.saveTheme(isDarkMode)
         }
     }
 
-    fun getTheme(): LiveData<Boolean> = usersPreference.getTheme().asLiveData()
+    fun getTheme(): LiveData<Boolean> = settingsPreference.getTheme().asLiveData()
 
     fun saveWidgetList(list: List<StoryItem>) {
         viewModelScope.launch {
-            usersPreference.saveWidgetList(list)
+            settingsPreference.saveWidgetList(list)
         }
     }
 }

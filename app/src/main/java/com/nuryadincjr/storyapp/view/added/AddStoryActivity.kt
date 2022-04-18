@@ -1,10 +1,13 @@
 package com.nuryadincjr.storyapp.view.added
 
-import android.Manifest
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.Manifest.permission.CAMERA
 import android.animation.AnimatorSet
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -20,8 +23,8 @@ import androidx.core.content.FileProvider
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
-import com.nuryadincjr.storyapp.data.model.UsersPreference
-import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
+import com.nuryadincjr.storyapp.data.model.SettingsPreference
+import com.nuryadincjr.storyapp.data.model.SettingsPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.databinding.ActivityAddStoryBinding
 import com.nuryadincjr.storyapp.util.Constant.alphaAnim
@@ -35,6 +38,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
+
 class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddStoryBinding
@@ -42,7 +46,7 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
     private var getFile: File? = null
 
     private val addStoryViewModel: AddStoryViewModel by viewModels {
-        val preference = UsersPreference.getInstance(dataStore)
+        val preference = SettingsPreference.getInstance(dataStore)
         StoriesFactory.getInstance(this, preference)
     }
 
@@ -72,6 +76,17 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private var location: Location? = null
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                getMyLocation()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_story)
@@ -94,6 +109,7 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_camera -> startTakePhoto()
             R.id.btn_gallery -> startGallery()
             R.id.btn_upload -> startUploadStory()
+            R.id.tv_location -> getMyLocation()
         }
     }
 
@@ -139,6 +155,7 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             btnCamera.setOnClickListener(this@AddStoryActivity)
             btnGallery.setOnClickListener(this@AddStoryActivity)
             btnUpload.setOnClickListener(this@AddStoryActivity)
+            tvLocation.setOnClickListener(this@AddStoryActivity)
         }
     }
 
@@ -169,12 +186,12 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun startUploadStory() {
-        val description = binding.tietDescription.text
+        val descInp = binding.tietDescription.text
         when {
             getFile == null -> {
                 Toast.makeText(this, getString(R.string.error_file), Toast.LENGTH_SHORT).show()
             }
-            description.isNullOrEmpty() -> {
+            descInp.isNullOrEmpty() -> {
                 Toast.makeText(this, getString(R.string.error_description), Toast.LENGTH_SHORT)
                     .show()
             }
@@ -183,15 +200,25 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
 
                 val file = reduceFileImage(getFile as File)
                 val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val myStory = description.toString().toRequestBody("text/plain".toMediaType())
                 val photo = MultipartBody.Part.createFormData("photo", file.name, requestImageFile)
+
+                val description = descInp.toString().toRequestBody("text/plain".toMediaType())
+
+                val latitude: Double? = location?.latitude
+                val longitude: Double? = location?.longitude
+
 
                 addStoryViewModel.apply {
                     getUser().observe(this@AddStoryActivity) { user ->
                         setToken(user.token)
                     }
 
-                    onUpload(photo, myStory).observe(this@AddStoryActivity) {
+                    onUpload(
+                        photo,
+                        description,
+                        latitude,
+                        longitude
+                    ).observe(this@AddStoryActivity) {
                         onResult(it)
                     }
                 }
@@ -225,6 +252,7 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             val camera = alphaAnim(btnCamera)
             val gallery = alphaAnim(btnGallery)
             val description = alphaAnim(tilDescription)
+            val location = alphaAnim(tvLocation)
             val upload = alphaAnim(btnUpload)
 
             val buttonSet = AnimatorSet().apply {
@@ -232,14 +260,28 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             AnimatorSet().apply {
-                playSequentially(image, buttonSet, description, upload)
+                playSequentially(image, buttonSet, description, location, upload)
                 start()
             }
         }
     }
 
+    private fun getMyLocation() {
+        if (ContextCompat.checkSelfPermission(
+                applicationContext,
+                ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val manager = getSystemService(LOCATION_SERVICE) as LocationManager
+            location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+            val latLong = "lat/long: ${location?.latitude}/${location?.longitude}"
+            binding.tvLocation.text = latLong
+        } else requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
+    }
+
     companion object {
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private val REQUIRED_PERMISSIONS = arrayOf(CAMERA)
         private const val REQUEST_CODE = 1
     }
 }

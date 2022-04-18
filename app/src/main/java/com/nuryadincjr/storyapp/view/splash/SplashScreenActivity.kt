@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.*
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
-import com.nuryadincjr.storyapp.data.model.UsersPreference
-import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
+import com.nuryadincjr.storyapp.data.model.SettingsPreference
+import com.nuryadincjr.storyapp.data.model.SettingsPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.view.main.MainActivity
 import com.nuryadincjr.storyapp.view.welcome.WelcomeActivity
 import kotlinx.coroutines.*
@@ -23,7 +23,7 @@ class SplashScreenActivity : AppCompatActivity() {
     private val activityScope = CoroutineScope(Dispatchers.Main)
 
     private val splashScreenViewModel: SplashScreenViewModel by viewModels {
-        val preference = UsersPreference.getInstance(dataStore)
+        val preference = SettingsPreference.getInstance(dataStore)
         StoriesFactory.getInstance(this, preference)
     }
 

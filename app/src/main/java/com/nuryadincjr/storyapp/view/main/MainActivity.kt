@@ -17,20 +17,21 @@ import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.adapter.ListStoriesAdapter
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
-import com.nuryadincjr.storyapp.data.model.UsersPreference
-import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
+import com.nuryadincjr.storyapp.data.model.SettingsPreference
+import com.nuryadincjr.storyapp.data.model.SettingsPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.databinding.ActivityMainBinding
 import com.nuryadincjr.storyapp.util.Constant.SPAN_COUNT
 import com.nuryadincjr.storyapp.view.added.AddStoryActivity
+import com.nuryadincjr.storyapp.view.location.MapsActivity
 import com.nuryadincjr.storyapp.view.settings.SettingsActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
 
     private val mainViewModel: MainViewModel by viewModels {
-        val preference = UsersPreference.getInstance(dataStore)
+        val preference = SettingsPreference.getInstance(dataStore)
         StoriesFactory.getInstance(this, preference)
     }
 
@@ -68,17 +69,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupView() {
         binding.apply {
-            fabStory.setOnClickListener {
-                val intent = Intent(this@MainActivity, AddStoryActivity::class.java)
-                startActivity(
-                    intent,
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle()
-                )
-            }
+            fabStory.setOnClickListener(this@MainActivity)
+            fabLocation.setOnClickListener(this@MainActivity)
 
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy > 0) fabStory.hide() else fabStory.show()
+                    if (dy > 0) {
+                        fabStory.hide()
+                        fabLocation.hide()
+                    } else {
+                        fabStory.show()
+                        fabLocation.show()
+                    }
                 }
             })
         }
@@ -126,6 +128,25 @@ class MainActivity : AppCompatActivity() {
                 } else LinearLayoutManager(context)
             setHasFixedSize(true)
             adapter = listUsersAdapter
+        }
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.fab_story -> {
+                val intent = Intent(this@MainActivity, AddStoryActivity::class.java)
+                startActivity(
+                    intent,
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle()
+                )
+            }
+            R.id.fab_location -> {
+                val intent = Intent(this@MainActivity, MapsActivity::class.java)
+                startActivity(
+                    intent,
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle()
+                )
+            }
         }
     }
 }

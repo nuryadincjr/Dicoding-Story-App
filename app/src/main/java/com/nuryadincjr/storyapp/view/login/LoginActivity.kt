@@ -16,8 +16,8 @@ import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.Result.*
 import com.nuryadincjr.storyapp.data.factory.LoginFactory
 import com.nuryadincjr.storyapp.data.model.Users
-import com.nuryadincjr.storyapp.data.model.UsersPreference
-import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
+import com.nuryadincjr.storyapp.data.model.SettingsPreference
+import com.nuryadincjr.storyapp.data.model.SettingsPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.remote.response.LoginResult
 import com.nuryadincjr.storyapp.databinding.ActivityLoginBinding
@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityLoginBinding
 
     private val loginViewModel: LoginViewModel by viewModels {
-        val preference = UsersPreference.getInstance(dataStore)
+        val preference = SettingsPreference.getInstance(dataStore)
         LoginFactory.getInstance(this, preference)
     }
 

@@ -25,12 +25,12 @@ class StoriesRepository private constructor(
         _token.value = token
     }
 
-    fun getStories(): LiveData<Result<List<StoryItem>>> =
+    fun getStories(location: Int? = null): LiveData<Result<List<StoryItem>>> =
         liveData {
             emit(Result.Loading)
             try {
                 val keyToken = "Bearer ${_token.value}"
-                val storiesResponse = apiService.getAllStories(keyToken)
+                val storiesResponse = apiService.getAllStories(keyToken, location = location)
                 val isError = storiesResponse.error == true
                 val message = storiesResponse.message.toString()
                 val listStory = storiesResponse.story as List<StoryItem>
@@ -53,13 +53,15 @@ class StoriesRepository private constructor(
 
     fun postStory(
         photo: MultipartBody.Part,
-        description: RequestBody
+        description: RequestBody,
+        lat: Double? = null,
+        lon: Double? = null,
     ): LiveData<Result<PostResponse>> =
         liveData {
             emit(Result.Loading)
             try {
                 val keyToken = "Bearer ${_token.value}"
-                val storiesResponse = apiService.addStory(keyToken, photo, description)
+                val storiesResponse = apiService.addStory(keyToken, photo, description, lat, lon)
                 val isError = storiesResponse.error == true
                 val message = storiesResponse.message.toString()
 

@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.core.app.ActivityOptionsCompat
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.factory.SettingFactory
-import com.nuryadincjr.storyapp.data.model.UsersPreference
-import com.nuryadincjr.storyapp.data.model.UsersPreference.Companion.dataStore
+import com.nuryadincjr.storyapp.data.model.SettingsPreference
+import com.nuryadincjr.storyapp.data.model.SettingsPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.databinding.ActivitySettingsBinding
 import com.nuryadincjr.storyapp.view.welcome.WelcomeActivity
 
@@ -20,7 +20,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySettingsBinding
 
     private val settingsViewModel: SettingsViewModel by viewModels {
-        val preference = UsersPreference.getInstance(dataStore)
+        val preference = SettingsPreference.getInstance(dataStore)
         SettingFactory.getInstance(preference)
     }
 

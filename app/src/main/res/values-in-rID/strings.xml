@@ -47,4 +47,5 @@
     <string name="account">Akun</string>
     <string name="sign_out">Keluar</string>
     <string name="summary_sign_out">Keluar dari sesi ini</string>
+    <string name="add_location">Tambahkan lokasi saat ini</string>
 </resources>
