@@ -7,13 +7,9 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.util.Constant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.lang.reflect.Type
 
 class SettingsPreference private constructor(private val dataStore: DataStore<Preferences>) {
 
@@ -63,24 +59,6 @@ class SettingsPreference private constructor(private val dataStore: DataStore<Pr
         }
     }
 
-    suspend fun saveWidgetList(list: List<StoryItem?>?) {
-        val gson = Gson()
-        val json: String = gson.toJson(list)
-        dataStore.edit { preferences ->
-            preferences[WIDGET_KEY] = json
-        }
-    }
-
-    fun getWidgetList(): Flow<List<StoryItem?>?> {
-        return dataStore.data.map {
-            val json = it[WIDGET_KEY] ?: ""
-            val gson = Gson()
-            val type: Type = object : TypeToken<List<StoryItem?>?>() {}.type
-
-            gson.fromJson(json, type)
-        }
-    }
-
     companion object {
         @Volatile
         private var instance: SettingsPreference? = null
@@ -93,7 +71,6 @@ class SettingsPreference private constructor(private val dataStore: DataStore<Pr
         private val PASSWORD_KEY = stringPreferencesKey("password")
         private val TOKEN_KEY = stringPreferencesKey("token")
         private val THEME_KEY = booleanPreferencesKey("theme_setting")
-        private val WIDGET_KEY = stringPreferencesKey("widget_list")
 
         fun getInstance(
             dataStore: DataStore<Preferences>

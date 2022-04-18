@@ -79,10 +79,9 @@ class StackWidgetProvider : AppWidgetProvider() {
                     FLAG_UPDATE_CURRENT or FLAG_MUTABLE
                 } else 0
             )
-
             val mainIntent = Intent(context, MainActivity::class.java)
             val mainPendingIntent = getActivity(
-                context, 0, mainIntent,
+                context, appWidgetId, mainIntent,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
                 } else 0
@@ -91,8 +90,8 @@ class StackWidgetProvider : AppWidgetProvider() {
             val views = RemoteViews(context.packageName, R.layout.list_story_widget).apply {
                 setRemoteAdapter(R.id.stack_view, intent)
                 setEmptyView(R.id.stack_view, R.id.tv_empty)
-                setOnClickPendingIntent(R.id.tv_banner, mainPendingIntent)
                 setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
+                setOnClickPendingIntent(R.id.tv_banner, mainPendingIntent)
             }
 
             appWidgetManager.updateAppWidget(appWidgetId, views)

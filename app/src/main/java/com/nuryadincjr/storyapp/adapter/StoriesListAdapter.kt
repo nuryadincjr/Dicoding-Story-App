@@ -2,37 +2,39 @@ package com.nuryadincjr.storyapp.adapter
 
 import android.app.Activity
 import android.content.Intent
-import android.view.LayoutInflater
+import android.view.LayoutInflater.from
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.databinding.ItemListStoryBinding
-import com.nuryadincjr.storyapp.util.Constant.DATA_STORY
+import com.nuryadincjr.storyapp.databinding.ItemListStoryBinding.inflate
+import com.nuryadincjr.storyapp.util.Constant
 import com.nuryadincjr.storyapp.view.detail.DetailsStoryActivity
 
-class ListStoriesAdapter(private val listStory: List<StoryItem>) :
-    RecyclerView.Adapter<ListStoriesAdapter.ListViewHolder>() {
+class StoriesListAdapter :
+    PagingDataAdapter<StoryItem, StoriesListAdapter.ListViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val binding =
-            ItemListStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = inflate(from(parent.context), parent, false)
         return ListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.setDataToView(listStory[position])
+        val storyItem = getItem(position)
+        if (storyItem != null) {
+            holder.bind(storyItem)
+        }
     }
 
-    override fun getItemCount(): Int = listStory.size
-
-    class ListViewHolder(
-        private var binding: ItemListStoryBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-        fun setDataToView(storyItem: StoryItem) {
+    class ListViewHolder(private val binding: ItemListStoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(storyItem: StoryItem) {
             binding.apply {
                 tvName.text = storyItem.name
                 tvDescription.text = storyItem.description
@@ -47,7 +49,7 @@ class ListStoriesAdapter(private val listStory: List<StoryItem>) :
                 itemView.apply {
                     setOnClickListener {
                         val intent = Intent(context, DetailsStoryActivity::class.java)
-                        intent.putExtra(DATA_STORY, storyItem)
+                        intent.putExtra(Constant.DATA_STORY, storyItem)
                         val optionsCompat: ActivityOptionsCompat =
                             ActivityOptionsCompat.makeSceneTransitionAnimation(
                                 context as Activity,
@@ -58,6 +60,18 @@ class ListStoriesAdapter(private val listStory: List<StoryItem>) :
                         context.startActivity(intent, optionsCompat.toBundle())
                     }
                 }
+            }
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StoryItem>() {
+            override fun areItemsTheSame(oldItem: StoryItem, newItem: StoryItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: StoryItem, newItem: StoryItem): Boolean {
+                return oldItem.id == newItem.id
             }
         }
     }

@@ -39,11 +39,11 @@ class StackRemoteViewsFactory(
         if (widgetItems != null) {
             val bitmap: Bitmap = Glide.with(context)
                 .asBitmap()
-                .load(widgetItems!![position]?.photoUrl.toString())
+                .load(widgetItems?.get(position)?.photoUrl.toString())
                 .submit(512, 512)
                 .get()
             rv.setImageViewBitmap(R.id.imageView, bitmap)
-            rv.setTextViewText(R.id.textView, widgetItems!![position]?.name.toString())
+            rv.setTextViewText(R.id.textView, widgetItems?.get(position)?.name.toString())
         }
 
         val extras = bundleOf(EXTRA_APPWIDGET_ID to position)

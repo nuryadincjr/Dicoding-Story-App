@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.core.app.ActivityOptionsCompat
 import com.nuryadincjr.storyapp.R
-import com.nuryadincjr.storyapp.data.factory.SettingFactory
+import com.nuryadincjr.storyapp.data.factory.StoriesFactory
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.model.SettingsPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.databinding.ActivitySettingsBinding
@@ -21,7 +21,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
 
     private val settingsViewModel: SettingsViewModel by viewModels {
         val preference = SettingsPreference.getInstance(dataStore)
-        SettingFactory.getInstance(preference)
+        StoriesFactory.getInstance(this, preference)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +89,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun onLogout() {
         settingsViewModel.apply {
-            saveWidgetList(emptyList())
+            deleteStories()
             logout()
         }
 

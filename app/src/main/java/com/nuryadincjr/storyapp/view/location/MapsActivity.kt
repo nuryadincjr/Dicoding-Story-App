@@ -146,7 +146,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     mMap.setMapStyle(
                         MapStyleOptions.loadRawResourceStyle(
                             this,
-                            R.raw.dark_map_style
+                            R.raw.night_map_style
                         )
                     )
                 } else {

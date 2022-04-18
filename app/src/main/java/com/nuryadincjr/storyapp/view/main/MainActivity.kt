@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -14,12 +13,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nuryadincjr.storyapp.R
-import com.nuryadincjr.storyapp.adapter.ListStoriesAdapter
-import com.nuryadincjr.storyapp.data.Result
+import com.nuryadincjr.storyapp.adapter.LoadingStateAdapter
+import com.nuryadincjr.storyapp.adapter.StoriesListAdapter
 import com.nuryadincjr.storyapp.data.factory.StoriesFactory
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.model.SettingsPreference.Companion.dataStore
-import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.databinding.ActivityMainBinding
 import com.nuryadincjr.storyapp.util.Constant.SPAN_COUNT
 import com.nuryadincjr.storyapp.view.added.AddStoryActivity
@@ -68,6 +66,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupView() {
+        binding.recyclerView.apply {
+            layoutManager =
+                if (resources?.configuration?.orientation == ORIENTATION_LANDSCAPE) {
+                    GridLayoutManager(this@MainActivity, SPAN_COUNT)
+                } else LinearLayoutManager(this@MainActivity)
+            setHasFixedSize(true)
+        }
+
         binding.apply {
             fabStory.setOnClickListener(this@MainActivity)
             fabLocation.setOnClickListener(this@MainActivity)
@@ -87,66 +93,41 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onSubscribe() {
+        val adapter = StoriesListAdapter()
+        binding.recyclerView.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter(adapter::retry)
+        )
+
         mainViewModel.apply {
             getUser().observe(this@MainActivity) { user ->
                 setToken(user.token)
-                getStories().observe(this@MainActivity) {
-                    onResult(it)
+
+                getStory().observe(this@MainActivity) {
+                    adapter.submitData(lifecycle, it)
                 }
             }
-        }
-    }
-
-    private fun onResult(result: Result<List<StoryItem>>) {
-        binding.apply {
-            when (result) {
-                is Result.Loading -> {
-                    progressBar.visibility = View.VISIBLE
-                }
-                is Result.Success -> {
-                    val listStory = result.data
-                    showRecyclerList(listStory)
-
-                    mainViewModel.saveWidgetList(listStory)
-                    progressBar.visibility = View.GONE
-                }
-                is Result.Error -> {
-                    progressBar.visibility = View.GONE
-                    Toast.makeText(this@MainActivity, result.error, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    private fun showRecyclerList(list: List<StoryItem>) {
-        val listUsersAdapter = ListStoriesAdapter(list)
-
-        binding.recyclerView.apply {
-            layoutManager =
-                if (resources?.configuration?.orientation == ORIENTATION_LANDSCAPE) {
-                    GridLayoutManager(context, SPAN_COUNT)
-                } else LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = listUsersAdapter
         }
     }
 
     override fun onClick(p0: View?) {
+        var clazz: Class<*>? = null
         when (p0?.id) {
             R.id.fab_story -> {
-                val intent = Intent(this@MainActivity, AddStoryActivity::class.java)
-                startActivity(
-                    intent,
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle()
-                )
+                clazz = AddStoryActivity::class.java
+
             }
             R.id.fab_location -> {
-                val intent = Intent(this@MainActivity, MapsActivity::class.java)
-                startActivity(
-                    intent,
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle()
-                )
+                clazz = MapsActivity::class.java
             }
+        }
+
+        if (clazz != null) {
+            startActivity(
+                Intent(this, clazz),
+                ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this)
+                    .toBundle()
+            )
         }
     }
 }

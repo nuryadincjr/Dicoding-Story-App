@@ -6,7 +6,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
+import androidx.paging.*
 import com.nuryadincjr.storyapp.data.Result
+import com.nuryadincjr.storyapp.data.StoryRemoteMediator
+import com.nuryadincjr.storyapp.data.local.room.StoriesDatabase
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
@@ -16,7 +19,8 @@ import okhttp3.RequestBody
 
 class StoriesRepository private constructor(
     private val context: Context,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val storiesDatabase: StoriesDatabase
 ) {
 
     private val _token = MutableLiveData<String?>()
@@ -81,6 +85,29 @@ class StoriesRepository private constructor(
             }
         }
 
+    suspend fun deleteStories() {
+        storiesDatabase.apply {
+            storiesDao().deleteAll()
+            remoteKeysDao().deleteRemoteKeys()
+        }
+    }
+
+    fun getStories(): LiveData<PagingData<StoryItem>> {
+        val keyToken = "Bearer ${_token.value}"
+
+        @OptIn(ExperimentalPagingApi::class)
+        val pager = Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            remoteMediator = StoryRemoteMediator(storiesDatabase, apiService, keyToken),
+            pagingSourceFactory = {
+                storiesDatabase.storiesDao().getAllStory()
+            }
+        ).liveData
+        return pager
+    }
+
 
     companion object {
         private const val TAG = "StoriesRepository"
@@ -91,9 +118,10 @@ class StoriesRepository private constructor(
 
         fun getInstance(
             context: Context,
-            apiService: ApiService
+            apiService: ApiService,
+            storiesDatabase: StoriesDatabase
         ): StoriesRepository = instance ?: synchronized(this) {
-            instance ?: StoriesRepository(context, apiService)
+            instance ?: StoriesRepository(context, apiService, storiesDatabase)
         }.also { instance = it }
     }
 }

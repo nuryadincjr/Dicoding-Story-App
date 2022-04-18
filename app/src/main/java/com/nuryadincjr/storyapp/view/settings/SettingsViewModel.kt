@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
-import com.nuryadincjr.storyapp.data.remote.response.StoryItem
+import com.nuryadincjr.storyapp.data.repository.StoriesRepository
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
+    private val storiesRepository: StoriesRepository,
     private val settingsPreference: SettingsPreference
 ) : ViewModel() {
     fun logout() {
@@ -25,9 +26,9 @@ class SettingsViewModel(
 
     fun getTheme(): LiveData<Boolean> = settingsPreference.getTheme().asLiveData()
 
-    fun saveWidgetList(list: List<StoryItem>) {
+    fun deleteStories() {
         viewModelScope.launch {
-            settingsPreference.saveWidgetList(list)
+            storiesRepository.deleteStories()
         }
     }
 }

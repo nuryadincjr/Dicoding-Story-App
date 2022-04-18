@@ -9,6 +9,7 @@ import com.nuryadincjr.storyapp.di.Injection
 import com.nuryadincjr.storyapp.view.added.AddStoryViewModel
 import com.nuryadincjr.storyapp.view.location.MapsViewModel
 import com.nuryadincjr.storyapp.view.main.MainViewModel
+import com.nuryadincjr.storyapp.view.settings.SettingsViewModel
 import com.nuryadincjr.storyapp.view.splash.SplashScreenViewModel
 
 class StoriesFactory(
@@ -30,6 +31,9 @@ class StoriesFactory(
             }
             modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
                 MapsViewModel(storiesRepository!!, settingsPreference!!) as T
+            }
+            modelClass.isAssignableFrom(SettingsViewModel::class.java) -> {
+                SettingsViewModel(storiesRepository!!, settingsPreference!!) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: $modelClass.name")
         }

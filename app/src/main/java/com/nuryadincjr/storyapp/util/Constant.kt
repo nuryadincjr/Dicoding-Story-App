@@ -10,10 +10,12 @@ import com.nuryadincjr.storyapp.R
 object Constant {
     const val BASE_URL = "https://story-api.dicoding.dev/v1/"
     const val FILENAME_FORMAT = "dd-MMM-yyyy"
-    const val DATA_STORY = "data_user"
-    const val MIN_PASS_LENGTH = 6
-    const val SPAN_COUNT = 2
     const val PREF_SESSION = "SESSION"
+    const val DATA_STORY = "data_user"
+    const val DB_NAME = "stories.db"
+    const val MIN_PASS_LENGTH = 6
+    const val DB_VERSION = 1
+    const val SPAN_COUNT = 2
 
     fun alphaAnim(view: View) = ofFloat(view, View.ALPHA, 1f).setDuration(500)
     fun transAnim(view: View, property: Property<View, Float>): ObjectAnimator =

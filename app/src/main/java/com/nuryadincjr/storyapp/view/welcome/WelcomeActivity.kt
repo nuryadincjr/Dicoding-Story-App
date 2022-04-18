@@ -8,8 +8,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.app.ActivityOptionsCompat.makeSceneTransitionAnimation
 import com.nuryadincjr.storyapp.BuildConfig.VERSION_NAME
 import com.nuryadincjr.storyapp.R
 import com.nuryadincjr.storyapp.databinding.ActivityWelcomeBinding
@@ -24,7 +23,6 @@ class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityWelcomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
@@ -49,8 +47,7 @@ class WelcomeActivity : AppCompatActivity(), View.OnClickListener {
 
         if (intent != null) {
             startActivity(
-                intent,
-                ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+                intent, makeSceneTransitionAnimation(this).toBundle()
             )
         }
     }
