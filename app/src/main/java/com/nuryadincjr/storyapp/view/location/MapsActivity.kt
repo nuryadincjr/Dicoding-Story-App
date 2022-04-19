@@ -127,7 +127,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 lon!!,
                                 name.toString(),
                                 description.toString(),
-                                id.toString()
+                                id
                             )
                         }
                     }

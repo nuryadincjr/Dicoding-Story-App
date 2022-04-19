@@ -5,7 +5,7 @@
     android:initialLayout="@layout/list_story_widget"
     android:minWidth="250dp"
     android:minHeight="110dp"
-    android:previewImage="@drawable/ic_dico"
+    android:previewImage="@drawable/my_widget"
 
     android:previewLayout="@layout/list_story_widget"
     android:targetCellWidth="4"

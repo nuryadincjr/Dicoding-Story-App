@@ -5,13 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import java.lang.reflect.Type
 
 @Dao
 interface StoriesDao {

@@ -48,4 +48,5 @@
     <string name="sign_out">выход</string>
     <string name="summary_sign_out">Выйти из этой сессии</string>
     <string name="add_location">Добавить текущее местоположение</string>
+    <string name="tray_again">Попробуйте еще раз</string>
 </resources>

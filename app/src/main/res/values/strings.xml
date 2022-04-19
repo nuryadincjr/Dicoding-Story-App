@@ -47,4 +47,5 @@
     <string name="sign_out">Sign out</string>
     <string name="summary_sign_out">Logout this session</string>
     <string name="add_location">Add current location</string>
+    <string name="tray_again">Tray again</string>
 </resources>

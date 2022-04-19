@@ -15,8 +15,6 @@ class MainViewModel(
 ) : ViewModel() {
     fun setToken(token: String) = storiesRepository.setToken(token)
 
-    fun getStories() = storiesRepository.getStories(0)
-
     fun getUser(): LiveData<Users> {
         return settingsPreference.getUserSession().asLiveData()
     }

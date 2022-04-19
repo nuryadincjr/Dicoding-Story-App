@@ -48,4 +48,5 @@
     <string name="sign_out">desconectar</string>
     <string name="summary_sign_out">Salir de esta sesión</string>
     <string name="add_location">Agregar ubicación actual</string>
+    <string name="tray_again">Intentar otra vez</string>
 </resources>
