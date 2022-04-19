@@ -35,6 +35,7 @@
     <string name="error_400">Неверный запрос, возможно, электронная почта уже зарегистрирована</string>
     <string name="error_404">Страница не найдена</string>
     <string name="error_500">Ошибка сервера</string>
+    <string name="error_disable_location">Включите службы определения местоположения и повторите попытку.</string>
     <string name="title_add_story">Добавить новую историю</string>
     <string name="title_gallery">Выбрать картину</string>
     <string name="appwidget_text">Список историй</string>
@@ -49,4 +50,5 @@
     <string name="summary_sign_out">Выйти из этой сессии</string>
     <string name="add_location">Добавить текущее местоположение</string>
     <string name="tray_again">Попробуйте еще раз</string>
+    <string name="clear_location">Очистить местоположение</string>
 </resources>

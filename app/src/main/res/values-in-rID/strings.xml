@@ -35,6 +35,7 @@
     <string name="error_404">Halaman tidak ditemukan</string>
     <string name="error_400">Permintaan Buruk, Email mungkin sudah terdaftar</string>
     <string name="error_500">Kesalahan pada server</string>
+    <string name="error_disable_location">Tolong nyalakan location services Anda, dan coba kembali.</string>
     <string name="title_add_story">Tambahkan Cerita Baru</string>
     <string name="title_gallery">Pilih Gambar</string>
     <string name="appwidget_text">Daftar Cerita</string>
@@ -49,4 +50,5 @@
     <string name="summary_sign_out">Keluar dari sesi ini</string>
     <string name="add_location">Tambahkan lokasi saat ini</string>
     <string name="tray_again">Coba lagi</string>
+    <string name="clear_location">Hapus lokasi</string>
 </resources>

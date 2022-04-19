@@ -33,9 +33,10 @@
     <string name="error_400">Bad Request, Email may already be registered</string>
     <string name="error_500">Server Error</string>
     <string name="error_password_empty">Enter the password.</string>
+    <string name="error_permission">Not getting permissions.</string>
+    <string name="error_disable_location">Please turn on your location services, and try again.</string>
     <string name="title_add_story">Add New Story</string>
     <string name="title_gallery">Choose a Picture</string>
-    <string name="error_permission">Not getting permissions.</string>
     <string name="appwidget_text">List Story</string>
     <string name="empty_text">No Data</string>
     <string name="app_widget_description">This is an app widget description</string>
@@ -48,4 +49,5 @@
     <string name="summary_sign_out">Logout this session</string>
     <string name="add_location">Add current location</string>
     <string name="tray_again">Tray again</string>
+    <string name="clear_location">Clear location</string>
 </resources>

@@ -35,6 +35,7 @@
     <string name="error_404">Página no encontrada</string>
     <string name="error_400">Solicitud incorrecta, es posible que el correo electrónico ya esté registrado</string>
     <string name="error_500">Error del servidor</string>
+    <string name="error_disable_location">Activa los servicios de ubicación e inténtalo de nuevo.</string>
     <string name="title_add_story">Agregar nueva historia</string>
     <string name="title_gallery">Elige una imagen</string>
     <string name="appwidget_text">Historia de la lista</string>
@@ -49,4 +50,5 @@
     <string name="summary_sign_out">Salir de esta sesión</string>
     <string name="add_location">Agregar ubicación actual</string>
     <string name="tray_again">Intentar otra vez</string>
+    <string name="clear_location">Borrar ubicación</string>
 </resources>
