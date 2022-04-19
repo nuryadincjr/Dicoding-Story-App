@@ -134,10 +134,17 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onSubscribe() {
-        addStoryViewModel.getFile().observe(this@AddStoryActivity) {
-            getFile = it
-            val result = BitmapFactory.decodeFile(it?.path)
-            binding.imageView.setImageBitmap(result)
+        addStoryViewModel.apply {
+            getFile().observe(this@AddStoryActivity) {
+                getFile = it
+                val result = BitmapFactory.decodeFile(it?.path)
+                binding.imageView.setImageBitmap(result)
+            }
+
+            getLocation().observe(this@AddStoryActivity) {
+                latLng = it
+                startLocation(it)
+            }
         }
     }
 
@@ -256,6 +263,7 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             val gallery = alphaAnim(btnGallery)
             val description = alphaAnim(tilDescription)
             val location = alphaAnim(tvLocation)
+            val clear = alphaAnim(ivClearLocation)
             val upload = alphaAnim(btnUpload)
 
             val buttonSet = AnimatorSet().apply {
@@ -263,7 +271,7 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             AnimatorSet().apply {
-                playSequentially(image, buttonSet, description, location, upload)
+                playSequentially(image, buttonSet, description, location, clear, upload)
                 start()
             }
         }
@@ -276,7 +284,8 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             val fusedLocationClient = getFusedLocationProviderClient(this)
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
-                    startLocation(location)
+                    latLng = LatLng(location.latitude, location.longitude)
+                    startLocation(latLng)
                 } else {
                     Toast.makeText(
                         this,
@@ -295,9 +304,9 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun startLocation(location: Location) {
-        latLng = LatLng(location.latitude, location.longitude)
-        binding.tvLocation.text = latLng.toString()
+    private fun startLocation(location: LatLng?) {
+        addStoryViewModel.setLocation(location)
+        binding.tvLocation.text = location.toString()
         binding.ivClearLocation.visibility = View.VISIBLE
     }
 
