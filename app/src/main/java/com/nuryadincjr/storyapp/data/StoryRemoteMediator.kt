@@ -12,6 +12,7 @@ import com.nuryadincjr.storyapp.data.local.entity.RemoteKeys
 import com.nuryadincjr.storyapp.data.local.room.StoriesDatabase
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
+import com.nuryadincjr.storyapp.util.wrapEspressoIdlingResource
 
 @OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(
@@ -32,46 +33,48 @@ class StoryRemoteMediator(
         loadType: LoadType,
         state: PagingState<Int, StoryItem>
     ): MediatorResult {
-        val page = when (loadType) {
-            REFRESH -> {
-                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextKey?.minus(1) ?: INITIAL_PAGE_INDEX
-            }
-            PREPEND -> {
-                val remoteKeys = getRemoteKeyForFirstItem(state)
-                val prevKey = remoteKeys?.prevKey
-                    ?: return Success(endOfPaginationReached = remoteKeys != null)
-                prevKey
-            }
-            APPEND -> {
-                val remoteKeys = getRemoteKeyForLastItem(state)
-                val nextKey = remoteKeys?.nextKey
-                    ?: return Success(endOfPaginationReached = remoteKeys != null)
-                nextKey
-            }
-        }
-
-        try {
-            val storiesResponse = apiService.getAllStories(keyToken, page, state.config.pageSize)
-            val listStory = storiesResponse.story as List<StoryItem>
-            val endOfPaginationReached = listStory.isEmpty()
-
-            database.withTransaction {
-                if (loadType == REFRESH) {
-                    database.remoteKeysDao().deleteRemoteKeys()
-                    database.storiesDao().deleteAll()
+        wrapEspressoIdlingResource {
+            val page = when (loadType) {
+                REFRESH -> {
+                    val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                    remoteKeys?.nextKey?.minus(1) ?: INITIAL_PAGE_INDEX
                 }
-                val prevKey = if (page == 1) null else page - 1
-                val nextKey = if (endOfPaginationReached) null else page + 1
-                val keys = listStory.map {
-                    RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
+                PREPEND -> {
+                    val remoteKeys = getRemoteKeyForFirstItem(state)
+                    val prevKey = remoteKeys?.prevKey
+                        ?: return Success(endOfPaginationReached = remoteKeys != null)
+                    prevKey
                 }
-                database.remoteKeysDao().insertAll(keys)
-                database.storiesDao().insertStory(listStory)
+                APPEND -> {
+                    val remoteKeys = getRemoteKeyForLastItem(state)
+                    val nextKey = remoteKeys?.nextKey
+                        ?: return Success(endOfPaginationReached = remoteKeys != null)
+                    nextKey
+                }
             }
-            return Success(endOfPaginationReached = endOfPaginationReached)
-        } catch (exception: Exception) {
-            return Error(exception)
+
+            try {
+                val storiesResponse = apiService.getAllStories(keyToken, page, state.config.pageSize)
+                val listStory = storiesResponse.story as List<StoryItem>
+                val endOfPaginationReached = listStory.isEmpty()
+
+                database.withTransaction {
+                    if (loadType == REFRESH) {
+                        database.remoteKeysDao().deleteRemoteKeys()
+                        database.storiesDao().deleteAll()
+                    }
+                    val prevKey = if (page == 1) null else page - 1
+                    val nextKey = if (endOfPaginationReached) null else page + 1
+                    val keys = listStory.map {
+                        RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
+                    }
+                    database.remoteKeysDao().insertAll(keys)
+                    database.storiesDao().insertStory(listStory)
+                }
+                return Success(endOfPaginationReached = endOfPaginationReached)
+            } catch (exception: Exception) {
+                return Error(exception)
+            }
         }
     }
 

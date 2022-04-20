@@ -1,0 +1,96 @@
+{
+  "error": false,
+  "message": "Stories fetched successfully",
+  "listStory": [
+    {
+      "id": "story-FvU4u0Vp2S3PMsFg",
+      "name": "Dimas",
+      "description": "Lorem Ipsum",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-01-08T06:34:18.598Z",
+      "lat": -10.212,
+      "lon": -16.002
+    },
+    {
+      "id": "story-FvU4u0Vp2S3PMsF1",
+      "name": "Agus",
+      "description": "Lorem Ipsum 1",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-01-08T06:34:18.598Z",
+      "lat": -10.212,
+      "lon": -16.002
+    },
+    {
+      "id": "story-FvU4u0Vp2S3PMsF2",
+      "name": "Uis",
+      "description": "Lorem Ipsum 2",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-01-08T06:34:18.598Z",
+      "lat": -10.212,
+      "lon": -16.002
+    },
+    {
+      "id": "story-FvU4u0Vp2S3PMsF3",
+      "name": "Daman",
+      "description": "Lorem Ipsum 3",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-01-08T06:34:18.598Z",
+      "lat": -10.212,
+      "lon": -16.002
+    },
+    {
+      "id": "story-FvU4u0Vp2S3PMsF4",
+      "name": "Nuryadin",
+      "description": "Lorem Ipsum 4",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-01-08T06:34:18.598Z",
+      "lat": -10.212,
+      "lon": -16.002
+    },
+    {
+      "id": "story-FvU4u0Vp2S3PMsF5",
+      "name": "Sendi",
+      "description": "Lorem Ipsum 5",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-01-08T06:34:18.598Z",
+      "lat": -10.212,
+      "lon": -16.002
+    },
+    {
+      "id": "story-FvU4u0Vp2S3PMsF6",
+      "name": "Wina",
+      "description": "Lorem Ipsum 6",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-01-08T06:34:18.598Z",
+      "lat": -10.212,
+      "lon": -16.002
+    },
+    {
+      "id": "story-FvU4u0Vp2S3PMsF7",
+      "name": "Alia",
+      "description": "Lorem Ipsum 7",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-01-08T06:34:18.598Z",
+      "lat": -10.212,
+      "lon": -16.002
+    },
+    {
+      "id": "story-FvU4u0Vp2S3PMsF8",
+      "name": "Rindi",
+      "description": "Lorem Ipsum 8",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-01-08T06:34:18.598Z",
+      "lat": -10.212,
+      "lon": -16.002
+    },
+    {
+      "id": "story-FvU4u0Vp2S3PMsF9",
+      "name": "Riki",
+      "description": "Lorem Ipsum 9",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-01-08T06:34:18.598Z",
+      "lat": -10.212,
+      "lon": -16.002
+    }
+  ]
+}
