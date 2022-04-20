@@ -8,7 +8,7 @@ import android.view.View
 import com.nuryadincjr.storyapp.R
 
 object Constant {
-    const val BASE_URL = "https://story-api.dicoding.dev/v1/"
+    var BASE_URL = "https://story-api.dicoding.dev/v1/"
     const val FILENAME_FORMAT = "dd-MMM-yyyy"
     const val PREF_SESSION = "SESSION"
     const val DATA_STORY = "data_user"

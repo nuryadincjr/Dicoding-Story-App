@@ -37,6 +37,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    testOptions {
+        animationsDisabled = true
+    }
 }
 
 dependencies {
@@ -56,16 +59,31 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation 'com.github.bumptech.glide:glide:4.13.1'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'androidx.test.espresso:espresso-contrib:3.4.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.1'
     implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt'
     implementation 'androidx.test:core-ktx:1.4.0'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation 'androidx.room:room-ktx:2.5.0-alpha01'
     implementation 'androidx.room:room-paging:2.5.0-alpha01'
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
     kapt 'androidx.room:room-compiler:2.5.0-alpha01'
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
+
+    //special instrumentation testing
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0" // InstantTaskExecutorRule
+    androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1-native-mt'
+
+    //TestCoroutineDispatcher
+    debugImplementation "androidx.fragment:fragment-testing:1.4.1" //launchFragmentInContainer
+
+    //mock web server
+    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:5.0.0-alpha.6'
+    androidTestImplementation 'com.squareup.okhttp3:okhttp-tls:5.0.0-alpha.6'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2' //RecyclerViewActions
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
