@@ -1,6 +1,5 @@
 package com.nuryadincjr.storyapp.view.main
 
-import android.provider.MediaStore
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
@@ -9,7 +8,6 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -21,6 +19,7 @@ import com.nuryadincjr.storyapp.util.EspressoIdlingResource
 import com.nuryadincjr.storyapp.view.added.AddStoryActivity
 import com.nuryadincjr.storyapp.view.detail.DetailsStoryActivity
 import com.nuryadincjr.storyapp.view.location.MapsActivity
+import com.nuryadincjr.storyapp.view.settings.SettingsActivity
 import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
@@ -97,16 +96,25 @@ class MainActivityTest {
      */
     @Test
     fun load4AddStory() {
-        Intents.init()
         onView(withId(R.id.fab_story)).perform(ViewActions.click())
         Intents.intended(hasComponent(AddStoryActivity::class.java.name))
         onView(withId(R.id.imageView)).check(matches(isDisplayed()))
-
-        onView(withId(R.id.btn_camera)).perform(ViewActions.click())
-        Intents.intended(hasAction(MediaStore.ACTION_IMAGE_CAPTURE))
-
-
-//        Espresso.pressBack()
+        onView(withId(R.id.btn_upload)).check(matches(isDisplayed()))
+        Espresso.pressBack()
     }
 
+    /**
+     * @Ketika berhasil menampilkan data Stories di Activity
+     * Memastikan RecyclerView tampil.
+     * Memastikan data yang ditampilkan sesuai.
+     */
+    @Test
+    fun load5Settings() {
+        onView(withId(R.id.menu_settings)).perform(ViewActions.click())
+        Intents.intended(hasComponent(SettingsActivity::class.java.name))
+        onView(withId(R.id.tvTitleFirst)).check(matches(isDisplayed()))
+        onView(withId(R.id.switch_theme)).check(matches(isDisplayed()))
+        onView(withId(R.id.switch_theme)).perform(ViewActions.swipeDown())
+        Espresso.pressBack()
+    }
 }

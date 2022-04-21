@@ -33,7 +33,6 @@ class StoriesRepository(
     fun getStories(location: Int? = null): LiveData<Result<List<StoryItem>>> =
         liveData {
             wrapEspressoIdlingResource {
-                emit(Result.Loading)
                 try {
                     val keyToken = "Bearer ${_token.value}"
                     val storiesResponse = apiService.getAllStories(keyToken, location = location)

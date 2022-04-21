@@ -37,6 +37,7 @@ class StoriesFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentStoriesBinding.inflate(layoutInflater, container, false)
+        setHasOptionsMenu(true)
         return binding?.root
     }
 
