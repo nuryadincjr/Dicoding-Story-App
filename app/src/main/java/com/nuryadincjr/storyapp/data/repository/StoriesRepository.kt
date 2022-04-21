@@ -17,7 +17,7 @@ import com.nuryadincjr.storyapp.util.Constant.onException
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class StoriesRepository private constructor(
+class StoriesRepository(
     private val context: Context,
     private val apiService: ApiService,
     private val storiesDatabase: StoriesDatabase

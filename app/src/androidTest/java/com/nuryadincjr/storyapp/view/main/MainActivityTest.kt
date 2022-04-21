@@ -30,8 +30,8 @@ class MainActivityTest {
     fun setup() {
         mockWebServer.start(8080)
         Constant.BASE_URL = "http://127.0.0.1:8080/"
-        ActivityScenario.launch(MainActivity::class.java)
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+        ActivityScenario.launch(MainActivity::class.java)
     }
 
     @After
@@ -42,11 +42,11 @@ class MainActivityTest {
 
     /**
      * @Ketika berhasil menampilkan data Stories di Activity
-     * RecyclerView tampil.
-     * Data yang ditampilkan sesuai.
+     * Memastikan RecyclerView tampil.
+     * Memastikan data yang ditampilkan sesuai.
      */
     @Test
-    fun getHeadlineNews_Success() {
+    fun getStories_Success() {
         val mockResponse = MockResponse()
             .setResponseCode(200)
             .setBody(JsonConverter.readStringFromFile("success_response.json"))

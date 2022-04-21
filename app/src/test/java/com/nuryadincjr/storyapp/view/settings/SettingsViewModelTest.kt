@@ -1,4 +1,4 @@
-package com.nuryadincjr.storyapp.view.splash
+package com.nuryadincjr.storyapp.view.settings
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nuryadincjr.storyapp.view.MainCoroutineRule
@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class SplashScreenViewModelTest{
+class SettingsViewModelTest{
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
@@ -20,11 +20,12 @@ class SplashScreenViewModelTest{
     var mainCoroutineRules = MainCoroutineRule()
 
     @Mock
-    private lateinit var splashScreenViewModel: SplashScreenViewModel
+    private lateinit var settingsViewModel: SettingsViewModel
 
     /**
-     * @Ketika berhasil membuka aplikasi.
-     * Memastikan data sesi log in.
-     * Memastikan data berhasil log in.
+     * @Ketika berhasil sign out.
+     * Memastikan sesi pengguna dihapus.
+     * Memastikan data stories dihapus.
      */
+
 }

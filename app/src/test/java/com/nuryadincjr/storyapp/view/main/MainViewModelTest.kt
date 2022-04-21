@@ -22,7 +22,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -38,20 +39,22 @@ class MainViewModelTest {
     @Mock
     private lateinit var mainViewModel: MainViewModel
 
+    private val dummyStories = DataDummy.generateDummyStoriesEntity()
+
     /**
      * @Ketika berhasil memuat data Stories.
-     * Memastikan data tidak null
-     * Memastikan jumlah data sesuai dengan yan gdiharapkan
+     * Memastikan data tidak null.
+     * Memastikan jumlah data sesuai dengan yang diharapkan.
+     * Memastikan data hasil sesuai dengan yang diharapkan.
      */
     @Test
-    fun `when Get Stories Should Not Null`() = mainCoroutineRules.runBlockingTest {
-        val dummyStories = DataDummy.generateDummyStoriesResponse()
-        val data = PagedTestDataSources.snapshot(dummyStories)
-        val story = MutableLiveData<PagingData<StoryItem>>()
-        story.value = data
+    fun `when getStory Should Not Null`() = mainCoroutineRules.runBlockingTest {
+        val pagingStories = PagedTestDataSources.snapshot(dummyStories)
+        val expectedStories = MutableLiveData<PagingData<StoryItem>>()
+        expectedStories.value = pagingStories
 
-        Mockito.`when`(mainViewModel.getStory()).thenReturn(story)
-        val pagingData = mainViewModel.getStory().getOrAwaitValue()
+        `when`(mainViewModel.getStory()).thenReturn(expectedStories)
+        val pagingStory = mainViewModel.getStory().getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoriesListAdapter.DIFF_CALLBACK,
@@ -59,17 +62,18 @@ class MainViewModelTest {
             mainDispatcher = mainCoroutineRules.dispatcher,
             workerDispatcher = mainCoroutineRules.dispatcher,
         )
-        differ.submitData(pagingData)
+        differ.submitData(pagingStory)
 
         advanceUntilIdle()
 
-        Mockito.verify(mainViewModel).getStory()
+        verify(mainViewModel).getStory()
+
         assertNotNull(differ.snapshot())
         assertEquals(dummyStories.size, differ.snapshot().size)
-        assertEquals(dummyStories[0].name, differ.snapshot()[0]?.name)
+        assertEquals(dummyStories[0].id, differ.snapshot()[0]?.id)
     }
 
-    class PagedTestDataSources private constructor(private val items: List<StoryItem>) :
+    class PagedTestDataSources private constructor() :
         PagingSource<Int, LiveData<List<StoryItem>>>() {
         companion object {
             fun snapshot(items: List<StoryItem>): PagingData<StoryItem> {

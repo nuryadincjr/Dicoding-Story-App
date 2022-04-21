@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface StoriesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStory(quote: List<StoryItem>)
+    suspend fun insertStory(list: List<StoryItem>)
 
     @Query("SELECT * FROM story")
     fun getAllStory(): PagingSource<Int, StoryItem>
