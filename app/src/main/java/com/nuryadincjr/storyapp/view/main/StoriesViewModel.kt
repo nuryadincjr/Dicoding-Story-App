@@ -9,7 +9,7 @@ import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.repository.StoriesRepository
 
-class MainViewModel(
+class StoriesViewModel(
     private val storiesRepository: StoriesRepository,
     private val settingsPreference: SettingsPreference
 ) : ViewModel() {

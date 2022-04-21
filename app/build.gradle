@@ -40,6 +40,15 @@ android {
     testOptions {
         animationsDisabled = true
     }
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/AL2.0', 'META-INF/LGPL2.1']
+        }
+    }
+    sourceSets {
+        androidTest.java.srcDirs += "src/sharedTest/java"
+        test.java.srcDirs += "src/sharedTest/java"
+    }
 }
 
 dependencies {
@@ -69,6 +78,7 @@ dependencies {
     implementation 'androidx.room:room-paging:2.5.0-alpha01'
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
     implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt 'androidx.room:room-compiler:2.5.0-alpha01'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.1'
     debugImplementation "androidx.fragment:fragment-testing:1.4.1"

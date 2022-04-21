@@ -14,6 +14,7 @@ import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
 import com.nuryadincjr.storyapp.util.Constant.onException
+import com.nuryadincjr.storyapp.util.wrapEspressoIdlingResource
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -31,27 +32,29 @@ class StoriesRepository(
 
     fun getStories(location: Int? = null): LiveData<Result<List<StoryItem>>> =
         liveData {
-            emit(Result.Loading)
-            try {
-                val keyToken = "Bearer ${_token.value}"
-                val storiesResponse = apiService.getAllStories(keyToken, location = location)
-                val isError = storiesResponse.error == true
-                val message = storiesResponse.message.toString()
-                val listStory = storiesResponse.story as List<StoryItem>
+            wrapEspressoIdlingResource {
+                emit(Result.Loading)
+                try {
+                    val keyToken = "Bearer ${_token.value}"
+                    val storiesResponse = apiService.getAllStories(keyToken, location = location)
+                    val isError = storiesResponse.error == true
+                    val message = storiesResponse.message.toString()
+                    val listStory = storiesResponse.story as List<StoryItem>
 
-                val response = if (isError) {
-                    Result.Error(message)
-                } else {
-                    Result.Success(listStory)
+                    val response = if (isError) {
+                        Result.Error(message)
+                    } else {
+                        Result.Success(listStory)
+                    }
+
+                    emit(response)
+                    Log.d(TAG, "getStories: $message")
+                } catch (e: Exception) {
+                    val exception = onException(e, context)
+
+                    emit(Result.Error(exception))
+                    Log.d(TAG, "getStories: $exception")
                 }
-
-                emit(response)
-                Log.d(TAG, "getStories: $message")
-            } catch (e: Exception) {
-                val exception = onException(e, context)
-
-                emit(Result.Error(exception))
-                Log.d(TAG, "getStories: $exception")
             }
         }
 

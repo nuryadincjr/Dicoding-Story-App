@@ -1,4 +1,4 @@
-package com.nuryadincjr.storyapp.view
+package com.nuryadincjr.storyapp
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData

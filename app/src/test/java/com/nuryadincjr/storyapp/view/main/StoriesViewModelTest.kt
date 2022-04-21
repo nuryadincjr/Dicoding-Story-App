@@ -10,9 +10,9 @@ import androidx.paging.PagingState
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.nuryadincjr.storyapp.adapter.StoriesListAdapter
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
-import com.nuryadincjr.storyapp.view.DataDummy
-import com.nuryadincjr.storyapp.view.MainCoroutineRule
-import com.nuryadincjr.storyapp.view.getOrAwaitValue
+import com.nuryadincjr.storyapp.DataDummy
+import com.nuryadincjr.storyapp.MainCoroutineRule
+import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runBlockingTest
@@ -28,7 +28,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class MainViewModelTest {
+class StoriesViewModelTest {
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -37,7 +37,7 @@ class MainViewModelTest {
     var mainCoroutineRules = MainCoroutineRule()
 
     @Mock
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var storiesViewModel: StoriesViewModel
 
     private val dummyStories = DataDummy.generateDummyStoriesEntity()
 
@@ -53,8 +53,8 @@ class MainViewModelTest {
         val expectedStories = MutableLiveData<PagingData<StoryItem>>()
         expectedStories.value = pagingStories
 
-        `when`(mainViewModel.getStory()).thenReturn(expectedStories)
-        val pagingStory = mainViewModel.getStory().getOrAwaitValue()
+        `when`(storiesViewModel.getStory()).thenReturn(expectedStories)
+        val pagingStory = storiesViewModel.getStory().getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoriesListAdapter.DIFF_CALLBACK,
@@ -66,7 +66,7 @@ class MainViewModelTest {
 
         advanceUntilIdle()
 
-        verify(mainViewModel).getStory()
+        verify(storiesViewModel).getStory()
 
         assertNotNull(differ.snapshot())
         assertEquals(dummyStories.size, differ.snapshot().size)

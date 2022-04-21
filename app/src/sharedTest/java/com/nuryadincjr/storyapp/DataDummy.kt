@@ -1,4 +1,4 @@
-package com.nuryadincjr.storyapp.view
+package com.nuryadincjr.storyapp
 
 import com.google.android.gms.maps.model.LatLng
 import com.nuryadincjr.storyapp.data.remote.response.*

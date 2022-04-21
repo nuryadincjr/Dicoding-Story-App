@@ -6,9 +6,9 @@ import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.data.repository.StoriesRepository
-import com.nuryadincjr.storyapp.view.DataDummy
-import com.nuryadincjr.storyapp.view.MainCoroutineRule
-import com.nuryadincjr.storyapp.view.getOrAwaitValue
+import com.nuryadincjr.storyapp.DataDummy
+import com.nuryadincjr.storyapp.MainCoroutineRule
+import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.*

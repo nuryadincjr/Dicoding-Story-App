@@ -1,10 +1,8 @@
 package com.nuryadincjr.storyapp.view.splash
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nuryadincjr.storyapp.view.MainCoroutineRule
-import com.nuryadincjr.storyapp.view.register.RegisterViewModel
+import com.nuryadincjr.storyapp.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock

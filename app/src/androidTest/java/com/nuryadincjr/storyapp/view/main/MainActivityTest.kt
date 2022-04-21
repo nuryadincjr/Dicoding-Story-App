@@ -1,42 +1,45 @@
 package com.nuryadincjr.storyapp.view.main
 
+import android.provider.MediaStore
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.MediumTest
-import com.nuryadincjr.storyapp.JsonConverter
+import androidx.test.filters.LargeTest
 import com.nuryadincjr.storyapp.R
-import com.nuryadincjr.storyapp.util.Constant
 import com.nuryadincjr.storyapp.util.EspressoIdlingResource
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import com.nuryadincjr.storyapp.view.added.AddStoryActivity
+import com.nuryadincjr.storyapp.view.detail.DetailsStoryActivity
+import com.nuryadincjr.storyapp.view.location.MapsActivity
+import org.junit.*
 import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4::class)
-@MediumTest
+@LargeTest
 class MainActivityTest {
 
-    private val mockWebServer = MockWebServer()
+    @get:Rule
+    val activity = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun setup() {
-        mockWebServer.start(8080)
-        Constant.BASE_URL = "http://127.0.0.1:8080/"
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
-        ActivityScenario.launch(MainActivity::class.java)
     }
 
     @After
     fun tearDown() {
-        mockWebServer.shutdown()
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
     }
 
@@ -46,22 +49,64 @@ class MainActivityTest {
      * Memastikan data yang ditampilkan sesuai.
      */
     @Test
-    fun getStories_Success() {
-        val mockResponse = MockResponse()
-            .setResponseCode(200)
-            .setBody(JsonConverter.readStringFromFile("success_response.json"))
-        mockWebServer.enqueue(mockResponse)
-
-        onView(withId(R.id.recyclerView))
-            .check(matches(isDisplayed()))
-        onView(withText("Lorem Ipsum"))
-            .check(matches(isDisplayed()))
-
-        onView(withId(R.id.recyclerView))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Lorem Ipsum 4"))
-                )
+    fun load1Stories() {
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        onView(withId(R.id.recyclerView)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                10
             )
+        )
     }
+
+    /**
+     * @Ketika berhasil menampilkan data Stories di Activity
+     * Memastikan RecyclerView tampil.
+     * Memastikan data yang ditampilkan sesuai.
+     */
+    @Test
+    fun load2DetailStories() {
+        Intents.init()
+        onView(withId(R.id.recyclerView)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                ViewActions.click()
+            )
+        )
+        Intents.intended(hasComponent(DetailsStoryActivity::class.java.name))
+        onView(withId(R.id.imageView)).check(matches(isDisplayed()))
+        Espresso.pressBack()
+    }
+
+    /**
+     * @Ketika berhasil menampilkan data Stories di Activity
+     * Memastikan RecyclerView tampil.
+     * Memastikan data yang ditampilkan sesuai.
+     */
+    @Test
+    fun load3MapStories() {
+        onView(withId(R.id.fab_location)).perform(ViewActions.click())
+        Intents.intended(hasComponent(MapsActivity::class.java.name))
+        onView(withId(R.id.map)).check(matches(isDisplayed()))
+        Espresso.pressBack()
+    }
+
+    /**
+     * @Ketika berhasil menampilkan data Stories di Activity
+     * Memastikan RecyclerView tampil.
+     * Memastikan data yang ditampilkan sesuai.
+     */
+    @Test
+    fun load4AddStory() {
+        Intents.init()
+        onView(withId(R.id.fab_story)).perform(ViewActions.click())
+        Intents.intended(hasComponent(AddStoryActivity::class.java.name))
+        onView(withId(R.id.imageView)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.btn_camera)).perform(ViewActions.click())
+        Intents.intended(hasAction(MediaStore.ACTION_IMAGE_CAPTURE))
+
+
+//        Espresso.pressBack()
+    }
+
 }

@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.asLiveData
 import com.nuryadincjr.storyapp.data.FakeStoriesDao
 import com.nuryadincjr.storyapp.data.local.room.StoriesDao
-import com.nuryadincjr.storyapp.view.DataDummy
-import com.nuryadincjr.storyapp.view.MainCoroutineRule
-import com.nuryadincjr.storyapp.view.getOrAwaitValue
+import com.nuryadincjr.storyapp.DataDummy
+import com.nuryadincjr.storyapp.MainCoroutineRule
+import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals

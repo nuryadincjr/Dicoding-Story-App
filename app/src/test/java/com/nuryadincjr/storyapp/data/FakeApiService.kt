@@ -4,7 +4,7 @@ import com.nuryadincjr.storyapp.data.remote.response.GetStoriesResponse
 import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
-import com.nuryadincjr.storyapp.view.DataDummy
+import com.nuryadincjr.storyapp.DataDummy
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 

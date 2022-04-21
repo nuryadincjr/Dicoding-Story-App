@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nuryadincjr.storyapp.data.FakeApiService
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
-import com.nuryadincjr.storyapp.view.DataDummy
-import com.nuryadincjr.storyapp.view.MainCoroutineRule
+import com.nuryadincjr.storyapp.DataDummy
+import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.view.login.LoginViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
