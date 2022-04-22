@@ -36,6 +36,8 @@
     <string name="error_400">Solicitud incorrecta, es posible que el correo electrónico ya esté registrado</string>
     <string name="error_500">Error del servidor</string>
     <string name="error_disable_location">Activa los servicios de ubicación e inténtalo de nuevo.</string>
+    <string name="error_style_parsing">Error al analizar el estilo.</string>
+    <string name="error_style_find">No puedo encontrar el estilo. Error: %s</string>
     <string name="title_add_story">Agregar nueva historia</string>
     <string name="title_gallery">Elige una imagen</string>
     <string name="appwidget_text">Historia de la lista</string>

@@ -35,6 +35,8 @@
     <string name="error_password_empty">Enter the password.</string>
     <string name="error_permission">Not getting permissions.</string>
     <string name="error_disable_location">Please turn on your location services, and try again.</string>
+    <string name="error_style_parsing">Style parsing failed.</string>
+    <string name="error_style_find">Can\'t find style. Error: %s</string>
     <string name="title_add_story">Add New Story</string>
     <string name="title_gallery">Choose a Picture</string>
     <string name="appwidget_text">List Story</string>

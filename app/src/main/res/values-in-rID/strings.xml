@@ -36,6 +36,8 @@
     <string name="error_400">Permintaan Buruk, Email mungkin sudah terdaftar</string>
     <string name="error_500">Kesalahan pada server</string>
     <string name="error_disable_location">Tolong nyalakan location services Anda, dan coba kembali.</string>
+    <string name="error_style_parsing">Penguraian gaya gagal.</string>
+    <string name="error_style_find">Tidak dapat menemukan gaya. Kesalahan: %s</string>
     <string name="title_add_story">Tambahkan Cerita Baru</string>
     <string name="title_gallery">Pilih Gambar</string>
     <string name="appwidget_text">Daftar Cerita</string>

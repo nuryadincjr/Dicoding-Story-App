@@ -2,6 +2,7 @@ package com.nuryadincjr.storyapp.view.location
 
 import android.Manifest
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -30,6 +31,9 @@ import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.model.SettingsPreference.Companion.dataStore
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.databinding.ActivityMapsBinding
+import com.nuryadincjr.storyapp.util.Constant
+import com.nuryadincjr.storyapp.view.detail.DetailsStoryActivity
+import okhttp3.internal.format
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -85,6 +89,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         onSubscribe()
         getMyLocation()
+
+        mMap.setOnInfoWindowClickListener { marker ->
+            val storyItem = marker.tag as StoryItem
+            startActivity(storyItem)
+        }
     }
 
     private fun setupView() {
@@ -119,15 +128,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 is Result.Success -> {
                     val listStory = result.data
                     for (item in listStory) {
-                        item.apply {
-                            setLocationStory(
-                                lat!!,
-                                lon!!,
-                                name.toString(),
-                                description.toString(),
-                                id
-                            )
-                        }
+                        setLocationStory(item)
                     }
                 }
                 is Result.Error -> {
@@ -156,29 +157,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     )
                 }
 
-                if (!success) Log.e(TAG, "Style parsing failed.")
+                if (!success) Log.e(TAG, getString(R.string.error_style_parsing))
             }
         } catch (exception: Resources.NotFoundException) {
-            Log.e(TAG, "Can't find style. Error: ", exception)
+            Log.e(TAG, format(getString(R.string.error_style_find), exception))
         }
     }
 
     private fun setLocationStory(
-        lat: Double,
-        lon: Double,
-        title: String,
-        snippet: String,
-        ids: String
+        item: StoryItem,
     ) {
-        val latLng = LatLng(lat, lon)
+        val latLng = LatLng(item.lat!!, item.lon!!)
         val markerOptions = MarkerOptions()
             .position(latLng)
-            .title(title)
-            .snippet(snippet)
+            .title(item.name)
+            .snippet(item.description)
             .icon(vectorToBitmap(R.drawable.ic_location_dot))
 
         mMap.apply {
-            addMarker(markerOptions)?.tag = ids
+            addMarker(markerOptions)?.tag = item
             animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
         }
     }
@@ -212,5 +209,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
         vectorDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    private fun startActivity(storyItem: StoryItem) {
+        val intent = Intent(this, DetailsStoryActivity::class.java)
+        intent.putExtra(Constant.DATA_STORY, storyItem)
+        startActivity(intent)
     }
 }

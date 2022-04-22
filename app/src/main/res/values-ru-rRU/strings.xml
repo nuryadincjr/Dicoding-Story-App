@@ -36,6 +36,8 @@
     <string name="error_404">Страница не найдена</string>
     <string name="error_500">Ошибка сервера</string>
     <string name="error_disable_location">Включите службы определения местоположения и повторите попытку.</string>
+    <string name="error_style_parsing">Ошибка синтаксического анализа стиля.</string>
+    <string name="error_style_find">Не могу найти стиль. Ошибка: %s</string>
     <string name="title_add_story">Добавить новую историю</string>
     <string name="title_gallery">Выбрать картину</string>
     <string name="appwidget_text">Список историй</string>
