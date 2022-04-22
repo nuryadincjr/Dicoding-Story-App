@@ -28,7 +28,7 @@ class RegisterViewModelTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
-    var mainCoroutineRules = MainCoroutineRule()
+    var mainCoroutineRule = MainCoroutineRule()
 
     @Mock
     private lateinit var registerViewModel: RegisterViewModel
@@ -42,16 +42,13 @@ class RegisterViewModelTest {
     private val dummyRegisterToLoginResponse = DataDummy.generateDummyLoginResponse()
     private val dummyUser = DataDummy.DataDummyUser()
 
-    @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
-
     @Before
     fun setUp() {
         registerViewModel = RegisterViewModel(registerRepository, settingsPreference)
     }
 
     /**
-     * @Ketika berhasil registrasi data akun.
+     * @Ketika berhasil registrasi data pengguna.
      * Memastikan data tidak null.
      * Memastikan mengembalikan Result.Success.
      * Memastikan data berhasil ditambahkan.
@@ -95,10 +92,6 @@ class RegisterViewModelTest {
             )
         }
 
-    /**
-     * @Ketika gagal registrasi data akun.
-     * Memastikan mengembalikan Result.Error.
-     */
     @Test
     fun `when Network Error Should Return Error`() {
         val expectedRegister = MutableLiveData<Result<LoginResponse>>()

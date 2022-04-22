@@ -29,7 +29,6 @@ import org.mockito.junit.MockitoJUnitRunner
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class StoriesViewModelTest {
-
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
@@ -41,12 +40,6 @@ class StoriesViewModelTest {
 
     private val dummyStories = DataDummy.generateDummyStoriesEntity()
 
-    /**
-     * @Ketika berhasil memuat data Stories.
-     * Memastikan data tidak null.
-     * Memastikan jumlah data sesuai dengan yang diharapkan.
-     * Memastikan data hasil sesuai dengan yang diharapkan.
-     */
     @Test
     fun `when getStory Should Not Null`() = mainCoroutineRules.runBlockingTest {
         val pagingStories = PagedTestDataSources.snapshot(dummyStories)

@@ -15,9 +15,7 @@ class MapsViewModel(
 
     fun getStories() = storiesRepository.getStories(1)
 
-    fun getUser(): LiveData<Users> {
-        return settingsPreference.getUserSession().asLiveData()
-    }
+    fun getUser(): LiveData<Users> = settingsPreference.getUserSession().asLiveData()
 
     fun getTheme(): LiveData<Boolean> = settingsPreference.getTheme().asLiveData()
 }

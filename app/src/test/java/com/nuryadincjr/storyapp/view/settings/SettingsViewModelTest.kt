@@ -25,7 +25,7 @@ class SettingsViewModelTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
-    var mainCoroutineRules = MainCoroutineRule()
+    var mainCoroutineRule = MainCoroutineRule()
 
     @Mock
     private lateinit var storiesRepository: StoriesRepository
@@ -36,33 +36,25 @@ class SettingsViewModelTest {
     @Mock
     private lateinit var settingsViewModel: SettingsViewModel
 
-    @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
-
     @Before
     fun setUp() {
         settingsViewModel = SettingsViewModel(storiesRepository, settingsPreference)
     }
 
-    /**
-     * @Ketika berhasil sign out.
-     * Memastikan sesi pengguna dihapus.
-     * Memastikan data stories dihapus.
-     */
     @Test
     fun `When getTheme Should Not Null and Return True`() =
         mainCoroutineRule.runBlockingTest {
-            val expectedRegister = MutableLiveData<Boolean>()
-            expectedRegister.value = true
+            val expectedTheme = MutableLiveData<Boolean>()
+            expectedTheme.value = true
 
-            `when`(settingsViewModel.getTheme()).thenReturn(expectedRegister)
+            `when`(settingsViewModel.getTheme()).thenReturn(expectedTheme)
 
-            val actualRegister = settingsViewModel.getTheme().getOrAwaitValue()
+            val actualTheme = settingsViewModel.getTheme().getOrAwaitValue()
 
             verify(settingsPreference).getTheme()
 
-            assertNotNull(actualRegister)
-            assertTrue(actualRegister)
-            assertEquals(true, actualRegister)
+            assertNotNull(actualTheme)
+            assertTrue(actualTheme)
+            assertEquals(true, actualTheme)
         }
 }

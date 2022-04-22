@@ -46,11 +46,6 @@ class RegisterRepositoryTest {
         registerViewModel = RegisterViewModel(registerRepository, settingsPreference)
     }
 
-    /**
-     * @Ketika berhasil registrasi data akun.
-     * Memastikan data registrasi tidak null.
-     * Memastikan data berhasil diregistrasi.
-     */
     @Test
     fun `When postRegister Should Not Null and Return Success`() =
         mainCoroutineRules.runBlockingTest {

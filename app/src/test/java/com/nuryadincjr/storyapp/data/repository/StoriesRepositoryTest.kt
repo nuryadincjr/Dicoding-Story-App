@@ -27,6 +27,7 @@ class StoriesRepositoryTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var apiService: ApiService
+
     private lateinit var storiesDao: StoriesDao
 
     private val dummyDescription = DataDummy.generateDummyDescription()
@@ -40,12 +41,6 @@ class StoriesRepositoryTest {
         storiesDao = FakeStoriesDao()
     }
 
-    /**
-     * @Ketika getAllStories data sesuai.
-     * Memastikan data stories tidak null.
-     * Memastikan jumlah data sesuai dengan yang duharapkan.
-     * Memastikan data hasil sesuai dengan yang diharapkan.
-     */
     @Test
     fun `when getAllStories Should Not Null`() = mainCoroutineRule.runBlockingTest {
         val expectedStories = DataDummy.generateDummyStoriesResponse()

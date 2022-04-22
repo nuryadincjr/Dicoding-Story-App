@@ -41,11 +41,6 @@ class MainActivityTest {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
     }
 
-    /**
-     * @Ketika berhasil menampilkan data Stories di Activity
-     * Memastikan RecyclerView tampil.
-     * Memastikan data yang ditampilkan sesuai.
-     */
     @Test
     fun load1Stories() {
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
@@ -56,13 +51,8 @@ class MainActivityTest {
         )
     }
 
-    /**
-     * @Ketika berhasil menampilkan data Stories di Activity
-     * Memastikan RecyclerView tampil.
-     * Memastikan data yang ditampilkan sesuai.
-     */
     @Test
-    fun load2DetailStories() {
+    fun load2DetailStory() {
         Intents.init()
         onView(withId(R.id.recyclerView)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
@@ -75,11 +65,6 @@ class MainActivityTest {
         pressBack()
     }
 
-    /**
-     * @Ketika berhasil menampilkan data Stories di Activity
-     * Memastikan RecyclerView tampil.
-     * Memastikan data yang ditampilkan sesuai.
-     */
     @Test
     fun load3MapStories() {
         onView(withId(R.id.fab_location)).perform(click())
@@ -88,11 +73,6 @@ class MainActivityTest {
         pressBack()
     }
 
-    /**
-     * @Ketika berhasil menampilkan data Stories di Activity
-     * Memastikan RecyclerView tampil.
-     * Memastikan data yang ditampilkan sesuai.
-     */
     @Test
     fun load4AddStory() {
         onView(withId(R.id.fab_story)).perform(click())
@@ -102,11 +82,6 @@ class MainActivityTest {
         pressBack()
     }
 
-    /**
-     * @Ketika berhasil menampilkan data Stories di Activity
-     * Memastikan RecyclerView tampil.
-     * Memastikan data yang ditampilkan sesuai.
-     */
     @Test
     fun load5Settings() {
         onView(withId(R.id.menu_settings)).perform(click())

@@ -2,12 +2,12 @@ package com.nuryadincjr.storyapp.view.added
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.nuryadincjr.storyapp.DataDummy
+import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.data.repository.StoriesRepository
-import com.nuryadincjr.storyapp.DataDummy
-import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -52,12 +52,6 @@ class AddStoryViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    /**
-     * @Ketika berhasil menambah data Stories.
-     * Memastikan data tidak null.
-     * Memastikan mengembalikan Result.Success.
-     * Memastikan data berhasil ditambahkan.
-     */
     @Test
     fun `When onUpload Should Not Null and Return Success`() =
         mainCoroutineRule.runBlockingTest {
@@ -92,10 +86,6 @@ class AddStoryViewModelTest {
             assertEquals(dummyResponse.message, (actualAddStory as Result.Success).data.message)
         }
 
-    /**
-     * @Ketika gagal menambah data Stories.
-     * Memastikan mengembalikan Result.Error.
-     */
     @Test
     fun `when Network Error Should Return Error`() {
         val expectedAddStory = MutableLiveData<Result<PostResponse>>()

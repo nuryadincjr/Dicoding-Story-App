@@ -46,12 +46,6 @@ class LoginRepositoryTest {
         loginViewModel = LoginViewModel(loginRepository, settingsPreference)
     }
 
-    /**
-     * @Ketika berhasil login data akun.
-     * Memastikan data user tidak null.
-     * Memastikan data status berhasil log in.
-     * Memastikan data id user sesuai dengan yang diinginkan.
-     */
     @Test
     fun `When postLogin Should Not Null and Return Success`() = mainCoroutineRules.runBlockingTest {
         val expectedStories = DataDummy.generateDummyLoginResponse()

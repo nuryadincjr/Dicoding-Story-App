@@ -47,13 +47,6 @@ class LoginViewModelTest {
         loginViewModel = LoginViewModel(loginRepository, settingsPreference)
     }
 
-    /**
-     * @Ketika berhasil login data akun.
-     * Memastikan data user tidak null.
-     * Memastikan mengembalikan Result.Success.
-     * Memastikan data status berhasil login.
-     * Memastikan data id user sesuai dengan yang diinginkan.
-     */
     @Test
     fun `When onLogin Should Not Null and Return Success`() = mainCoroutineRules.runBlockingTest {
         val expectedLogin = MutableLiveData<Result<LoginResponse>>()
@@ -82,10 +75,6 @@ class LoginViewModelTest {
         assertEquals(dummyLoginResponse.loginResult?.userId, actualLogin.data.loginResult?.userId)
     }
 
-    /**
-     * @Ketika gagal login data akun.
-     * Memastikan mengembalikan Result.Error.
-     */
     @Test
     fun `when Network Error Should Return Error`() {
         val expectedLogin = MutableLiveData<Result<LoginResponse>>()

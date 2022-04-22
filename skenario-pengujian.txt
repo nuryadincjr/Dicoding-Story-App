@@ -1,0 +1,119 @@
+Unit testing ViewModel:
+1)  Kelas AddStoryViewModelTest:
+    a.  Ketika berhasil menambah data Stories.
+        - Memastikan data tidak null.
+        - Memastikan mengembalikan Result.Success.
+        - Memastikan data berhasil ditambahkan.
+
+    b.  Ketika gagal menambah data Stories.
+        - Memastikan mengembalikan Result.Error.
+
+2)  Kelas MapsViewModelTest:
+    a.  Ketika berhasil memuat data Stories dengan kriteria lokasi.
+        - Memastikan data tidak null.
+        - Memastikan mengembalikan Result.Success.
+        - Memastikan jumlah data sesuai dengan yang diharapkan.
+        - Memastikan data hasil sesuai dengan yang diharapkan.
+
+    b.  Ketika gagal memuat data Stories dengan kriteria lokasi.
+        - Memastikan mengembalikan Result.Error.
+
+3)  Kelas LoginViewModelTest:
+    a. Ketika berhasil login data pengguna.
+      - Memastikan data user tidak null.
+      - Memastikan mengembalikan Result.Success.
+      - Memastikan data status berhasil login.
+      - Memastikan data id user sesuai dengan yang diinginkan.
+
+    b.  Ketika gagal memuat data berita.
+        - Memastikan mengembalikan Result.Error.
+
+4)  Kelas StoriesViewModelTest:
+    Ketika berhasil memuat data Stories.
+    - Memastikan data tidak null.
+    - Memastikan jumlah data sesuai dengan yang diharapkan.
+    - Memastikan data hasil sesuai dengan yang diharapkan.
+
+5)  Kelas RegisterViewModelTest:
+    a.  Ketika berhasil registrasi data pengguna.
+        - Memastikan data tidak null.
+        - Memastikan mengembalikan Result.Success.
+        - Memastikan data berhasil ditambahkan.
+        - Memastikan data id user sesuai dengan yang diinginkan.
+
+    b.  Ketika gagal registrasi data pengguna.
+        - Memastikan mengembalikan Result.Error.
+
+6)  Kelas SettingsViewModelTest:
+    Ketika berhasil mengubah tema aplikasi.
+    - Memastikan data tidak null.
+    - Memastikan mengembalikan Boolean.
+    - Memastikan data hasil sesuai dengan yang diharapkan.
+
+Unit testing Repository:
+1)  Kelas LoginRepositoryTest:
+    Ketika berhasil login data pengguna.
+    - Memastikan data user tidak null.
+    - Memastikan data status berhasil login.
+    - Memastikan data id user sesuai dengan yang diinginkan.
+
+2)  Kelas RegisterRepositoryTest:
+    Ketika berhasil registrasi data pengguna.
+    - Memastikan data registrasi tidak null.
+    - Memastikan data berhasil diregistrasi.
+
+3)  Kelas StoriesRepositoryTest:
+    Ketika getAllStories data sesuai.
+    - Memastikan data stories tidak null.
+    - Memastikan jumlah data sesuai dengan yang duharapkan.
+    - Memastikan data hasil sesuai dengan yang diharapkan.
+
+4)  Kelas WidgetRepositoryTest:
+    Ketika getWidgetStory data sesuai.
+    - Memastikan data stories tidak null.
+    - Memastikan jumlah data sesuai dengan yang duharapkan.
+    - Memastikan data hasil sesuai dengan yang diharapkan.
+
+Integration test:
+1)  Kelas StoriesFragmentTest
+    a.  Ketika berhasil menampilkan data stories di Stories Fragment
+        - RecyclerView tampil.
+        - Data yang ditampilkan sesuai.
+        - Memastikan data menuju ke data yang diinginkan.
+
+    b.  Ketika gagal menampilkan data stories di Stories Fragment
+        - RecyclerView tampil.
+        - Pesan error yang ditampilkan sesuai.
+
+End-to-end test:
+1)  Kelas MainActivityTest
+    a.  Menampilkan daftar stories
+        - Memastikan RecyclerView untuk data item story telah ditampilkan.
+
+    b.  Menampilkan detail story
+        - Memastikan menuju ke halaman DetailsStoryActivity.
+        - Memastikan halaman detail dapat menampilkan imageView.
+
+    c.  Menampilkan map lokasi stories
+        - Memastikan menuju ke halaman MapsActivity.
+        - Memastikan halaman detail dapat menampilkan map.
+
+    d.  Mengunggah Story
+        - Memastikan menuju ke halaman AddStoryActivity.
+        - Memastikan halaman unggah story menampilkan imageView.
+        - Memastikan halaman unggah story menampilkan button untuk mengunggah.
+
+    e.  Mengatur tema aplikasi
+        - Memastikan menuju ke halaman SettingsActivity.
+        - Memastikan halaman setting menampilkan judul pengaturan.
+        - Memastikan halaman swich ubah tema telah tampil.
+        - Memastikan swich ubah tema telah diswipeDown.
+
+
+Room database test:
+1)  Kelas StoriesDaoTest
+    a.  Ketika menyimpan data story
+        - Sama dengan data ketika getWidgetStory.
+
+    b.  Ketika menghapus semua data story
+        - Data getWidgetStory kosong.

@@ -45,12 +45,6 @@ class MapsViewModelTest {
         mapsViewModel = MapsViewModel(storiesRepository, settingsPreference)
     }
 
-    /**
-     * @Ketika berhasil memuat data Stories dengan kriteria lokasi.
-     * Memastikan data tidak null.
-     * Memastikan jumlah data sesuai dengan yang diharapkan.
-     * Memastikan data hasil sesuai dengan yang diharapkan.
-     */
     @Test
     fun `when getStories Should Not Null and Return Success`() {
         val expectedStories = MutableLiveData<Result<List<StoryItem>>>()
@@ -67,10 +61,6 @@ class MapsViewModelTest {
         assertEquals(dummyStories[0].id, actualStories.data[0].id)
     }
 
-    /**
-     * @Ketika gagal memuat data Stories dengan kriteria lokasi.
-     * Memastikan mengembalikan Result.Error.
-     */
     @Test
     fun `when Network Error Should Return Error`() {
         val expectedStories = MutableLiveData<Result<List<StoryItem>>>()
