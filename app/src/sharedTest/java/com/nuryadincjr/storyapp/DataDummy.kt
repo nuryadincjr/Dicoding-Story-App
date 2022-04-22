@@ -49,10 +49,11 @@ object DataDummy {
     }
 
     fun generateDummyLoginResponse(): LoginResponse {
+        val user = DataDummyUser()
         val loginResult = LoginResult(
-            "Nuryadin Abutani",
-            "user-yj5pc_LARC_AgK67",
-            "nyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLXlqNXBjX0xBUkNfQWdLNjEiLCJpYXQiOjE2NDE3OTk5NDl9.flEMaQ7zsdYkxuyGbiXjEDXO8kuDTcI__3UjCwt6R_N"
+            user.name,
+            user.userId,
+            user.token
         )
         return LoginResponse(loginResult, false, "success")
     }

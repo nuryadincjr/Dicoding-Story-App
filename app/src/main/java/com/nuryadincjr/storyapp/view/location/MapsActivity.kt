@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,12 +14,10 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.content.res.ResourcesCompat.getDrawable
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -79,6 +76,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
+        setMapStyle()
+
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isIndoorLevelPickerEnabled = true
         mMap.uiSettings.isCompassEnabled = true
@@ -86,7 +85,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         onSubscribe()
         getMyLocation()
-        setMapStyle()
     }
 
     private fun setupView() {
@@ -177,12 +175,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .position(latLng)
             .title(title)
             .snippet(snippet)
-            .icon(
-                vectorToBitmap(
-                    R.drawable.ic_location_dot,
-                    Color.parseColor("#3DDC84")
-                )
-            )
+            .icon(vectorToBitmap(R.drawable.ic_location_dot))
 
         mMap.apply {
             addMarker(markerOptions)?.tag = ids
@@ -202,8 +195,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int): BitmapDescriptor {
-        val vectorDrawable = ResourcesCompat.getDrawable(resources, id, null)
+    private fun vectorToBitmap(@DrawableRes id: Int): BitmapDescriptor {
+        val vectorDrawable = getDrawable(resources, id, null)
         if (vectorDrawable == null) {
             Log.e("BitmapHelper", "Resource not found")
             return BitmapDescriptorFactory.defaultMarker()
@@ -214,9 +207,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             vectorDrawable.intrinsicHeight,
             Bitmap.Config.ARGB_8888
         )
+
         val canvas = Canvas(bitmap)
         vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-        DrawableCompat.setTint(vectorDrawable, color)
         vectorDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
