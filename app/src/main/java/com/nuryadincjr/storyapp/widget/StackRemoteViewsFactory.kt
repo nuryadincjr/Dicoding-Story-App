@@ -48,8 +48,8 @@ class StackRemoteViewsFactory(
                 val futureTarget: FutureTarget<Bitmap> = Glide.with(context.applicationContext)
                     .asBitmap()
                     .load(url)
-                    .placeholder(R.drawable.ic_baseline_image_24)
-                    .error(R.drawable.ic_baseline_broken_image_24)
+                    .placeholder(R.drawable.ic_image_load)
+                    .error(R.drawable.ic_image_broken)
                     .submit(width, height)
 
                 val bitmap = futureTarget.get()

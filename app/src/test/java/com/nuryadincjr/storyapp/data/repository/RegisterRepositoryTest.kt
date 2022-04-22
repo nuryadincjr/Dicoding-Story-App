@@ -52,15 +52,16 @@ class RegisterRepositoryTest {
      * Memastikan data berhasil diregistrasi.
      */
     @Test
-    fun `When successfully registering the account data`() = mainCoroutineRules.runBlockingTest {
-        val expectedRegister = DataDummy.generateDummyRegisterResponse()
-        val actualRegister = apiService.postRegister(
-            dummyUser.name,
-            dummyUser.email,
-            dummyUser.password
-        )
+    fun `When postRegister Should Not Null and Return Success`() =
+        mainCoroutineRules.runBlockingTest {
+            val expectedRegister = DataDummy.generateDummyRegisterResponse()
+            val actualRegister = apiService.postRegister(
+                dummyUser.name,
+                dummyUser.email,
+                dummyUser.password
+            )
 
-        assertNotNull(actualRegister)
-        assertEquals(expectedRegister.message, actualRegister.message)
-    }
+            assertNotNull(actualRegister)
+            assertEquals(expectedRegister.message, actualRegister.message)
+        }
 }

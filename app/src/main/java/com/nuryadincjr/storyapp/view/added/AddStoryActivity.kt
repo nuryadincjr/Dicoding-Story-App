@@ -114,7 +114,9 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_gallery -> startGallery()
             R.id.btn_upload -> startUploadStory()
             R.id.tv_location -> getMyLastLocation()
-            R.id.iv_clear_location -> clearLocation()
+            R.id.iv_clear_location -> {
+                startLocation(null)
+            }
         }
     }
 
@@ -142,7 +144,6 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             getLocation().observe(this@AddStoryActivity) {
-                latLng = it
                 startLocation(it)
             }
         }
@@ -304,16 +305,24 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun startLocation(location: LatLng?) {
-        addStoryViewModel.setLocation(location)
-        binding.tvLocation.text = location.toString()
-        binding.ivClearLocation.visibility = View.VISIBLE
-    }
+    private fun startLocation(latLng: LatLng?) {
+        val visibility: Int
+        val location: String
 
-    private fun clearLocation() {
-        binding.tvLocation.text = getString(R.string.add_location)
-        binding.ivClearLocation.visibility = View.GONE
-        latLng = null
+        if (latLng != null) {
+            location = latLng.toString()
+            visibility = View.VISIBLE
+        } else {
+            visibility = View.GONE
+            location = getString(R.string.add_location)
+        }
+
+        this.latLng = latLng
+        addStoryViewModel.setLocation(latLng)
+        binding.apply {
+            tvLocation.text = location
+            ivClearLocation.visibility = visibility
+        }
     }
 
     private fun checkPermission(permission: String): Boolean {

@@ -17,7 +17,7 @@ object DataDummy {
 
         for (i in 0..10) {
             val storyItem = StoryItem(
-                "https://dicoding-web-img.sgp1.cdn.digitaloceanspaces.com/original/commons/feature-1-kurikulum-global-3.png",
+                "https://avatars.githubusercontent.com/u/51723168?v=4",
                 null,
                 "Name + $i",
                 "Description $i",
@@ -35,7 +35,7 @@ object DataDummy {
 
         for (i in 0..10) {
             val storyItem = StoryItem(
-                "https://dicoding-web-img.sgp1.cdn.digitaloceanspaces.com/original/commons/feature-1-kurikulum-global-3.png",
+                "https://avatars.githubusercontent.com/u/51723168?v=4",
                 null,
                 "Name + $i",
                 "Description $i",
@@ -82,6 +82,7 @@ object DataDummy {
     }
 
     data class DataDummyUser(
+        val userId: String = "user-yj5pc_LARC_AgK67",
         val name: String = "Nuryadin Abutani",
         val email: String = "Nuryadin.cjr@gmail.com",
         val password: String = "12345678",

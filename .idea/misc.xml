@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable-nodpi/ic_location_dot_24.xml" value="0.2075" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.2075" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.128" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_baseline_back_hand_24.xml" value="0.141" />
@@ -18,22 +19,27 @@
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_icon_login.xml" value="0.1725" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_icon_register.xml" value="0.1725" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_icon_welcome.xml" value="0.1725" />
+        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_image_broken.xml" value="0.2075" />
+        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_image_load.xml" value="0.2075" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2075" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1725" />
+        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_location_dot.xml" value="0.2075" />
+        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_location_dot_24.xml" value="0.2075" />
+        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/ic_map_search.xml" value="0.2075" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout-land/activity_add_story.xml" value="0.22" />
-        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_add_story.xml" value="0.20614035087719298" />
+        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_add_story.xml" value="0.25" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_details_story.xml" value="0.2" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_main.xml" value="0.20675105485232068" />
-        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_maps.xml" value="0.1" />
+        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_maps.xml" value="0.18" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_register.xml" value="0.23684210526315788" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_settings.xml" value="0.13764044943820225" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_tes.xml" value="0.19537037037037036" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_welcome.xml" value="0.22" />
-        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/fragment_stories.xml" value="0.1" />
+        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/fragment_stories.xml" value="0.33" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/item_list_story.xml" value="0.25" />
-        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/item_loading.xml" value="0.1" />
+        <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/item_loading.xml" value="0.15" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/item_widget.xml" value="0.15463917525773196" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/layout/list_story_widget.xml" value="0.18" />
         <entry key="..\:/Users/nurya/AndroidStudioProjects/StoryApp/app/src/main/res/menu/settings_menu.xml" value="0.25" />

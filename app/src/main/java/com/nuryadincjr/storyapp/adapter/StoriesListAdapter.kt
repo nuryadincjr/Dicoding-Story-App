@@ -42,8 +42,8 @@ class StoriesListAdapter :
                 Glide.with(itemView.context)
                     .load(storyItem.photoUrl)
                     .centerCrop()
-                    .placeholder(R.drawable.ic_baseline_image_24)
-                    .error(R.drawable.ic_baseline_broken_image_24)
+                    .placeholder(R.drawable.ic_image_load)
+                    .error(R.drawable.ic_image_broken)
                     .into(imageView)
 
                 itemView.apply {

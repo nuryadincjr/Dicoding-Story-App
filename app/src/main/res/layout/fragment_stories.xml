@@ -28,7 +28,8 @@
         app:layout_constraintBottom_toTopOf="@+id/fab_story"
         app:layout_constraintEnd_toEndOf="@+id/fab_story"
         app:layout_constraintStart_toStartOf="@+id/fab_story"
-        app:srcCompat="@drawable/ic_map_search" />
+        app:srcCompat="@drawable/ic_map_search"
+        app:tint="@android:color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_story"
@@ -40,6 +41,7 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_post_add_24" />
+        app:srcCompat="@drawable/ic_baseline_post_add_24"
+        app:tint="@android:color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

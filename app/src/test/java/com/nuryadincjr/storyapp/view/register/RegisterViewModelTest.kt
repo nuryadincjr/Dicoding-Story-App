@@ -2,12 +2,12 @@ package com.nuryadincjr.storyapp.view.register
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.nuryadincjr.storyapp.DataDummy
+import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.repository.RegisterRepository
-import com.nuryadincjr.storyapp.DataDummy
-import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -58,7 +58,7 @@ class RegisterViewModelTest {
      * Memastikan data id user sesuai dengan yang diinginkan.
      */
     @Test
-    fun `Ketika berhasil memuat menambah data Stories panggil onUpload`() =
+    fun `When onRegister Should Not Null and Return Success`() =
         mainCoroutineRule.runBlockingTest {
             val expectedRegister = MutableLiveData<Result<LoginResponse>>()
             expectedRegister.value = Result.Success(dummyRegisterToLoginResponse)

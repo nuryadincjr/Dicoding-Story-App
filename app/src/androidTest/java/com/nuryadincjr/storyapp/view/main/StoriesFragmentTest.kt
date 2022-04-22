@@ -2,11 +2,11 @@ package com.nuryadincjr.storyapp.view.main
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.nuryadincjr.storyapp.JsonConverter
@@ -16,11 +16,13 @@ import com.nuryadincjr.storyapp.util.EspressoIdlingResource
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
+import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 class StoriesFragmentTest {
@@ -53,16 +55,27 @@ class StoriesFragmentTest {
             .setBody(JsonConverter.readStringFromFile("success_response.json"))
         mockWebServer.enqueue(mockResponse)
 
-        Espresso.onView(ViewMatchers.withId(R.id.recyclerView))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText("Lorem Ipsum"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.recyclerView))
+            .check(matches(isDisplayed()))
+        onView(withText("Lorem Ipsum"))
+            .check(matches(isDisplayed()))
 
-        Espresso.onView(ViewMatchers.withId(R.id.recyclerView))
+        onView(withId(R.id.recyclerView))
             .perform(
                 RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    ViewMatchers.hasDescendant(ViewMatchers.withText("Lorem Ipsum 4"))
+                    hasDescendant(withText("Lorem Ipsum 7"))
                 )
             )
+    }
+
+    @Test
+    fun getStories_TestError() {
+        val mockResponse = MockResponse()
+            .setResponseCode(404)
+            .setBody(JsonConverter.readStringFromFile("error_response.json"))
+        mockWebServer.enqueue(mockResponse)
+
+        onView(withId(R.id.recyclerView))
+            .check(matches(isDisplayed()))
     }
 }

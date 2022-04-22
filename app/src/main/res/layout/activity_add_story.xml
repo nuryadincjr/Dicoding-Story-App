@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_image_24" />
+        app:srcCompat="@drawable/ic_image_load" />
 
     <Button
         android:id="@+id/btn_camera"
@@ -75,32 +75,32 @@
 
     <TextView
         android:id="@+id/tv_location"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
         android:alpha="0"
         android:drawablePadding="8dp"
         android:minHeight="32dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16sp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:text="@string/add_location"
         android:textStyle="bold"
         app:drawableStartCompat="@drawable/ic_location_dot_24"
-        app:layout_constraintBottom_toTopOf="@+id/btn_upload"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal4"
+        app:layout_constraintEnd_toStartOf="@+id/iv_clear_location"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/iv_clear_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
         android:alpha="0"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/clear_location"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/tv_location"
-        app:layout_constraintEnd_toEndOf="@+id/tv_location"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_description"
         app:srcCompat="@drawable/ic_baseline_clear_24" />
 

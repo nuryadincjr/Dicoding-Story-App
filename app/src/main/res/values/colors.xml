@@ -6,6 +6,7 @@
     <color name="pink_primary">#f35383</color>
     <color name="pink_light">#ff87b2</color>
     <color name="pink_dark">#bc1357</color>
-    <color name="gray_secondary">#2c3d4f</color>
-    <color name="gray_light">#56677b</color>
+    <color name="gray_secondary">#415973</color>
+    <color name="gray_light">#70767E</color>
+    <color name="gray_dark">#19212B</color>
 </resources>

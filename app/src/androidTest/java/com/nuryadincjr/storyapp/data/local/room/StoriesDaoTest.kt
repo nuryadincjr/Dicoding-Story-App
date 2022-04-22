@@ -33,7 +33,7 @@ class StoriesDaoTest {
     private lateinit var database: StoriesDatabase
     private lateinit var dao: StoriesDao
 
-    private val sampleNews = DataDummy.generateDummyStoriesEntity()
+    private val dummyStories = DataDummy.generateDummyStoriesEntity()
 
     @Before
     fun initDb() {
@@ -49,14 +49,14 @@ class StoriesDaoTest {
 
     @Test
     fun insertStory() = mainCoroutineRule.runBlockingTest {
-        dao.insertStory(sampleNews)
-        val actualNews = dao.getWidgetStory().asLiveData().getOrAwaitValue()
-        assertEquals(sampleNews[0].name, actualNews?.get(0)?.name)
+        dao.insertStory(dummyStories)
+        val actualStories = dao.getWidgetStory().asLiveData().getOrAwaitValue()
+        assertEquals(dummyStories[0].name, actualStories?.get(0)?.name)
     }
 
     @Test
     fun deleteAll() = mainCoroutineRule.runBlockingTest {
-        dao.insertStory(sampleNews)
+        dao.insertStory(dummyStories)
         dao.deleteAll()
         val actualNews = dao.getWidgetStory().asLiveData().getOrAwaitValue()
         assertTrue(actualNews?.isEmpty() ?: false)

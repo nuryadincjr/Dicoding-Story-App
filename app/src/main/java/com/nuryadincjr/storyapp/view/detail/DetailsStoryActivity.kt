@@ -45,8 +45,8 @@ class DetailsStoryActivity : AppCompatActivity() {
             Glide.with(this@DetailsStoryActivity)
                 .load(user?.photoUrl)
                 .centerCrop()
-                .placeholder(R.drawable.ic_baseline_image_24)
-                .error(R.drawable.ic_baseline_broken_image_24)
+                .placeholder(R.drawable.ic_image_load)
+                .error(R.drawable.ic_image_broken)
                 .into(imageView)
         }
     }
