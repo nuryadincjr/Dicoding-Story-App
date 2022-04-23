@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices.getFusedLocationProviderClient
 import com.google.android.gms.maps.model.LatLng
 import com.nuryadincjr.storyapp.R
@@ -44,6 +45,7 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var currentPhotoPath: String
     private var latLng: LatLng? = null
     private var getFile: File? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val addStoryViewModel: AddStoryViewModel by viewModels {
         val preference = SettingsPreference.getInstance(dataStore)
@@ -155,6 +157,8 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
             setDisplayHomeAsUpEnabled(true)
             elevation = 0f
         }
+
+        fusedLocationClient = getFusedLocationProviderClient(this)
 
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
@@ -282,7 +286,6 @@ class AddStoryActivity : AppCompatActivity(), View.OnClickListener {
         if (checkPermission(ACCESS_FINE_LOCATION) &&
             checkPermission(ACCESS_COARSE_LOCATION)
         ) {
-            val fusedLocationClient = getFusedLocationProviderClient(this)
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     latLng = LatLng(location.latitude, location.longitude)
