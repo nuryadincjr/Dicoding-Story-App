@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -35,15 +36,11 @@ class SplashScreenActivity : AppCompatActivity() {
         startScreen()
     }
 
-    override fun onPause() {
-        activityScope.cancel()
-        super.onPause()
-    }
-
     private fun startScreen() {
         activityScope.launch {
             delay(3000)
             onSubscribe()
+            activityScope.cancel()
         }
     }
 

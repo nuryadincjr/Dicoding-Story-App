@@ -80,7 +80,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        setMapStyle()
+        mapsViewModel.getTheme().observe(this@MapsActivity) {
+            setMapStyle(false, it)
+        }
 
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isIndoorLevelPickerEnabled = true
@@ -93,6 +95,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.setOnInfoWindowClickListener { marker ->
             val storyItem = marker.tag as StoryItem
             startActivity(storyItem)
+        }
+
+        binding.tglStyle.setOnCheckedChangeListener { _, isChecked ->
+            setMapStyle(isChecked, false)
         }
     }
 
@@ -138,27 +144,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun setMapStyle() {
+    private fun setMapStyle(isChecked: Boolean, isTheme: Boolean) {
         try {
-            mapsViewModel.getTheme().observe(this@MapsActivity) {
-                val success = if (it) {
-                    mMap.setMapStyle(
-                        MapStyleOptions.loadRawResourceStyle(
-                            this,
-                            R.raw.night_map_style
-                        )
+            val success = if (isChecked || isTheme) {
+                binding.tglStyle.isChecked = true
+                mMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                        this@MapsActivity,
+                        R.raw.night_map_style
                     )
-                } else {
-                    mMap.setMapStyle(
-                        MapStyleOptions.loadRawResourceStyle(
-                            this,
-                            R.raw.light_map_style
-                        )
+                )
+            } else {
+                mMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                        this@MapsActivity,
+                        R.raw.light_map_style
                     )
-                }
-
-                if (!success) Log.e(TAG, getString(R.string.error_style_parsing))
+                )
             }
+
+            if (!success) Log.e(TAG, getString(R.string.error_style_parsing))
         } catch (exception: Resources.NotFoundException) {
             Log.e(TAG, format(getString(R.string.error_style_find), exception))
         }
