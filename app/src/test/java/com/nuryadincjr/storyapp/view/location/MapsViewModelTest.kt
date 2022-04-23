@@ -70,4 +70,13 @@ class MapsViewModelTest {
         assertNotNull(actualStories)
         assertTrue(actualStories is Result.Error)
     }
+
+    @Test
+    fun `When setToken Should Not Null`() {
+        val expectedToken = "12345678"
+        val actualToken = mapsViewModel.setToken(expectedToken)
+
+        verify(storiesRepository).setToken(expectedToken)
+        assertNotNull(actualToken)
+    }
 }

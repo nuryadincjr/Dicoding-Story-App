@@ -3,8 +3,10 @@ package com.nuryadincjr.storyapp.view.login
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nuryadincjr.storyapp.DataDummy
+import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
+import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.repository.LoginRepository
 import com.nuryadincjr.storyapp.getOrAwaitValue
@@ -24,6 +26,9 @@ import org.mockito.junit.MockitoJUnitRunner
 class LoginViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    var mainCoroutineRules = MainCoroutineRule()
 
     @Mock
     private lateinit var loginViewModel: LoginViewModel
@@ -94,5 +99,18 @@ class LoginViewModelTest {
 
         assertNotNull(actualLogin)
         assertTrue(actualLogin is Result.Error)
+    }
+
+    @Test
+    fun `when loginSession Should Not Null`() {
+        val user = Users(
+            dummyUser.userId,
+            dummyUser.name,
+            dummyUser.email,
+            dummyUser.password,
+            dummyUser.token
+        )
+        val actualLoginSession = loginViewModel.loginSession(user)
+        assertNotNull(actualLoginSession)
     }
 }

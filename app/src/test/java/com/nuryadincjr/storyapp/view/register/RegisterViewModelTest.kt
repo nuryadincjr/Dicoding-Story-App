@@ -3,8 +3,10 @@ package com.nuryadincjr.storyapp.view.register
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nuryadincjr.storyapp.DataDummy
+import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
+import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.repository.RegisterRepository
 import com.nuryadincjr.storyapp.getOrAwaitValue
@@ -24,6 +26,9 @@ import org.mockito.junit.MockitoJUnitRunner
 class RegisterViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    var mainCoroutineRules = MainCoroutineRule()
 
     @Mock
     private lateinit var registerViewModel: RegisterViewModel
@@ -106,5 +111,18 @@ class RegisterViewModelTest {
 
         assertNotNull(actualRegister)
         assertTrue(actualRegister is Result.Error)
+    }
+
+    @Test
+    fun `when loginSession Should Not Null`() {
+        val user = Users(
+            dummyUser.userId,
+            dummyUser.name,
+            dummyUser.email,
+            dummyUser.password,
+            dummyUser.token
+        )
+        val actualLoginSession = registerViewModel.loginSession(user)
+        assertNotNull(actualLoginSession)
     }
 }

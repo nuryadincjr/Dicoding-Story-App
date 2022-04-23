@@ -8,6 +8,19 @@ Unit testing ViewModel:
     b.  Ketika gagal menambah data Stories.
         - Memastikan mengembalikan Result.Error.
 
+    c.  Ketika setFile data getFile sukses
+        - Memastikan data tidak null.
+        - Memastikan mengembalikan File.
+        - Memastikan data file sesuai dengan yang diharapkan.
+
+    d.  Ketika setLocation data getLocation sukses
+        - Memastikan data tidak null.
+        - Memastikan mengembalikan LatLng.
+        - Memastikan data lokasi sesuai dengan yang diharapkan.
+
+    e.  Ketika setToken sesi pengguna
+        - Memastikan data tidak null.
+
 2)  Kelas MapsViewModelTest:
     a.  Ketika berhasil memuat data Stories dengan kriteria lokasi.
         - Memastikan data tidak null.
@@ -18,6 +31,9 @@ Unit testing ViewModel:
     b.  Ketika gagal memuat data Stories dengan kriteria lokasi.
         - Memastikan mengembalikan Result.Error.
 
+    c.  Ketika setToken sesi pengguna
+        - Memastikan data tidak null.
+
 3)  Kelas LoginViewModelTest:
     a. Ketika berhasil login data pengguna.
       - Memastikan data user tidak null.
@@ -25,14 +41,24 @@ Unit testing ViewModel:
       - Memastikan data status berhasil login.
       - Memastikan data id user sesuai dengan yang diinginkan.
 
-    b.  Ketika gagal memuat data berita.
+    b.  Ketika gagal login data pengguna.
         - Memastikan mengembalikan Result.Error.
 
+    c.  Ketika loginSession
+        - Memastikan data tidak null.
+
 4)  Kelas StoriesViewModelTest:
-    Ketika berhasil memuat data Stories.
-    - Memastikan data tidak null.
-    - Memastikan jumlah data sesuai dengan yang diharapkan.
-    - Memastikan data hasil sesuai dengan yang diharapkan.
+    a.  Ketika berhasil memuat data Stories.
+        - Memastikan data tidak null.
+        - Memastikan jumlah data sesuai dengan yang diharapkan.
+        - Memastikan data hasil sesuai dengan yang diharapkan.
+
+    b.  Ketika getUser sesi data pengguna
+        - Memastikan data tidak null.
+        - Memastikan data hasil sesuai dengan yang diharapkan.
+
+    c.  Ketika setToken sesi pengguna
+        - Memastikan data token tidak null.
 
 5)  Kelas RegisterViewModelTest:
     a.  Ketika berhasil registrasi data pengguna.
@@ -44,11 +70,33 @@ Unit testing ViewModel:
     b.  Ketika gagal registrasi data pengguna.
         - Memastikan mengembalikan Result.Error.
 
+    c.  Ketika loginSession
+        - Memastikan data tidak null.
+
 6)  Kelas SettingsViewModelTest:
-    Ketika berhasil mengubah tema aplikasi.
-    - Memastikan data tidak null.
-    - Memastikan mengembalikan Boolean.
-    - Memastikan data hasil sesuai dengan yang diharapkan.
+    a.  Ketika saveTheme sesi pengguna
+        - Memastikan data boolean tema tidak null.
+
+    b.  Ketika getTheme tema aplikasi.
+        - Memastikan data tidak null.
+        - Memastikan mengembalikan Boolean.
+        - Memastikan data hasil sesuai dengan yang diharapkan.
+
+    b.  Ketika logout
+        - Memastikan data tidak null.
+
+    c.  Ketika deleteStories
+        - Memastikan data tidak null.
+
+7)  Kelas SplashScreenViewModelTest:
+    a.  Ketika getUser sesi data pengguna
+        - Memastikan data tidak null.
+        - Memastikan data hasil sesuai dengan yang diharapkan.
+
+    b.  Ketika getTheme tema aplikasi.
+        - Memastikan data tidak null.
+        - Memastikan mengembalikan Boolean.
+        - Memastikan data hasil sesuai dengan yang diharapkan.
 
 Unit testing Repository:
 1)  Kelas LoginRepositoryTest:
@@ -91,12 +139,15 @@ End-to-end test:
         - Memastikan RecyclerView untuk data item story telah ditampilkan.
 
     b.  Menampilkan detail story
+        - Memastikan RecyclerView untuk data item story telah ditampilkan.
         - Memastikan menuju ke halaman DetailsStoryActivity.
         - Memastikan halaman detail dapat menampilkan imageView.
 
     c.  Menampilkan map lokasi stories
         - Memastikan menuju ke halaman MapsActivity.
         - Memastikan halaman detail dapat menampilkan map.
+        - Memastikan toggle ubah tema map pada halaman map telah tampil.
+        - Memastikan toggle ubah tema map pada halaman map ditekan.
 
     d.  Mengunggah Story
         - Memastikan menuju ke halaman AddStoryActivity.
@@ -108,7 +159,6 @@ End-to-end test:
         - Memastikan halaman setting menampilkan judul pengaturan.
         - Memastikan halaman swich ubah tema telah tampil.
         - Memastikan swich ubah tema telah diswipeDown.
-
 
 Room database test:
 1)  Kelas StoriesDaoTest

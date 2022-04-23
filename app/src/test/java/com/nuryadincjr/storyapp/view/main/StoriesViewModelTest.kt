@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ListUpdateCallback
 import com.nuryadincjr.storyapp.DataDummy
 import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.adapter.StoriesListAdapter
+import com.nuryadincjr.storyapp.data.model.Users
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,6 +40,7 @@ class StoriesViewModelTest {
     private lateinit var storiesViewModel: StoriesViewModel
 
     private val dummyStories = DataDummy.generateDummyStoriesEntity()
+    private val dummyUser = DataDummy.DataDummyUser()
 
     @Test
     fun `when getStory Should Not Null`() = mainCoroutineRules.runBlockingTest {
@@ -64,6 +66,36 @@ class StoriesViewModelTest {
         assertNotNull(differ.snapshot())
         assertEquals(dummyStories.size, differ.snapshot().size)
         assertEquals(dummyStories[0].id, differ.snapshot()[0]?.id)
+    }
+
+    @Test
+    fun `when getUser Should Not Null`() {
+        val user = Users(
+            dummyUser.userId,
+            dummyUser.name,
+            dummyUser.email,
+            dummyUser.password,
+            dummyUser.token
+        )
+        val expectedUser = MutableLiveData<Users>()
+        expectedUser.value = user
+
+        `when`(storiesViewModel.getUser()).thenReturn(expectedUser)
+        val actualUser = storiesViewModel.getUser().getOrAwaitValue()
+
+        verify(storiesViewModel).getUser()
+
+        assertNotNull(actualUser)
+        assertEquals(user.userId, actualUser.userId)
+    }
+
+    @Test
+    fun `when setToken Should Not Null`() {
+        val expectedToken = "12345678"
+        val actualToken = storiesViewModel.setToken(expectedToken)
+
+        verify(storiesViewModel).setToken(expectedToken)
+        assertNotNull(actualToken)
     }
 
     class PagedTestDataSources private constructor() :

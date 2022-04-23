@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
