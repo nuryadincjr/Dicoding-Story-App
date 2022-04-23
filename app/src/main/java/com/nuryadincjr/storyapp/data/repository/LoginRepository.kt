@@ -10,7 +10,7 @@ import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
 import com.nuryadincjr.storyapp.util.Constant
 
-class LoginRepository private constructor(
+class LoginRepository(
     private val context: Context,
     private val apiService: ApiService
 ) {

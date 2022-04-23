@@ -8,10 +8,10 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.nuryadincjr.storyapp.adapter.StoriesListAdapter
-import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.DataDummy
 import com.nuryadincjr.storyapp.MainCoroutineRule
+import com.nuryadincjr.storyapp.adapter.StoriesListAdapter
+import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle

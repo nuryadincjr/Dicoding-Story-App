@@ -2,15 +2,13 @@ package com.nuryadincjr.storyapp.view.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.nuryadincjr.storyapp.DataDummy
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.repository.LoginRepository
-import com.nuryadincjr.storyapp.DataDummy
-import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -27,17 +25,14 @@ class LoginViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    @get:Rule
-    var mainCoroutineRules = MainCoroutineRule()
+    @Mock
+    private lateinit var loginViewModel: LoginViewModel
 
     @Mock
     private lateinit var loginRepository: LoginRepository
 
     @Mock
     private lateinit var settingsPreference: SettingsPreference
-
-    @Mock
-    private lateinit var loginViewModel: LoginViewModel
 
     private val dummyLoginResponse = DataDummy.generateDummyLoginResponse()
     private val dummyUser = DataDummy.DataDummyUser()
@@ -48,7 +43,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `When onLogin Should Not Null and Return Success`() = mainCoroutineRules.runBlockingTest {
+    fun `When onLogin Should Not Null and Return Success`() {
         val expectedLogin = MutableLiveData<Result<LoginResponse>>()
         expectedLogin.value = Result.Success(dummyLoginResponse)
 

@@ -1,12 +1,11 @@
 package com.nuryadincjr.storyapp.data.repository
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nuryadincjr.storyapp.data.FakeApiService
-import com.nuryadincjr.storyapp.data.model.SettingsPreference
-import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
 import com.nuryadincjr.storyapp.DataDummy
 import com.nuryadincjr.storyapp.MainCoroutineRule
-import com.nuryadincjr.storyapp.view.login.LoginViewModel
+import com.nuryadincjr.storyapp.data.FakeApiService
+import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
@@ -31,10 +30,7 @@ class LoginRepositoryTest {
     private lateinit var loginRepository: LoginRepository
 
     @Mock
-    private lateinit var settingsPreference: SettingsPreference
-
-    @Mock
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var context: Context
 
     private lateinit var apiService: ApiService
 
@@ -43,7 +39,7 @@ class LoginRepositoryTest {
     @Before
     fun setUp() {
         apiService = FakeApiService()
-        loginViewModel = LoginViewModel(loginRepository, settingsPreference)
+        loginRepository = LoginRepository(context, apiService)
     }
 
     @Test

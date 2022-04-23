@@ -1,12 +1,12 @@
 package com.nuryadincjr.storyapp.data.repository
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nuryadincjr.storyapp.data.FakeApiService
-import com.nuryadincjr.storyapp.data.FakeStoriesDao
-import com.nuryadincjr.storyapp.data.local.room.StoriesDao
-import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
 import com.nuryadincjr.storyapp.DataDummy
 import com.nuryadincjr.storyapp.MainCoroutineRule
+import com.nuryadincjr.storyapp.data.FakeApiService
+import com.nuryadincjr.storyapp.data.local.room.StoriesDatabase
+import com.nuryadincjr.storyapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
@@ -15,6 +15,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -26,9 +27,16 @@ class StoriesRepositoryTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    private lateinit var apiService: ApiService
+    @Mock
+    private lateinit var storiesRepository: StoriesRepository
 
-    private lateinit var storiesDao: StoriesDao
+    @Mock
+    private lateinit var context: Context
+
+    @Mock
+    private lateinit var database: StoriesDatabase
+
+    private lateinit var apiService: ApiService
 
     private val dummyDescription = DataDummy.generateDummyDescription()
     private val dummyLocation = DataDummy.generateDummyLocation()
@@ -38,7 +46,7 @@ class StoriesRepositoryTest {
     @Before
     fun setUp() {
         apiService = FakeApiService()
-        storiesDao = FakeStoriesDao()
+        storiesRepository = StoriesRepository(context, apiService, database)
     }
 
     @Test

@@ -3,14 +3,12 @@ package com.nuryadincjr.storyapp.view.register
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nuryadincjr.storyapp.DataDummy
-import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.remote.response.LoginResponse
 import com.nuryadincjr.storyapp.data.repository.RegisterRepository
 import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -26,9 +24,6 @@ import org.mockito.junit.MockitoJUnitRunner
 class RegisterViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
 
     @Mock
     private lateinit var registerViewModel: RegisterViewModel
@@ -47,50 +42,42 @@ class RegisterViewModelTest {
         registerViewModel = RegisterViewModel(registerRepository, settingsPreference)
     }
 
-    /**
-     * @Ketika berhasil registrasi data pengguna.
-     * Memastikan data tidak null.
-     * Memastikan mengembalikan Result.Success.
-     * Memastikan data berhasil ditambahkan.
-     * Memastikan data id user sesuai dengan yang diinginkan.
-     */
     @Test
-    fun `When onRegister Should Not Null and Return Success`() =
-        mainCoroutineRule.runBlockingTest {
-            val expectedRegister = MutableLiveData<Result<LoginResponse>>()
-            expectedRegister.value = Result.Success(dummyRegisterToLoginResponse)
+    fun `When onRegister Should Not Null and Return Success`() {
+        val expectedRegister = MutableLiveData<Result<LoginResponse>>()
+        expectedRegister.value = Result.Success(dummyRegisterToLoginResponse)
 
-            `when`(
-                registerViewModel.onRegister(
-                    dummyUser.name,
-                    dummyUser.email,
-                    dummyUser.password
-                )
-            ).thenReturn(expectedRegister)
-
-            val actualRegister = registerViewModel.onRegister(
-                dummyUser.name,
-                dummyUser.email,
-                dummyUser.password
-            ).getOrAwaitValue()
-
-            verify(registerRepository).register(
+        `when`(
+            registerViewModel.onRegister(
                 dummyUser.name,
                 dummyUser.email,
                 dummyUser.password
             )
+        ).thenReturn(expectedRegister)
 
-            assertNotNull(actualRegister)
-            assertTrue(actualRegister is Result.Success)
-            assertEquals(
-                dummyRegisterToLoginResponse.message,
-                (actualRegister as Result.Success).data.message
-            )
-            assertEquals(
-                dummyRegisterToLoginResponse.loginResult?.userId,
-                actualRegister.data.loginResult?.userId
-            )
-        }
+        val actualRegister = registerViewModel.onRegister(
+            dummyUser.name,
+            dummyUser.email,
+            dummyUser.password
+        ).getOrAwaitValue()
+
+        verify(registerRepository).register(
+            dummyUser.name,
+            dummyUser.email,
+            dummyUser.password
+        )
+
+        assertNotNull(actualRegister)
+        assertTrue(actualRegister is Result.Success)
+        assertEquals(
+            dummyRegisterToLoginResponse.message,
+            (actualRegister as Result.Success).data.message
+        )
+        assertEquals(
+            dummyRegisterToLoginResponse.loginResult?.userId,
+            actualRegister.data.loginResult?.userId
+        )
+    }
 
     @Test
     fun `when Network Error Should Return Error`() {

@@ -2,10 +2,10 @@ package com.nuryadincjr.storyapp.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.asLiveData
-import com.nuryadincjr.storyapp.data.FakeStoriesDao
-import com.nuryadincjr.storyapp.data.local.room.StoriesDao
 import com.nuryadincjr.storyapp.DataDummy
 import com.nuryadincjr.storyapp.MainCoroutineRule
+import com.nuryadincjr.storyapp.data.FakeStoriesDao
+import com.nuryadincjr.storyapp.data.local.room.StoriesDao
 import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -33,12 +33,6 @@ class WidgetRepositoryTest {
         storiesDao = FakeStoriesDao()
     }
 
-    /**
-     * @Ketika getWidgetStory data sesuai.
-     * Memastikan data stories tidak null.
-     * Memastikan jumlah data sesuai dengan yang duharapkan.
-     * Memastikan data hasil sesuai dengan yang diharapkan.
-     */
     @Test
     fun `when getWidgetStory Should Not Null`() = mainCoroutineRules.runBlockingTest {
         val expectedWidget = DataDummy.generateDummyStoriesEntity()

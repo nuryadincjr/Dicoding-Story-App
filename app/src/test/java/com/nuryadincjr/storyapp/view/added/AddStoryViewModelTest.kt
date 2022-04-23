@@ -3,14 +3,12 @@ package com.nuryadincjr.storyapp.view.added
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nuryadincjr.storyapp.DataDummy
-import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.remote.response.PostResponse
 import com.nuryadincjr.storyapp.data.repository.StoriesRepository
 import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -26,9 +24,6 @@ import org.mockito.junit.MockitoJUnitRunner
 class AddStoryViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    var mainCoroutineRules = MainCoroutineRule()
 
     @Mock
     private lateinit var storyViewModel: AddStoryViewModel
@@ -49,42 +44,38 @@ class AddStoryViewModelTest {
         storyViewModel = AddStoryViewModel(storiesRepository, settingsPreference)
     }
 
-    @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
-
     @Test
-    fun `When onUpload Should Not Null and Return Success`() =
-        mainCoroutineRule.runBlockingTest {
-            val expectedAddStory = MutableLiveData<Result<PostResponse>>()
-            expectedAddStory.value = Result.Success(dummyResponse)
+    fun `When onUpload Should Not Null and Return Success`() {
+        val expectedAddStory = MutableLiveData<Result<PostResponse>>()
+        expectedAddStory.value = Result.Success(dummyResponse)
 
-            `when`(
-                storyViewModel.onUpload(
-                    dummyFile,
-                    dummyDescription,
-                    dummyLocation.latitude,
-                    dummyLocation.longitude
-                )
-            ).thenReturn(expectedAddStory)
-
-            val actualAddStory = storyViewModel.onUpload(
-                dummyFile,
-                dummyDescription,
-                dummyLocation.latitude,
-                dummyLocation.longitude
-            ).getOrAwaitValue()
-
-            verify(storiesRepository).postStory(
+        `when`(
+            storyViewModel.onUpload(
                 dummyFile,
                 dummyDescription,
                 dummyLocation.latitude,
                 dummyLocation.longitude
             )
+        ).thenReturn(expectedAddStory)
 
-            assertNotNull(actualAddStory)
-            assertTrue(actualAddStory is Result.Success)
-            assertEquals(dummyResponse.message, (actualAddStory as Result.Success).data.message)
-        }
+        val actualAddStory = storyViewModel.onUpload(
+            dummyFile,
+            dummyDescription,
+            dummyLocation.latitude,
+            dummyLocation.longitude
+        ).getOrAwaitValue()
+
+        verify(storiesRepository).postStory(
+            dummyFile,
+            dummyDescription,
+            dummyLocation.latitude,
+            dummyLocation.longitude
+        )
+
+        assertNotNull(actualAddStory)
+        assertTrue(actualAddStory is Result.Success)
+        assertEquals(dummyResponse.message, (actualAddStory as Result.Success).data.message)
+    }
 
     @Test
     fun `when Network Error Should Return Error`() {

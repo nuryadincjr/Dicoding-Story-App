@@ -46,7 +46,7 @@ class MainActivityTest {
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
         onView(withId(R.id.recyclerView)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                10
+                4
             )
         )
     }
@@ -54,6 +54,7 @@ class MainActivityTest {
     @Test
     fun load2DetailStory() {
         Intents.init()
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
         onView(withId(R.id.recyclerView)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -70,6 +71,8 @@ class MainActivityTest {
         onView(withId(R.id.fab_location)).perform(click())
         Intents.intended(hasComponent(MapsActivity::class.java.name))
         onView(withId(R.id.map)).check(matches(isDisplayed()))
+        onView(withId(R.id.tgl_style)).check(matches(isDisplayed()))
+        onView(withId(R.id.tgl_style)).perform(click())
         pressBack()
     }
 

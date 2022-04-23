@@ -2,12 +2,11 @@ package com.nuryadincjr.storyapp.view.location
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.nuryadincjr.storyapp.DataDummy
 import com.nuryadincjr.storyapp.data.Result
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.remote.response.StoryItem
 import com.nuryadincjr.storyapp.data.repository.StoriesRepository
-import com.nuryadincjr.storyapp.DataDummy
-import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.*
@@ -26,17 +25,14 @@ class MapsViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    @get:Rule
-    var mainCoroutineRules = MainCoroutineRule()
+    @Mock
+    private lateinit var mapsViewModel: MapsViewModel
 
     @Mock
     private lateinit var storiesRepository: StoriesRepository
 
     @Mock
     private lateinit var settingsPreference: SettingsPreference
-
-    @Mock
-    private lateinit var mapsViewModel: MapsViewModel
 
     private val dummyStories = DataDummy.generateDummyStoriesEntity()
 

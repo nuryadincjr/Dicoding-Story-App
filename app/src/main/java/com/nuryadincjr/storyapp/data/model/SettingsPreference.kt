@@ -11,7 +11,7 @@ import com.nuryadincjr.storyapp.util.Constant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class SettingsPreference private constructor(private val dataStore: DataStore<Preferences>) {
+class SettingsPreference(private val dataStore: DataStore<Preferences>) {
 
     fun getUserSession(): Flow<Users> {
         return dataStore.data.map {

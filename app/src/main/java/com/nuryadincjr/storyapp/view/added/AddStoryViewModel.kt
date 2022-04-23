@@ -36,8 +36,5 @@ class AddStoryViewModel(
         lon: Double? = null,
     ) = storiesRepository.postStory(photo, description, lat, lon)
 
-
-    fun getUser(): LiveData<Users> {
-        return settingsPreference.getUserSession().asLiveData()
-    }
+    fun getUser(): LiveData<Users> = settingsPreference.getUserSession().asLiveData()
 }

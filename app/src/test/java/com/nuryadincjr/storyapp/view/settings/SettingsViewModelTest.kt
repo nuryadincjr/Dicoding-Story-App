@@ -2,12 +2,10 @@ package com.nuryadincjr.storyapp.view.settings
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import com.nuryadincjr.storyapp.MainCoroutineRule
 import com.nuryadincjr.storyapp.data.model.SettingsPreference
 import com.nuryadincjr.storyapp.data.repository.StoriesRepository
 import com.nuryadincjr.storyapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -24,9 +22,6 @@ class SettingsViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
-
     @Mock
     private lateinit var storiesRepository: StoriesRepository
 
@@ -42,19 +37,18 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun `When getTheme Should Not Null and Return True`() =
-        mainCoroutineRule.runBlockingTest {
-            val expectedTheme = MutableLiveData<Boolean>()
-            expectedTheme.value = true
+    fun `When getTheme Should Not Null and Return True`() {
+        val expectedTheme = MutableLiveData<Boolean>()
+        expectedTheme.value = true
 
-            `when`(settingsViewModel.getTheme()).thenReturn(expectedTheme)
+        `when`(settingsViewModel.getTheme()).thenReturn(expectedTheme)
 
-            val actualTheme = settingsViewModel.getTheme().getOrAwaitValue()
+        val actualTheme = settingsViewModel.getTheme().getOrAwaitValue()
 
-            verify(settingsPreference).getTheme()
+        verify(settingsPreference).getTheme()
 
-            assertNotNull(actualTheme)
-            assertTrue(actualTheme)
-            assertEquals(true, actualTheme)
-        }
+        assertNotNull(actualTheme)
+        assertTrue(actualTheme)
+        assertEquals(true, actualTheme)
+    }
 }
